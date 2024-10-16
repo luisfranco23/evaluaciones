@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
 import { toast } from 'react-toastify';
+import talentoImagen from '/talento.jpg'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -80,9 +81,9 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-screen">
+      <div className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen">
         {/* Imagen de fondo o ilustración */}
-        {/* <img src="/placeholder.svg" alt="Imagen de inicio de sesión" className="hidden md:block w-full h-full object-cover" /> */}
+        <img src={talentoImagen} alt="Imagen de inicio de sesión" className="hidden md:block w-auto h-full object-cover" />
       </div>
     </main>
   );
