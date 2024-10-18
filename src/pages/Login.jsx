@@ -21,8 +21,9 @@ const Login = () => {
       if (result.data?.data) {
         user?.setUser(result.data?.data)
 
-        if (result.data?.data.sedes.length < 1) {
+        if (result.data?.data.Sedes.length < 1) {
           toast.warning("No cuenta con sedes asignadas, por favor contacta con el Administrador")
+          navigate('/');
           return;
         }
         // Redirigir al Home después de iniciar sesión

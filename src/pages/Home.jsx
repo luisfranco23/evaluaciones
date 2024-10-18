@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 const Home = () => {
     const navigate = useNavigate();
     const user = useUser();
-    const [disponible, setDisponible] = useState(false);
+    const [disponible, setDisponible] = useState(true);
     const [loading, setLoading] = useState(true); // Estado de carga
 
     const evaluarColaborador = (path, idUsuario) => {
@@ -26,7 +26,7 @@ const Home = () => {
 
             try {
                 const respuesta = await axios.get(`${URLBASE}/evaluaciones/disponible`, {
-                    params: { idColaborador: user.user.idUsuario, idEvaluador: user.user.idUsuario }
+                    params: { idColaborador: user?.user.idUsuario, idEvaluador: user?.user.idUsuario }
                 });
 
                 if (respuesta.status === 200) {

@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
   };
 
   useEffect(() => {
-    const perfil = user?.user.idPerfil;
+    const perfil = user?.user?.idPerfil;
     setIdPerfil(Number(perfil));
   }, [user]);
 
@@ -38,14 +38,14 @@ const Layout = ({ children }) => {
       <nav className={`fixed h-full bg-black text-white transition-all duration-300 ease-in-out flex flex-col justify-between ${isMenuOpen ? 'w-64' : 'w-16'}`}>
         <div className="relative p-4 flex items-center justify-between">
           <span className={`text-xl font-bold transition-block duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}>
-            {user?.user.sedes[0]?.nombre}
+            {user?.user?.Sedes[0]?.nombre}
           </span>
           <button onClick={toggleMenu} className={`absolute top-1/2 transform -translate-y-1/2 text-white focus:outline-none hover:bg-gray-800 p-2 rounded-full transition-all duration-300 ${isMenuOpen ? '-right-3' : 'right-0'}`}>
             {isMenuOpen ? <FaChevronLeft size={20} /> : <FaChevronRight size={20} />}
           </button>
         </div>
         <span className={`text-sm ml-4 font-bold transition-block duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}>
-          {user?.user.nombre}
+          {user?.user?.nombre}
         </span>
 
         {/* Opciones del menú */}
