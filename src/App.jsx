@@ -9,10 +9,8 @@ import InformesGraficas from './pages/InformesGraficas';
 import ComentariosAcciones from './components/ComentariosAcciones';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Usuarios from './pages/Admin/Usuarios';
 
-// import Usuarios from './pages/Usuarios'; // Importa el componente de Usuarios
-// import Descriptores from './pages/Descriptores'; // Importa el componente de Descriptores
-// import Evaluaciones from './pages/Evaluaciones'; // Importa el componente de Evaluaciones
 
 function App() {
   return (
@@ -39,7 +37,7 @@ function App() {
 
           {/* Rutas de administración */}
           <Route path="administrar">
-            {/* <Route path="usuarios" element={<Usuarios />} /> {/* Subruta relativa */}
+            <Route path="usuarios" element={<Usuarios />} /> Subruta relativa
             {/* <Route path="descriptores" element={<Descriptores />} />
             <Route path="evaluaciones" element={<Evaluaciones />} />  */}
             <Route path="seguimiento" element={<ComentariosAcciones />} />

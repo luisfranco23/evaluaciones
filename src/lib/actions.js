@@ -1,3 +1,3 @@
-export const URLBASE = `http://localhost:3000/api/v1/administrar`;
+export const URLBASE = `http://ide.oncologosdeloccidente.net:3010/api/v1/administrar`;
 
 

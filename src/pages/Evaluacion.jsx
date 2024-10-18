@@ -19,13 +19,13 @@ const Evaluacion = () => {
 
   const evaluadorId = user?.user.idUsuario; // Evaluador siempre es el usuario actual
 
-  const competencias = evaluacion?.competencias || [];
+  const competencias = evaluacion?.Competencias || [];
   const competenciaActual = competencias[currentPage]; // Obtener la competencia actual
 
   const usuario = user?.colaboradores?.colaboradores.find(c => c.idUsuario == idUsuario) || user?.colaboradores || user?.user;
 
   const dataParams = {
-    idEmpresa: usuario?.sedes[0].empresa.idEmpresa || null,
+    idEmpresa: usuario?.Empresas[0].idEmpresa || null,
     idNivelCargo: usuario?.idNivelCargo
   }
 
@@ -92,6 +92,8 @@ const Evaluacion = () => {
         idColaborador: usuario.idUsuario,
         idEvaluador: evaluadorId, // Evaluador es el usuario actual
       }));
+
+      console.log(respuestas)
   
       try {
         await axios.post(`${URLBASE}/respuestas`, { respuestas });
@@ -118,18 +120,18 @@ const Evaluacion = () => {
               <>
                 <div className="bg-gray-50 mt-2 pt-2 pb-2 text-center">
                   <h1 className="font-bold text-2xl">{competenciaActual?.nombre || 'Nombre de la competencia'}</h1>
-                  <p className="italic">{competenciaActual?.tipoCompetencia.nombre}</p>
+                  <p className="italic">{competenciaActual?.tipoCompetencium?.nombre}</p>
                   <p className="italic m-4">{competenciaActual?.descripcion}</p>
                 </div>
 
-                {competenciaActual?.descriptores.map((descriptor) => (
+                {competenciaActual?.Descriptores?.map((descriptor) => (
                   <div key={descriptor.idDescriptor} className="w-full">
                     <div className="bg-gray-50 mt-1 items-center justify-center flex w-full">
                       <p className="font-semibold m-3">{descriptor.descripcion}</p>
                     </div>
 
                     <div className="bg-gray-50 mt-2 p-6 w-full flex gap-2 flex-col">
-                      {calificaciones.map((calificacion) => {
+                      {calificaciones.sort((a,b) => b.valor - a.valor).map((calificacion) => {
                         const isSelected = selectedValues[descriptor.idDescriptor] === calificacion.idCalificacion;
                         return (
                           <div
