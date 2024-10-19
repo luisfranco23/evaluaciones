@@ -35,7 +35,6 @@ const Home = () => {
                     toast.error("Error al obtener la disponibilidad.");
                 }
             } catch (error) {
-                console.error("Error en la petición:", error);
                 toast.error("Ocurrió un error al verificar la disponibilidad.");
             } finally {
                 setLoading(false); // Finaliza la carga
@@ -50,7 +49,7 @@ const Home = () => {
     }
 
     return (
-        <div className="flex flex-col gap-2 my-5 mx-10">
+        <div className="flex flex-col gap-2 my-5 mx-10 bg-gray-50 w-auto">
             <h1 className="font-bold text-center mb-4 mt-5 text-2xl">Bienvenidos al módulo de evaluaciones</h1>
             <p><span>Cordial saludo,</span> Te damos la bienvenida a la evaluación de desempeño 2024 y te invitamos a participar activamente desde tu rol.</p>
             <p>El objetivo de esta evaluación es valorar las competencias que nos hacen competitivos como organización, a fin de identificar nuestras fortalezas como colaboradores y equipos de trabajo, así como para evidenciar temas que debamos intervenir mediante planes de mejoramiento individuales o grupales.</p>
@@ -77,7 +76,6 @@ const Home = () => {
                 >
                     <span>Ver resultados</span>
                 </button>
-
                 {
                     disponible ? (
                         <button
@@ -86,7 +84,7 @@ const Home = () => {
                         >
                             <span>Iniciar</span> <FiArrowRight className="w-5 md:w-6" />
                         </button>
-                    ) : null
+                    ): null
                 }
             </div>
         </div>

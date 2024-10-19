@@ -11,7 +11,9 @@ const ProtectedLayout = ({ allowedProfiles }) => {
 
   useEffect(() => {
     // Verificar si existe el token en la cookie
-    const token = Cookies.get('token');
+    // const token = Cookies.get('token');
+
+    const token = user?.user
     const idPerfil = user?.user.idPerfil
     // Si no existe el token, redirigir al login
     if (!token) {
@@ -35,7 +37,7 @@ const ProtectedLayout = ({ allowedProfiles }) => {
 
       {/* El contenido de las rutas */}
       <div className="flex-1 bg-gray-50">
-        <Outlet />
+          <Outlet />
         {/* Puedes habilitar el footer si es necesario */}
       </div>
     </div>
