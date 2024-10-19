@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { useUser } from '../context/UserContext';
 
 const Layout = ({ children }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdminSubMenuOpen, setIsAdminSubMenuOpen] = useState(false); // Estado para controlar el submenú de administración
   const [idPerfil, setIdPerfil] = useState(null);
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const Layout = ({ children }) => {
   }, [user]);
 
   return (
-    <div className="flex h-screen bg-gray-50 text-gray-900">
+    <div className="flex z-10 h-screen bg-gray-50 text-gray-900">
       {/* Menú lateral fijo */}
       <nav className={`fixed h-full bg-black text-white transition-all duration-300 ease-in-out flex flex-col justify-between ${isMenuOpen ? 'w-64' : 'w-16'}`}>
         <div className="relative p-4 flex items-center justify-between">

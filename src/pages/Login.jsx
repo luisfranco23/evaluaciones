@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 import talentoImagen from '/talento.jpg'
 
 const Login = () => {
@@ -39,7 +40,7 @@ const Login = () => {
 
   return (
     <main className="min-h-screen flex flex-col md:flex-row">
-      <div className="w-full md:w-1/2 flex justify-center items-center p-8 bg-gray-50">
+      <div className="w-full md:w-1/2 min-h-screen md:h-auto flex justify-center items-center p-8 bg-gray-50">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-2 text-center">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900">Iniciar sesión</h1>
@@ -65,6 +66,7 @@ const Login = () => {
                 id="password"
                 name="password"
                 type="password"
+                aria-autocomplete='current-password'
                 placeholder="Ingresa tu contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -82,7 +84,7 @@ const Login = () => {
         </div>
       </div>
 
-      <div className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen">
+      <div className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen hidden md:block">
         {/* Imagen de fondo o ilustración */}
         <img src={talentoImagen} alt="Imagen de inicio de sesión" className="hidden md:block w-auto h-full object-cover" />
       </div>
