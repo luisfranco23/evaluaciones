@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
@@ -14,6 +14,8 @@ const Evaluacion = () => {
   const [calificaciones, setCalificaciones] = useState([]);
   const [evaluacion, setEvaluacion] = useState([]);
   const [mostrarComentarios, setMostrarComentarios] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false); // Para controlar el modal de confirmación
   const { idUsuario } = useParams();
   const user = useUser();
 
@@ -27,8 +29,7 @@ const Evaluacion = () => {
   const dataParams = {
     idEmpresa: usuario?.Empresas[0].idEmpresa || null,
     idNivelCargo: usuario?.idNivelCargo
-  }
-
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -39,8 +40,9 @@ const Evaluacion = () => {
           params: dataParams
         });
         setEvaluacion(evaluacionResponse.data?.data || []);
+        setIsLoading(false);
       } catch (err) {
-        toast.error("Ocurrio un error durante la obtención de los datos!")
+        toast.error("Ocurrio un error durante la obtención de los datos!");
       }
     };
 
@@ -56,10 +58,10 @@ const Evaluacion = () => {
   };
 
   const validatePage = () => {
-    const descriptores = competencias[currentPage]?.descriptores || [];
+    const descriptores = competencias[currentPage]?.Descriptores || [];
     return descriptores.every(descriptor => selectedValues[descriptor.idDescriptor]);
   };
-  
+
   // Manejar el cambio de página
   const nextPage = () => {
     if (validatePage()) {
@@ -67,7 +69,6 @@ const Evaluacion = () => {
         setCurrentPage(currentPage + 1);
       }
     } else {
-      // Mostrar un mensaje de error utilizando la librería de toast
       toast.error("Por favor, selecciona una respuesta para cada descriptor.");
     }
   };
@@ -78,41 +79,47 @@ const Evaluacion = () => {
     }
   };
 
-  // Enviar la evaluación
-  const submit = async (e) => {
+  // Mostrar el diálogo de confirmación antes de enviar
+  const handleFinalizarClick = (e) => {
     e.preventDefault();
-  
     if (validatePage()) {
-      // Si todas las respuestas son válidas, procede con el envío
-      const idEvaluacion = evaluacion.idEvaluacion; // ID de la evaluación actual
-      const respuestas = Object.entries(selectedValues).map(([idDescriptor, idCalificacion]) => ({
-        idDescriptor: parseInt(idDescriptor),
-        idCalificacion,
-        idEvaluacion,
-        idColaborador: usuario.idUsuario,
-        idEvaluador: evaluadorId, // Evaluador es el usuario actual
-      }));
-
-      console.log(respuestas)
-  
-      try {
-        await axios.post(`${URLBASE}/respuestas`, { respuestas });
-        setCompleted(true); // Marcar como completado después de enviar
-        setMostrarComentarios(true);
-      } catch (error) {
-        toast.error("Error al enviar las respuestas!")
-      }
+      setShowConfirmDialog(true); // Mostrar el diálogo de confirmación
     } else {
       toast.error("Por favor, selecciona una respuesta para cada descriptor antes de finalizar.");
     }
   };
 
+  // Confirmar el envío
+  const confirmSubmit = async () => {
+    const idEvaluacion = evaluacion.idEvaluacion; // ID de la evaluación actual
+    const respuestas = Object.entries(selectedValues).map(([idDescriptor, idCalificacion]) => ({
+      idDescriptor: parseInt(idDescriptor),
+      idCalificacion,
+      idEvaluacion,
+      idColaborador: usuario.idUsuario,
+      idEvaluador: evaluadorId, // Evaluador es el usuario actual
+    }));
+
+    try {
+      await axios.post(`${URLBASE}/respuestas`, { respuestas });
+      setCompleted(true); // Marcar como completado después de enviar
+      setMostrarComentarios(true);
+      setShowConfirmDialog(false); // Ocultar el diálogo de confirmación
+    } catch (error) {
+      toast.error("Error al enviar las respuestas!");
+    }
+  };
+
+  if (isLoading) {
+    return <div className="text-center mt-5">Cargando...</div>;
+  }
+
   return (
-    <div className="flex flex-col justify-center items-center m-14">
+    <div className="flex flex-col justify-center items-center m-14 ">
       <h1 className="font-bold text-2xl">{`${evaluacion.nombre} - ${evaluacion.año}`}</h1>
       <p className="font-light">{`Evaluando a: ${usuario.nombre}`}</p>
 
-      <form className="w-full" onSubmit={submit}>
+      <form className="w-full" onSubmit={handleFinalizarClick}>
         {!completed ? (
           <div className="border-2 mt-4 p-2 rounded-lg w-full">
             {/* Renderización de la evaluación por competencias */}
@@ -131,7 +138,7 @@ const Evaluacion = () => {
                     </div>
 
                     <div className="bg-gray-50 mt-2 p-6 w-full flex gap-2 flex-col">
-                      {calificaciones.sort((a,b) => b.valor - a.valor).map((calificacion) => {
+                      {calificaciones.sort((a, b) => b.valor - a.valor).map((calificacion) => {
                         const isSelected = selectedValues[descriptor.idDescriptor] === calificacion.idCalificacion;
                         return (
                           <div
@@ -162,7 +169,8 @@ const Evaluacion = () => {
                   {!completed && (
                     currentPage === competencias.length - 1 ? (
                       <button
-                        type="submit"
+                        type="button"
+                        onClick={handleFinalizarClick}
                         className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-black/80"
                       >
                         Finalizar
@@ -185,6 +193,29 @@ const Evaluacion = () => {
           mostrarComentarios && <ComentariosAcciones idColaborador={usuario?.idUsuario} idEvaluador={evaluadorId} idEvaluacion={evaluacion?.idEvaluacion} esEvaluador={!(usuario?.idUsuario === evaluadorId)} />
         )}
       </form>
+
+      {/* Modal de confirmación */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">¿Confirmar el envío de la evaluación?</h2>
+            <div className="flex justify-end gap-4">
+              <button
+                className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+                onClick={() => setShowConfirmDialog(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600"
+                onClick={confirmSubmit}
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
