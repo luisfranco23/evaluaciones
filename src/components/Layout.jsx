@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaTimes, FaChevronLeft, FaChevronRight, FaCheckCircle, FaHome, FaCog, FaSignOutAlt, FaClipboardCheck, FaUser, FaList, FaEdit, FaCaretDown, FaCaretUp } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 import { useUser } from '../context/UserContext';
@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
   return (
     <div className="flex z-10 h-screen bg-gray-50 text-gray-900">
       {/* Menú lateral fijo */}
-      <nav className={`fixed h-full bg-black text-white transition-all duration-300 ease-in-out flex flex-col justify-between ${isMenuOpen ? 'w-64' : 'w-16'}`}>
+      <nav className={`fixed h-full bg-secound/90 text-white transition-all duration-300 ease-in-out flex flex-col justify-between ${isMenuOpen ? 'w-72' : 'w-16'}`}>
         <div className="relative p-4 flex items-center justify-between">
           <span className={`text-xl font-bold transition-block duration-300 ${isMenuOpen ? 'block' : 'hidden'}`}>
             {user?.user?.Sedes[0]?.nombre}

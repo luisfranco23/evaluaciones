@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
@@ -25,11 +25,11 @@ const Evaluacion = () => {
   const competenciaActual = competencias[currentPage]; // Obtener la competencia actual
 
   const usuario = user?.colaboradores?.colaboradores.find(c => c.idUsuario == idUsuario) || user?.colaboradores || user?.user;
-
   const dataParams = {
     idEmpresa: usuario?.Empresas[0].idEmpresa || null,
     idNivelCargo: usuario?.idNivelCargo
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +42,7 @@ const Evaluacion = () => {
         setEvaluacion(evaluacionResponse.data?.data || []);
         setIsLoading(false);
       } catch (err) {
+        console.log(er)
         toast.error("Ocurrio un error durante la obtención de los datos!");
       }
     };
@@ -106,6 +107,7 @@ const Evaluacion = () => {
       setMostrarComentarios(true);
       setShowConfirmDialog(false); // Ocultar el diálogo de confirmación
     } catch (error) {
+      console.log(error)
       toast.error("Error al enviar las respuestas!");
     }
   };
