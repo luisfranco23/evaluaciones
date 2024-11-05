@@ -35,7 +35,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   // Agregar una nueva acción de mejoramiento
   const agregarAccion = () => {
-    setAccionesMejoramiento([...accionesMejoramiento, { idCompetencia: '', comentario: '', estado: '', fechaCumplimiento: '' }]);
+      setAccionesMejoramiento([...accionesMejoramiento, { idCompetencia: '', comentario: '', estado: '', fechaCumplimiento: '' }]);
   };
 
   // Manejo de envío de datos
