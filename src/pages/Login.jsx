@@ -1,14 +1,13 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
 import talentoImagen from '/talento.jpg'
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [documento, setDocumento] = useState('');
   const [password, setPassword] = useState('');
   const user = useUser()
   const navigate = useNavigate();
@@ -18,22 +17,23 @@ const Login = () => {
 
     try {
 
-      const result = await axios.post(`${URLBASE}/usuarios/login`, { correo: email, contrasena: password }, { withCredentials: true })
+      const result = await axios.post(`${URLBASE}/usuarios/login`, { documento: documento, contrasena: password }, { withCredentials: true })
       if (result.data?.data) {
         user?.setUser(result.data?.data)
 
-        if (result.data?.data.Sedes.length < 1) {
-          toast.warning("No cuenta con sedes asignadas, por favor contacta con el Administrador")
+        if (result.data?.data.Empresas.length < 1) {
+          toast.warning("No cuenta con empresa asignada, por favor contacta con el Administrador")
           navigate('/');
           return;
         }
         // Redirigir al Home después de iniciar sesión
-        navigate('/home');
+          navigate('/home');
+
       } else {
         // Mostrar error si las credenciales son incorrectas
         toast.error("Credenciales Invalidas.")
       }
-    } catch (error) {
+    } catch {
       toast.error('Ocurrió un error. Inténtalo de nuevo.')
     }
   };
@@ -43,21 +43,21 @@ const Login = () => {
       <div className="w-full md:w-1/2 min-h-screen md:h-auto flex justify-center items-center p-8 bg-gray-50">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-2 text-center">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900">Iniciar sesión</h1>
+            <h1 className="text-5xl font-bold tracking-tight text-zvioleta">Talento Pro</h1>
             <p className="text-sm text-gray-600">Ingresa tus credenciales para acceder</p>
           </div>
           <form className="space-y-4" onSubmit={handleLogin}>
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Correo</label>
+              <label htmlFor="documento" className="block text-sm font-medium text-gray-700">Número de documento</label>
               <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Ingresa tu correo"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="documento"
+                name="documento"
+                type="number"
+                placeholder="Ingresa tu número de documento"
+                value={documento}
+                onChange={(e) => setDocumento(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-znaranja focus:border-b-znaranja [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
               />
             </div>
             <div className="space-y-2">
@@ -71,18 +71,19 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-znaranja focus:border-b-znaranja"
               />
             </div>
             <button
               type="submit"
-              className="w-full px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 text-xl font-medium text-white bg-zvioleta rounded-md hover:bg-zvioleta/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zvioleta/90"
             >
-              Iniciar sesión
+              Ingresar
             </button>
           </form>
         </div>
       </div>
+
 
       <div className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen hidden md:block">
         {/* Imagen de fondo o ilustración */}

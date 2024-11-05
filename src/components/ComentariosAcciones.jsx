@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios'; // Para hacer peticiones HTTP
 import { URLBASE } from '../lib/actions';
 import { toast } from 'react-toastify';
@@ -16,42 +16,15 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
     if (esEvaluador) {
       const obtenerDatos = async () => {
         try {
-          const responseCompetencias = await axios.get(`${URLBASE}/respuestas`, {
-            params: { idColaborador, idEvaluador }
-          });
-          const competenciasCalculadas = calcularPromedioCompetencias(responseCompetencias.data?.data);
-          setCompetenciasFiltradas(competenciasCalculadas);
-        } catch (error) {
+          const responseCompetencias = await axios.get(`${URLBASE}/respuestas`, { params: { idEvaluador, idColaborador, idEvaluacion} });
+          setCompetenciasFiltradas(responseCompetencias.data?.evaluacion);
+        } catch {
           toast.error("Ocurrió un error al obtener las competencias.");
         }
       };
       obtenerDatos();
     }
-  }, [idColaborador, idEvaluador, esEvaluador]);
-
-  // Función para calcular el promedio de las competencias
-  const calcularPromedioCompetencias = (dataCompetencias) => {
-    const competencias = Object.values(dataCompetencias);
-
-    return competencias
-      .map(competencia => {
-        const descriptores = competencia.descriptores || [];
-
-        if (descriptores.length === 0) {
-          return null;
-        }
-
-        const sumatoriaCalificaciones = descriptores.reduce((suma, descriptor) => suma + descriptor.calificacion.valor, 0);
-        const promedio = sumatoriaCalificaciones / descriptores.length;
-
-        return {
-          idCompetencia: competencia.idCompetencia,
-          nombre: competencia.nombreCompetencia,
-          promedio: promedio.toFixed(2)
-        };
-      })
-      .filter(competencia => competencia && competencia.promedio <= 3);
-  };
+  }, [idColaborador, idEvaluador, esEvaluador, idEvaluacion]);
 
   // Manejar cambio en acciones de mejoramiento
   const handleAccionChange = (index, field, value) => {
@@ -104,7 +77,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
       } else {
         toast.error('Ya has agregado un comentario!');
       }
-    } catch (error) {
+    } catch {
       toast.error("Ocurrió un error en la comunicación con el servidor.");
       setTimeout(() => {
         navigate('/home');
@@ -114,19 +87,18 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   return (
     <div className="m-12">
-      <h2 className="text-lg font-bold">Comentarios Generales</h2>
+      <h2 className="text-lg font-bold text-znaranja">Comentarios Generales</h2>
       <textarea
-        className="border w-full p-2 rounded-md"
+        className="border w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zvioleta/90"
         placeholder="Escribe tus comentarios..."
         value={comentariosGenerales}
         required
         onChange={(e) => setComentariosGenerales(e.target.value)}
       />
 
-      {/* Mostrar sección de compromisos solo si es evaluador */}
       {esEvaluador && (
         <>
-          <h2 className="text-lg font-bold mt-4">Acciones de Mejoramiento</h2>
+          <h2 className="text-lg font-bold mt-4 text-znaranja">Acciones de Mejoramiento</h2>
           {accionesMejoramiento.map((accion, index) => (
             <div key={index} className="mt-2">
               <select
@@ -135,11 +107,13 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
                 onChange={(e) => handleAccionChange(index, 'idCompetencia', e.target.value)}
               >
                 <option value="">Selecciona una competencia</option>
-                {competenciasFiltradas.map((competencia) => (
-                  <option key={competencia.idCompetencia} value={competencia.idCompetencia}>
-                    {`${competencia.nombre} (${competencia.promedio})`}
-                  </option>
-                ))}
+                {
+                  competenciasFiltradas.map(competencia => (
+                    competencia.promedio < 3.5 ? 
+                    <option key={competencia.idCompetencia} value={competencia.idCompetencia}>{`${competencia.nombre} - (${competencia.promedio.toFixed(1)})`}</option>
+                    : null
+                  ))
+                }
               </select>
               <textarea
                 className="border w-full p-2 mt-2 rounded-md"
@@ -166,7 +140,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
               />
             </div>
           ))}
-          <button onClick={agregarAccion} className="bg-black text-white p-2 rounded-md mt-4">
+          <button onClick={agregarAccion} className="bg-zvioleta text-white p-2 rounded-md mt-4">
             Agregar Acción
           </button>
         </>
@@ -181,7 +155,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
         <label className="ml-2">Confirmo que he realizado la retroalimentación</label>
       </div>
 
-      <button onClick={submitComentarios} className="bg-black text-white p-2 rounded-md mt-4">
+      <button onClick={submitComentarios} className="bg-zvioleta hover:bg-zvioleta/90 hover:scale-105 text-white p-2 rounded-md mt-4">
         Finalizar
       </button>
     </div>

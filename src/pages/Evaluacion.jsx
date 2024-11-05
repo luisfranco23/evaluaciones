@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
@@ -25,11 +25,11 @@ const Evaluacion = () => {
   const competenciaActual = competencias[currentPage]; // Obtener la competencia actual
 
   const usuario = user?.colaboradores?.colaboradores.find(c => c.idUsuario == idUsuario) || user?.colaboradores || user?.user;
-
   const dataParams = {
     idEmpresa: usuario?.Empresas[0].idEmpresa || null,
     idNivelCargo: usuario?.idNivelCargo
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,7 +41,7 @@ const Evaluacion = () => {
         });
         setEvaluacion(evaluacionResponse.data?.data || []);
         setIsLoading(false);
-      } catch (err) {
+      } catch{
         toast.error("Ocurrio un error durante la obtención de los datos!");
       }
     };
@@ -106,6 +106,7 @@ const Evaluacion = () => {
       setMostrarComentarios(true);
       setShowConfirmDialog(false); // Ocultar el diálogo de confirmación
     } catch (error) {
+      console.log(error)
       toast.error("Error al enviar las respuestas!");
     }
   };
@@ -115,9 +116,9 @@ const Evaluacion = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center m-14 ">
-      <h1 className="font-bold text-2xl">{`${evaluacion.nombre} - ${evaluacion.año}`}</h1>
-      <p className="font-light">{`Evaluando a: ${usuario.nombre}`}</p>
+    <div className="flex flex-col justify-center items-center mx-10 lg:mx-32 my-10">
+      <h1 className="font-bold text-2xl text-zvioleta">{`${evaluacion.nombre} - ${evaluacion.año}`}</h1>
+      <p className="font-light text-znaranja">{`Evaluando a: ${usuario.nombre}`}</p>
 
       <form className="w-full" onSubmit={handleFinalizarClick}>
         {!completed ? (
@@ -126,7 +127,7 @@ const Evaluacion = () => {
             {currentPage < competencias.length ? (
               <>
                 <div className="bg-gray-50 mt-2 pt-2 pb-2 text-center">
-                  <h1 className="font-bold text-2xl">{competenciaActual?.nombre || 'Nombre de la competencia'}</h1>
+                  <h1 className="font-bold text-2xl text-zvioleta">{competenciaActual?.nombre || 'Nombre de la competencia'}</h1>
                   <p className="italic">{competenciaActual?.tipoCompetencium?.nombre}</p>
                   <p className="italic m-4">{competenciaActual?.descripcion}</p>
                 </div>
@@ -143,10 +144,10 @@ const Evaluacion = () => {
                         return (
                           <div
                             key={calificacion.idCalificacion}
-                            className={`cursor-pointer p-4 border-2 rounded-lg flex items-center space-x-2 ${isSelected ? 'border-black bg-blue-100 text-black' : 'border-gray-300'}`}
+                            className={`cursor-pointer p-4 border-2 rounded-lg flex items-center space-x-2 ${isSelected ? 'border-zvioleta bg-zvioletaopaco/15' : 'border-gray-300'}`}
                             onClick={() => handleRadioChange(descriptor.idDescriptor, calificacion.idCalificacion)}
                           >
-                            <div className={`w-4 h-4 rounded-full border-2 ${isSelected ? 'bg-black' : 'border-gray-300'}`} />
+                            <div className={`w-4 h-4 rounded-full border-2 ${isSelected ? 'bg-zvioleta' : 'border-gray-300'}`} />
                             <label className="cursor-pointer">{calificacion.valor} - {calificacion.descripcion}</label>
                           </div>
                         );
@@ -157,11 +158,12 @@ const Evaluacion = () => {
 
                 {/* Botones de navegación */}
                 <div className="mt-4 mb-8 flex justify-between">
-                  {currentPage > 0 && (
+                  {currentPage >= 0 && (
                     <button
                       type="button"
                       onClick={prevPage}
-                      className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-black/80"
+                      disabled={currentPage <= 0}
+                      className={`px-4 py-2 text-md font-medium text-white  bg-zvioleta hover:bg-zvioleta/90 rounded-md ${currentPage <= 0 ? "cursor-not-allowed": null}`}
                     >
                       Atrás
                     </button>
@@ -171,7 +173,7 @@ const Evaluacion = () => {
                       <button
                         type="button"
                         onClick={handleFinalizarClick}
-                        className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-black/80"
+                        className="px-4 py-2 text-md font-medium text-white bg-zvioleta hover:bg-zvioleta/90 rounded-md"
                       >
                         Finalizar
                       </button>
@@ -179,7 +181,7 @@ const Evaluacion = () => {
                       <button
                         type="button"
                         onClick={nextPage}
-                        className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md hover:bg-black/80"
+                        className="px-4 py-2 text-md font-medium text-white bg-zvioleta hover:bg-zvioleta/90 rounded-md"
                       >
                         Siguiente
                       </button>
@@ -201,13 +203,13 @@ const Evaluacion = () => {
             <h2 className="text-xl font-semibold mb-4">¿Confirmar el envío de la evaluación?</h2>
             <div className="flex justify-end gap-4">
               <button
-                className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
+                className="px-4 py-2 text-sm font-medium text-white bg-znaranja hover:bg-znaranja/90 rounded-md"
                 onClick={() => setShowConfirmDialog(false)}
               >
                 Cancelar
               </button>
               <button
-                className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600"
+                className="px-4 py-2 text-sm font-medium text-white bg-zvioleta rounded-md hover:bg-zvioleta/90"
                 onClick={confirmSubmit}
               >
                 Confirmar

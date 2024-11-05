@@ -10,6 +10,9 @@ import ComentariosAcciones from './components/ComentariosAcciones';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Usuarios from './pages/Admin/Usuarios';
+import NotFound from './pages/NotFound';
+import Seguimiento from './pages/Seguimiento';
+import AdmEvaluacion from './pages/Admin/AdmEvaluacion';
 
 
 function App() {
@@ -26,6 +29,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/evaluacion/:idUsuario" element={<Evaluacion />} />
           <Route path="/resultados/:idUsuario" element={<Resultados />} />
+          <Route path="/seguimiento/:idUsuario" element={<Seguimiento />} />
         </Route>
 
         {/* Solo para evaluadores y administradores */}
@@ -38,11 +42,12 @@ function App() {
           {/* Rutas de administración */}
           <Route path="administrar">
             <Route path="usuarios" element={<Usuarios />} /> Subruta relativa
-            {/* <Route path="descriptores" element={<Descriptores />} />
-            <Route path="evaluaciones" element={<Evaluaciones />} />  */}
+            {/* <Route path="descriptores" element={<Descriptores />} /> */}
+            <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
             <Route path="seguimiento" element={<ComentariosAcciones />} />
           </Route>
         </Route>
+        <Route path='/*' element={<NotFound />} />
       </Routes>
     </>
   );
