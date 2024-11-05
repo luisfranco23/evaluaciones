@@ -7,11 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        // secound: "#1e375a",
-        // primary: "#00abe4"
-        primary: "#fff",
-        secound: "#000",
-        threeth: "#2563eb"
+        zvioleta: "#80006A",
+        znaranja: "#FF5F3F",
+        zvioletaopaco: "#A65C99",
+        znaranjaclaro: "#FFB5A6",
+        zcinza: "#D7D7D7",
+        zamarilloclaro: "#FFFABF",
+        zamarillo: "#FFF280",
+        zverdeclaro: "#45E3C9",
+        zverde: "#00B094"
       }
     },
   },

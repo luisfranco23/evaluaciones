@@ -1,47 +1,72 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie'; // Librería para manejar cookies
 import Layout from './Layout';
 import { Outlet } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import axios from 'axios';
+import { URLBASE } from '../lib/actions';
+import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 const ProtectedLayout = ({ allowedProfiles }) => {
   const navigate = useNavigate();
-  const user = useUser()
+  const user = useUser();
+  const [loadingSession, setLoadingSession] = useState(true);
 
   useEffect(() => {
-    // Verificar si existe el token en la cookie
-    // const token = Cookies.get('token');
+    const verifySession = async () => {
+      const toastId = toast.loading("Verificando sesión...", {toastId: "loading-id"});
 
-    const token = user?.user
-    const idPerfil = user?.user.idPerfil
-    // Si no existe el token, redirigir al login
-    if (!token) {
-      navigate('/');
-      return;
+      try {
+        const res = await axios.get(`${URLBASE}/usuarios/sesion`, { withCredentials: true });
+        
+        if (!res.data?.data) {
+          toast.update(toastId, { render: "Sesión no válida. Redirigiendo...", type: "error", isLoading: false, autoClose: 3000 });
+          navigate('/');
+          return;
+        } else {
+        navigate('/home');
+          toast.update(toastId, { render: "Sesión válida. Redirigiendo...", type: "success", isLoading: false, autoClose: 3000 });
+        }
+      } catch {
+        toast.update(toastId, { render: "Error al verificar la sesión", type: "error", isLoading: false, autoClose: 3000 });
+        navigate('/');
+      } finally {
+        setLoadingSession(false);
+      }
+    };
+
+    verifySession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.user]);
+
+  useEffect(() => {
+    if (!loadingSession) {
+      const idPerfil = user?.user?.idPerfil;
+      const idPerfilNumber = Number(idPerfil);
+
+      if (!allowedProfiles.includes(idPerfilNumber)) {
+        navigate('/home');
+      }
     }
+  }, [loadingSession, navigate, allowedProfiles, user]);
 
-    // Si existe el token, validar el idPerfil permitido
-    const idPerfilNumber = Number(idPerfil); // Convertir a número para comparar correctamente
-
-    // Si el perfil del usuario no está en la lista de perfiles permitidos, redirigir a Home
-    if (!allowedProfiles.includes(idPerfilNumber)) {
-      navigate('/home'); // Redirigir a la ruta de Home
-    }
-  }, [navigate, allowedProfiles]);
+  if (loadingSession) {
+    return null;
+  }
 
   return (
-    <div className="flex h-screen overflow-auto">
-      {/* Menú lateral siempre visible en rutas protegidas */}
+    <div className="flex h-screen overflow-auto bg-gray-50">
       <Layout />
-
-      {/* El contenido de las rutas */}
-      <div className="flex-1 bg-gray-50">
-          <Outlet />
-        {/* Puedes habilitar el footer si es necesario */}
+      <div className="flex-1">
+        <Outlet />
       </div>
     </div>
   );
+};
+
+ProtectedLayout.propTypes = {
+  allowedProfiles: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default ProtectedLayout;
