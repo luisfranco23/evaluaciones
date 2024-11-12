@@ -1,97 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import { Bar, Pie, Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, LineElement, PointElement } from 'chart.js';
+import { useEffect, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import axios from 'axios';
+import { URLBASE } from '../lib/actions';
+import GraficaAvances from './GraficaAvances';
 
 // Registrar los componentes necesarios de Chart.js
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, LineElement, PointElement);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const InformesGraficas = () => {
-  const [data, setData] = useState({
-    competencias: [],
-    puntajes: [],
-    avanceEvaluacion: 0,
-    tendencias: [],
-  });
+  const [data, setData] = useState();
 
   useEffect(() => {
-    // Función para generar datos aleatorios
-    const generateRandomData = (numCompetencias) => {
-      const competencias = [];
-      const puntajes = [];
-      const tendencias = [];
-      
-      for (let i = 1; i <= numCompetencias; i++) {
-        competencias.push(`Competencia ${i}`);
-        puntajes.push(Math.floor(Math.random() * 100)); // Puntajes entre 0 y 100
-        tendencias.push(Math.floor(Math.random() * 100)); // Tendencias entre 0 y 100
-      }
-      
-      return { competencias, puntajes, tendencias };
-    };
-
-    // Simular datos
-    const fetchedData = {
-      ...generateRandomData(4), // Generar 4 competencias
-      avanceEvaluacion: Math.floor(Math.random() * 100), // Porcentaje de avance
-    };
-
-    setData(fetchedData);
+    axios.get(`${URLBASE}/informes/grafica/all`)
+      .then(res => setData(res.data?.data))
+      .catch(err => console.log(err));
   }, []);
 
-  const barChartData = {
-    labels: data.competencias,
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  // Organizar los datos de "totalRespuestasPorSede" y "totalUsuariosPorSede"
+  const sedeNames = data.totalUsuariosPorSede.map(item => item.nombre);
+  const totalRespuestas = data.totalRespuestasPorSede.map(item => item.total);
+  const totalUsuariosPorSede = data.totalUsuariosPorSede.map(item => item.total);
+
+  // Organizar los datos de "totalRespuestasPorEmpresa" y "totalUsuariosPorEmpresa"
+  const empresaNames = data.totalUsuariosPorEmpresa.map(item => item.nombre);
+  const totalRespuestasPorEmpresa = data.totalRespuestasPorEmpresa.map(item => item.total);
+  const totalUsuariosPorEmpresa = data.totalUsuariosPorEmpresa.map(item => item.total);
+
+  // Datos para el gráfico de barras (comparación de respuestas vs usuarios por sede)
+  const barChartDataSede = {
+    labels: sedeNames,
     datasets: [
       {
-        label: 'Puntajes por Competencia',
-        data: data.puntajes,
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        label: 'Respuestas por Sede',
+        data: totalRespuestas,
+        backgroundColor: '#00B094',
+        borderColor: '#00B094',
+        borderWidth: 1,
+      },
+      {
+        label: 'Usuarios por Sede',
+        data: totalUsuariosPorSede,
+        backgroundColor: '#FF5F3F',
+        borderColor: '#FF5F3F',
         borderWidth: 1,
       },
     ],
   };
 
-  const pieChartData = {
-    labels: ['Avance Completo', 'Avance Pendiente'],
+  const barChartDataEmpresa = {
+    labels: empresaNames,
     datasets: [
       {
-        data: [data.avanceEvaluacion, 100 - data.avanceEvaluacion],
-        backgroundColor: ['rgba(75, 192, 192, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+        label: 'Respuestas por Empresa',
+        data: totalRespuestasPorEmpresa,
+        backgroundColor: '#FF5F3F',
+        borderColor: '#FF5F3F',
+        borderWidth: 1,
       },
-    ],
-  };
-
-  const lineChartData = {
-    labels: ['Evaluación 1', 'Evaluación 2', 'Evaluación 3', 'Evaluación 4'],
-    datasets: [
       {
-        label: 'Tendencia de Puntajes',
-        data: data.tendencias,
-        fill: false,
-        borderColor: 'rgba(255, 159, 64, 1)',
-        tension: 0.1,
+        label: 'Usuarios por Empresa',
+        data: totalUsuariosPorEmpresa,
+        backgroundColor: '#80006A',
+        borderColor: '#80006A',
+        borderWidth: 1,
       },
     ],
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Informes Gráficas</h1>
-
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Puntajes por Competencia</h2>
-        <Bar data={barChartData} height={200} />
+    <div className="p-4 mx-24 mt-5">
+      <h1 className="text-3xl font-bold mb-4 text-zvioleta">Informes Gráficas</h1>
+      <div className="grid grid-cols-1 gap-4">
+        
+        <div className="mb-4">
+          <h2 className="text-lg font-semibold mb-2">Respuestas vs Usuarios por Sede</h2>
+          <Bar data={barChartDataSede} height={200} />
+        </div>
+        <div className="mb-4">
+          <h2 className="text-lg font-semibold mb-2">Respuestas vs Usuarios por Empresa</h2>
+          <Bar data={barChartDataEmpresa} height={200} />
+        </div>
       </div>
-
-      <div className="mb-4">
-        <h2 className="text-lg font-semibold mb-2">Avance de la Evaluación</h2>
-        <Pie data={pieChartData} height={200} />
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold mb-2">Tendencia de Puntajes</h2>
-        <Line data={lineChartData} height={200} />
-      </div>
+      {/* <div className='w-3/6'>
+        <GraficaAvances />
+      </div> */}
     </div>
   );
 };

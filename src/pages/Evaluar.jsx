@@ -142,9 +142,9 @@ const Evaluar = () => {
         {visibleColaboradores.map((colaborador) => (
           <li key={colaborador.idUsuario} className="py-4">
             <div className="flex justify-between items-center lg:flex-row flex-col">
-              <div className="md:grid md:grid-cols-4 w-3/4 md:w-full flex flex-col justify-items-center lg:justify-items-start">
-                <h2 className="text-lg font-semibold text-gray-700">{colaborador.nombre}</h2>
-                <p className="text-gray-500">{colaborador.cargo}</p>
+              <div className="md:grid md:grid-cols-4 w-3/4 capitalize md:w-full flex flex-col justify-items-center lg:justify-items-start">
+                <h2 className="text-lg font-semibold text-gray-700">{colaborador.nombre.toLowerCase()}</h2>
+                <p className="text-gray-500 capitalize">{colaborador.cargo.toLowerCase()}</p>
                 <p className="text-gray-500">
                   {colaborador.Empresas.length > 0
                     ? colaborador.Empresas.map((empresa) => (

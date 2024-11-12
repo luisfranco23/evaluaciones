@@ -40,6 +40,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   // Manejo de envío de datos
   const submitComentarios = async () => {
+    if (retroalimentacion) {
     try {
       // Guardar comentarios generales
       const payload = {
@@ -83,6 +84,9 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
         navigate('/home');
       }, 1000);
     }
+  }else{
+    toast.warning("Debes confirmar la retroalimentación")
+  }
   };
 
   return (
@@ -151,6 +155,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
           type="checkbox"
           checked={retroalimentacion}
           onChange={(e) => setRetroalimentacion(e.target.checked)}
+          className='form-switch h-4 w-8'
         />
         <label className="ml-2">Confirmo que he realizado la retroalimentación</label>
       </div>
