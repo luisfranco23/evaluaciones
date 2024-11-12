@@ -13,6 +13,7 @@ import Usuarios from './pages/Admin/Usuarios';
 import NotFound from './pages/NotFound';
 import Seguimiento from './pages/Seguimiento';
 import AdmEvaluacion from './pages/Admin/AdmEvaluacion';
+import GraficaAvances from './pages/GraficaAvances';
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route element={<ProtectedLayout allowedProfiles={[2, 3]} />}>
           <Route path="/evaluar" element={<Evaluar />} />
           <Route path="/informes/graficas" element={<InformesGraficas />} />
+          <Route path="/informes/avances" element={<GraficaAvances />} />
         </Route>
         <Route element={<ProtectedLayout allowedProfiles={[3]} />}>
 

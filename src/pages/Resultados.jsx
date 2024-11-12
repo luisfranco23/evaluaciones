@@ -25,7 +25,7 @@ const Resultados = () => {
     };
 
     fetchRespuestas();
-  }, [idUsuario]);
+  }, [idUsuario, user?.user?.idUsuario]);
 
   const formatearFecha = (fecha) => {
     if (!fecha) return 0
@@ -114,31 +114,17 @@ const Resultados = () => {
           })}
           <tr className='grid  grid-cols-4 border my-1'>
             <th className='col-span-3'>PROMEDIO EVALUACIÓN</th>
-            <th className='col-span-1 text-center'>{calcularPromedio(respuestas?.evaluacion)}</th>
+            <th className='col-span-1 text-center'>{respuestas?.evaluacion ? calcularPromedio(respuestas?.evaluacion) : 'En espera de resultados'}</th>
           </tr>
           <tr className='grid  grid-cols-4 border my-1'>
             <th className='col-span-3'>PROMEDIO AUTOEVALUACIÓN</th>
-            <th className='col-span-1 text-center'>{calcularPromedio(respuestas?.autoevaluacion)}</th>
+            <th className='col-span-1 text-center'>{respuestas?.evaluacion ? calcularPromedio(respuestas?.autoevaluacion): 'En espera de resultados'}</th>
           </tr>
           <tr className='grid grid-cols-1 border'>
             <th className='text-start'>Comentarios</th>
-            {respuestas?.compromisos?.map(({index, TipoEvaluacione, comentario, Compromisos}) => (
-              <>
-              <td key={index} className='border'>{`${TipoEvaluacione.nombre}:  ${comentario}`}</td>
-                {Compromisos?.map(compromiso => (
-                  <>
-                  <th className='text-start'>Compromiso</th>
-                  <td>Competencia: {compromiso.Competencia.nombre}</td>
-                  <td>Estado: {compromiso.comentario}</td>
-                  <td>Estado: {compromiso.estado}</td>
-                  <td>fecha de cumplimiento: {formatearFecha(compromiso.fechaCumplimiento)}</td>
-                  </>
-
-                ))}
-              </>
-              
+            {respuestas?.compromisos?.map(({index, TipoEvaluacione, comentario}) => (
+              <td key={index} className='border'>{`${TipoEvaluacione.nombre === "EVALUACIÓN" ? comentario : '*'}`}</td>
             ))}
-            {/* acá van los compromisis */}
           </tr>
           <tr className='grid grid-cols-2 border'>
             <th>Firma evaluador</th>

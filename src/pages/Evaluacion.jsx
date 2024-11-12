@@ -117,9 +117,9 @@ const Evaluacion = () => {
 
   return (
     <div className="flex flex-col justify-center items-center mx-10 lg:mx-32 my-10">
-      <h1 className="font-bold text-2xl text-zvioleta">{`${evaluacion.nombre} - ${evaluacion.año}`}</h1>
+      <h1 className="font-bold text-2xl text-zvioleta">{`${evaluacion.nombre}  ${evaluacion.año}`}</h1>
       <p className="font-light text-znaranja">{`Evaluando a: ${usuario.nombre}`}</p>
-
+      <p className=' py-7'>A continuación, encontrarás las competencias con sus definiciones y los comportamientos a evaluar según el desempeño observado, junto con las responsabilidades en formación y Seguridad y Salud en el Trabajo (SST). Usa la escala de 5 niveles para calificar cada aspecto.</p>
       <form className="w-full" onSubmit={handleFinalizarClick}>
         {!completed ? (
           <div className="border-2 mt-4 p-2 rounded-lg w-full">
@@ -128,13 +128,13 @@ const Evaluacion = () => {
               <>
                 <div className="bg-gray-50 mt-2 pt-2 pb-2 text-center">
                   <h1 className="font-bold text-2xl text-zvioleta">{competenciaActual?.nombre || 'Nombre de la competencia'}</h1>
-                  <p className="italic">{competenciaActual?.tipoCompetencium?.nombre}</p>
-                  <p className="italic m-4">{competenciaActual?.descripcion}</p>
+                  <p className="italic text-start">{competenciaActual?.tipoCompetencium?.nombre}</p>
+                  <p className="italic text-start m-4">{competenciaActual?.descripcion}</p>
                 </div>
 
                 {competenciaActual?.Descriptores?.map((descriptor) => (
                   <div key={descriptor.idDescriptor} className="w-full">
-                    <div className="bg-gray-50 mt-1 items-center justify-center flex w-full">
+                    <div className="bg-gray-50 mt-1 items-start justify-start flex w-full">
                       <p className="font-semibold m-3">{descriptor.descripcion}</p>
                     </div>
 
@@ -144,10 +144,10 @@ const Evaluacion = () => {
                         return (
                           <div
                             key={calificacion.idCalificacion}
-                            className={`cursor-pointer p-4 border-2 rounded-lg flex items-center space-x-2 ${isSelected ? 'border-zvioleta bg-zvioletaopaco/15' : 'border-gray-300'}`}
+                            className={`cursor-pointer p-4 border-2 rounded-lg flex items-center space-x-2 ${isSelected ? 'border-zvioleta bg-zvioletaopaco/15 text-zvioleta' : 'border-gray-300'}`}
                             onClick={() => handleRadioChange(descriptor.idDescriptor, calificacion.idCalificacion)}
                           >
-                            <div className={`w-4 h-4 rounded-full border-2 ${isSelected ? 'bg-zvioleta' : 'border-gray-300'}`} />
+                            <div className={`w-3 h-3 rounded-full border-2 ${isSelected ? 'bg-zvioletaopaco  border-zvioleta' : 'border-gray-300'}`} />
                             <label className="cursor-pointer">{calificacion.valor} - {calificacion.descripcion}</label>
                           </div>
                         );

@@ -20,6 +20,7 @@ const Usuarios = () => {
   const [showModal, setShowModal] = useState({ type: '', open: false });
 
 
+
   const buscarUsuario = async (data) => {
     const { idUsuario, correo } = data;
     setLoading(true);
@@ -53,6 +54,11 @@ const Usuarios = () => {
         setValue('cargo', userData.cargo);
         setValue('idPerfil', userData.idPerfil);
         setValue('idNivelCargo', userData.idNivelCargo);
+        setValue('contrasena');
+        setValue('defaultContrasena', userData.defaultContrasena);
+        setValue('activo', userData.activo);
+        setValue('fechaIngreso', userData.fechaIngreso);
+        setValue('area', userData.area);
       } else {
         toast.error('Usuario no encontrado.');
       }
@@ -66,12 +72,7 @@ const Usuarios = () => {
 
   const actualizarUsuario = async (data) => {
     try {
-      await axios.put(`${URLBASE}/usuarios/${data.idUsuario}`, {
-        ...data,
-        Empresas: asignadasEmpresas,
-        Sedes: asignadasSedes,
-        colaboradores: asignadosColaboradores
-      });
+      await axios.put(`${URLBASE}/usuarios/${data.idUsuario}`, data);
       toast.success('Usuario actualizado exitosamente.');
     } catch {
       toast.error('Error al actualizar usuario.');
@@ -85,7 +86,7 @@ const Usuarios = () => {
 
   return (
     <div className="p-8 bg-gray-50 rounded-lg shadow-md max-w-5xl mx-auto">
-      <h1 className="text-4xl font-bold mb-8 text-center text-blue-600">Administrar Usuarios</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center text-zvioleta">Administrar Usuarios</h1>
 
       <div className="mb-8">
         <form onSubmit={handleSubmit(buscarUsuario)} className="flex gap-4">
@@ -97,11 +98,12 @@ const Usuarios = () => {
           />
           <input
             type="email"
+            disabled={true}
             {...register('correo')}
-            placeholder="Buscar por Correo"
-            className="border p-3 rounded-lg w-full"
+            placeholder="Correo"
+            className="border p-3 rounded-lg w-full cursor-not-allowed bg-gray-50 border-gray-300 text-gray-600"
           />
-          <button type="submit" className="bg-blue-600 text-white px-6 py-3 rounded-lg">
+          <button type="submit" className="bg-zvioleta text-white px-6 py-3 rounded-lg">
             {loading ? 'Buscando...' : 'Buscar'}
           </button>
         </form>
@@ -127,11 +129,21 @@ const Usuarios = () => {
               <input type="text" {...register('cargo', { required: true })} className="border p-3 rounded-lg w-full" />
             </div>
             <div>
+              <label className="block text-gray-700 mb-2">Área</label>
+              <input type="text" {...register('area')} className="border p-3 rounded-lg w-full" />
+            </div>
+            <div>
+              <label className="block text-gray-700 mb-2">Fecha de ingreso</label>
+              <input type="date" {...register('fechaIngreso')} className="border p-3 rounded-lg w-full" />
+            </div>
+            <div>
               <label className="block text-gray-700 mb-2">Perfil</label>
               <select {...register('idPerfil', { required: true })} className="border p-3 rounded-lg w-full">
-                {perfiles?.map((perfil) => (
+                {perfiles.length > 0 ? perfiles?.map((perfil) => (
                   <option key={perfil.idPerfil} value={perfil.idPerfil}>{perfil.nombre}</option>
-                ))}
+                )): (
+                  <option value="">Cargando perfiles...</option>
+                )}
               </select>
             </div>
             <div>
@@ -141,6 +153,20 @@ const Usuarios = () => {
                   <option key={nivel.idNivelCargo} value={nivel.idNivelCargo}>{nivel.nombre}</option>
                 ))}
               </select>
+            </div>
+            <div>
+              <label className="block text-gray-700 mb-2">Contraseña</label>
+              <input type="password" {...register('contrasena')} className="border p-3 rounded-lg w-full" />
+            </div>
+            <div className='flex justify-around items-center'>
+              <div className='flex flex-col'>
+                <label className="block text-gray-700 mb-2">¿Cambiar contraseña?</label>
+                <input type="checkbox" {...register('defaultContrasena')} className="border p-3 rounded-lg" />
+              </div>
+              <div className='flex flex-col'>
+                <label className="block text-gray-700 mb-2">¿Activo?</label>
+                <input type="checkbox" {...register('activo')} className="border p-3 rounded-lg" />
+              </div>
             </div>
           </div>
 
@@ -172,8 +198,8 @@ const Usuarios = () => {
                 showModal.type === 'Empresas'
                   ? asignadasEmpresas
                   : showModal.type === 'Sedes'
-                  ? asignadasSedes
-                  : asignadosColaboradores,
+                    ? asignadasSedes
+                    : asignadosColaboradores,
               onChange: (items) => {
                 if (showModal.type === 'Empresas') setAsignadasEmpresas(items);
                 else if (showModal.type === 'Sedes') setAsignadasSedes(items);

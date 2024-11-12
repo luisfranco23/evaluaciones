@@ -51,9 +51,10 @@ const Layout = ({ children }) => {
             {isMenuOpen ? <FaChevronLeft size={20} /> : <FaChevronRight size={20} />}
           </button>
         </div>
-        <span className={`ml-4 font-bold text-xl transition-opacity duration-300 ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
-          {user?.user?.nombre}
+        <span className={`ml-4 font-bold text-xl transition-opacity duration-300 capitalize ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
+          {user?.user?.nombre.toLowerCase()}
         </span>
+        <span className={`ml-4 text-sm transition-opacity capitalize duration-300 ${isMenuOpen ? 'opacity-70' : 'opacity-0'}`}>{user?.user?.cargo}</span>
         {/* Opciones del menú */}
         <ul className="flex-1 space-y-4 mt-8">
           <li>
@@ -79,6 +80,12 @@ const Layout = ({ children }) => {
                   <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Informes</span>
                 </Link>
               </li>
+              {/* <li>
+                <Link to="/informes/avances" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                  <FaClipboardCheck size={20} />
+                  <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Informes</span>
+                </Link>
+              </li> */}
 
               <li>
                 <div className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors cursor-pointer" onClick={toggleAdminSubMenu}>
