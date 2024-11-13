@@ -17,8 +17,8 @@ const Resultados = () => {
         const respuesta = await axios.get(`${URLBASE}/respuestas`, { params: { idEvaluador: user.user?.idUsuario, idColaborador: usuario?.idUsuario, idEvaluacion: 1 } });
         setRespuestas(respuesta.data);
 
-        const calificaciones = await axios.get(`${URLBASE}/respuestas/calificacion`, { withCredentials: true })
-        setCalificaciones(calificaciones.data?.data)
+        const calificacionesRes = await axios.get(`${URLBASE}/respuestas/calificacion`, { withCredentials: true })
+        setCalificaciones(calificacionesRes.data?.data)
       } catch {
         toast.error("Ocurrio un error al obtener los resultados!")
       }
@@ -83,12 +83,12 @@ const Resultados = () => {
           </tr>
           <tr className='grid grid-cols-2 border mt-2'>
             <th className='col-span-2 text-start border-b'>Objetivo</th>
-            <td className='col-span-2 pb-2'>El objetivo de esta evaluación es valorar las competencias que nos hacen competitivos como organización, a fin de identificar nuestras fortalezas como colaboradores y equipos de trabajo, así como para evidenciar temas que debamos intervenir mediante planes de mejoramiento individuales o grupales.</td>
+            <td className='col-span-2 pb-2'>El objetivo de esta evaluación es valorar las competencias para identificar las fortalezas y puntos de mejora en cuanto al desempeño esperado.</td>
           </tr>
           <tr className='grid grid-cols-4 mt-4 p-1 mb-4'>
             <th className='col-span-4 border font-bold my-3'>Escala de calificación</th>
             {
-              calificaciones?.map(calificacion => (
+              calificaciones?.map((calificacion) => (
                 <>
                   <td className='col-span-3 p-1 border' key={calificacion.descripcion}>{calificacion.descripcion}</td>
                   <td className='text-center border' key={calificacion.valor}>{calificacion.valor}</td>
@@ -134,7 +134,7 @@ const Resultados = () => {
           </tr>
         </tbody>
         <tfoot className='border grid grid-cols-2 my-4'>
-          <th>Fecha registro</th>
+          <th>Fecha impresión</th>
           <th>{formatearFecha(new Date())}</th>
         </tfoot>
       </table>

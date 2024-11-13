@@ -3,6 +3,7 @@ import axios from 'axios'; // Para hacer peticiones HTTP
 import { URLBASE } from '../lib/actions';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom'; // Para la redirección
+import PropTypes from 'prop-types'
 
 const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvaluador }) => {
   const [comentariosGenerales, setComentariosGenerales] = useState('');
@@ -16,7 +17,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
     if (esEvaluador) {
       const obtenerDatos = async () => {
         try {
-          const responseCompetencias = await axios.get(`${URLBASE}/respuestas`, { params: { idEvaluador, idColaborador, idEvaluacion} });
+          const responseCompetencias = await axios.get(`${URLBASE}/respuestas`, { params: { idEvaluador, idColaborador, idEvaluacion } });
           setCompetenciasFiltradas(responseCompetencias.data?.evaluacion);
         } catch {
           toast.error("Ocurrió un error al obtener las competencias.");
@@ -35,65 +36,77 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   // Agregar una nueva acción de mejoramiento
   const agregarAccion = () => {
-      setAccionesMejoramiento([...accionesMejoramiento, { idCompetencia: '', comentario: '', estado: '', fechaCumplimiento: '' }]);
+    setAccionesMejoramiento([...accionesMejoramiento, { idCompetencia: '', comentario: '', estado: '', fechaCumplimiento: '' }]);
   };
 
+  const competencias = competenciasFiltradas.filter(competencia => competencia.promedio < 3.4)
+
+  const pass = (esEvaluador && retroalimentacion) && (
+    (competencias.length >= 3 && accionesMejoramiento.length >= 3) || 
+    (competencias.length <= 3 && accionesMejoramiento.length === competencias.length)
+  )
   // Manejo de envío de datos
   const submitComentarios = async () => {
-    if (retroalimentacion) {
-    try {
-      // Guardar comentarios generales
-      const payload = {
-        idEvaluacion,
-        idEvaluador,
-        idColaborador,
-        comentario: comentariosGenerales,
-        accionesMejoramiento: esEvaluador ? accionesMejoramiento : [],
-        retroalimentacion
-      };
+    const puedeEnviar = comentariosGenerales.length > 0 && (!esEvaluador || pass);
+    if (puedeEnviar) {
+      try {
+        // Guardar comentarios generales
+        const payload = {
+          idEvaluacion,
+          idEvaluador,
+          idColaborador,
+          comentario: comentariosGenerales,
+          accionesMejoramiento: esEvaluador ? accionesMejoramiento : [],
+          retroalimentacion
+        };
 
-      const response = await axios.post(`${URLBASE}/evaluaciones/comentarios`, payload);
+        const response = await axios.post(`${URLBASE}/evaluaciones/comentarios`, payload);
 
-      if (response.status === 200) {
-        const idEvalRealizada = response.data?.data?.idEvalRealizada;
+        if (response.status === 200) {
+          const idEvalRealizada = response.data?.data?.idEvalRealizada;
 
-        toast.success("Comentarios guardados con éxito!");
+          toast.success("Comentarios guardados con éxito!", {position: 'top-center', toastId: 'comentarios-id-succes'});
 
-        if (esEvaluador && comentariosGenerales.length > 0) {
-          for (const accion of accionesMejoramiento) {
-            const compromisoPayload = {
-              idCompetencia: accion.idCompetencia,
-              idEvalRealizada, // Obtenido del comentario registrado
-              comentario: accion.comentario,
-              estado: accion.estado,
-              fechaCumplimiento: accion.fechaCumplimiento
-            };
-            await axios.post(`${URLBASE}/evaluaciones/compromisos`, compromisoPayload);
+          if (!esEvaluador) {
+            navigate("/home")
+            return
           }
-          toast.success("Compromisos guardados con éxito!");
+
+          if (pass) {
+            for (const accion of accionesMejoramiento) {
+              const compromisoPayload = {
+                idCompetencia: accion.idCompetencia,
+                idEvalRealizada, // Obtenido del comentario registrado
+                comentario: accion.comentario,
+                estado: accion.estado,
+                fechaCumplimiento: accion.fechaCumplimiento
+              };
+              await axios.post(`${URLBASE}/evaluaciones/compromisos`, compromisoPayload);
+            }
+            toast.success("Compromisos guardados con éxito!", {position: 'top-center',toastId: 'err-id-mejoramiento'});
+            setTimeout(() => {
+              navigate("/home")
+            }, 1500);
+          }else{
+            toast.error('Debes registrar las acciones de mejoramiento!', {position: 'top-center', toastId: 'err-id-mejoramiento'})
+          }
+        } else {
+          toast.error('Ya has agregado un comentario!', {position: 'top-center',toastId: 'err-id-mejoramiento'});
         }
-        setTimeout(() => {
-          navigate('/home');
-        }, 1000);
-      } else {
-        toast.error('Ya has agregado un comentario!');
+      } catch {
+        toast.error("Ocurrió un error en la comunicación con el servidor.");
       }
-    } catch {
-      toast.error("Ocurrió un error en la comunicación con el servidor.");
-      setTimeout(() => {
-        navigate('/home');
-      }, 1000);
+    } else {
+      toast.error("Debes llenar los comentarios", {position: 'top-center',toastId: 'err-id-mejoramiento'})
     }
-  }else{
-    toast.warning("Debes confirmar la retroalimentación")
-  }
   };
 
   return (
-    <div className="m-12">
-      <h2 className="text-lg font-bold text-znaranja">Comentarios Generales</h2>
+    <div className="my-12 mx-auto max-w-4xl">
+      <h2 className="text-lg font-bold text-zvioleta">Comentarios Generales</h2>
+      <p className='mt-2'>Comentario <span className='text-red-600 font-bold'>*</span></p>
       <textarea
-        className="border w-full p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zvioleta/90"
+        className={`border w-full p-2 rounded-md focus:ring-1 focus:ring-znaranjaclaro focus:border-znaranjaclaro`}
         placeholder="Escribe tus comentarios..."
         value={comentariosGenerales}
         required
@@ -102,69 +115,83 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
       {esEvaluador && (
         <>
-          <h2 className="text-lg font-bold mt-4 text-znaranja">Acciones de Mejoramiento</h2>
+          <h2 className="text-lg font-bold mt-4 text-zvioleta">Acciones de Mejoramiento</h2>
           {accionesMejoramiento.map((accion, index) => (
-            <div key={index} className="mt-2">
+            <div key={index} className="mt-2 flex flex-col gap-3 border-b-2">
+              <p className='-mb-2 mt-2'>Competencia <span className='text-red-600 font-bold'>*</span></p>
               <select
-                className="border w-full p-2 rounded-md"
+                className="border w-full rounded-md focus:ring-1 focus:ring-znaranjaclaro focus:border-znaranjaclaro"
                 value={accion.idCompetencia}
+                required
                 onChange={(e) => handleAccionChange(index, 'idCompetencia', e.target.value)}
               >
                 <option value="">Selecciona una competencia</option>
                 {
-                  competenciasFiltradas.map(competencia => (
-                    competencia.promedio < 3.5 ? 
-                    <option key={competencia.idCompetencia} value={competencia.idCompetencia}>{`${competencia.nombre} - (${competencia.promedio.toFixed(1)})`}</option>
-                    : null
+                  competencias.map(competencia => (
+                      <option key={competencia.idCompetencia} value={competencia.idCompetencia}>{`${competencia.nombre} (${competencia.promedio.toFixed(1)})`}</option>
                   ))
                 }
               </select>
+              <p className='-mb-2 mt-2'>Descripción <span className='text-red-600 font-bold'>*</span></p>
               <textarea
-                className="border w-full p-2 mt-2 rounded-md"
+                className="border w-full rounded-md focus:ring-1 focus:ring-znaranjaclaro focus:border-znaranjaclaro"
                 placeholder="Describe la acción de mejoramiento..."
                 value={accion.comentario}
                 required
                 onChange={(e) => handleAccionChange(index, 'comentario', e.target.value)}
               />
+              <p className='-mb-2'>Estado <span className='text-red-600 font-bold'>*</span></p>
               <select
-                className="border w-full p-2 mt-2 rounded-md"
+                className="border w-full rounded-md focus:ring-1 focus:ring-znaranjaclaro focus:border-znaranjaclaro"
                 value={accion.estado}
+                required
                 onChange={(e) => handleAccionChange(index, 'estado', e.target.value)}
               >
-                <option value="">Selecciona el estado</option>
+                <option value="" className=''>Selecciona el estado</option>
                 <option value="En curso">En curso</option>
                 <option value="Finalizado">Finalizado</option>
                 <option value="Por iniciar">Por iniciar</option>
               </select>
+              <p className='-mb-2'>Fecha de cumplimiento <span className='text-red-600 font-bold'>*</span></p>
               <input
                 type="date"
-                className="border w-full p-2 mt-2 rounded-md"
+                required
+                className="border w-full rounded-md focus:ring-1 focus:ring-znaranjaclaro focus:border-znaranjaclaro mb-7"
                 value={accion.fechaCumplimiento}
                 onChange={(e) => handleAccionChange(index, 'fechaCumplimiento', e.target.value)}
+                title='Fecha del compromiso'
               />
             </div>
           ))}
-          <button onClick={agregarAccion} className="bg-zvioleta text-white p-2 rounded-md mt-4">
+          <button onClick={agregarAccion} disabled={competencias.length === accionesMejoramiento.length} className={`bg-zvioleta text-white p-2 rounded-md mt-4 ${competencias.length === accionesMejoramiento.length ? 'cursor-not-allowed': null}`} >
             Agregar Acción
           </button>
+          <div className="my-6 mt-10 flex items-center">
+            <input
+              type="checkbox"
+              id="retroalimentacion-checkbox"
+              checked={retroalimentacion}
+              onChange={(e) => setRetroalimentacion(e.target.checked)}
+              className="h-5 w-5 rounded-lg appearance-none border-znaranja focus:ring-zvioleta text-znaranja"
+            />
+            <label htmlFor="retroalimentacion-checkbox" className="ml-2">
+              Confirmo que he realizado la retroalimentación
+            </label>
+          </div>
         </>
+
       )}
-
-      <div className="mt-4 flex items-center">
-        <input
-          type="checkbox"
-          checked={retroalimentacion}
-          onChange={(e) => setRetroalimentacion(e.target.checked)}
-          className='form-switch h-4 w-8'
-        />
-        <label className="ml-2">Confirmo que he realizado la retroalimentación</label>
-      </div>
-
       <button onClick={submitComentarios} className="bg-zvioleta hover:bg-zvioleta/90 hover:scale-105 text-white p-2 rounded-md mt-4">
-        Finalizar
+        Guardar y finalizar
       </button>
     </div>
   );
 };
 
+ComentariosAcciones.propTypes = {
+  idEvaluacion: PropTypes.number,
+  idEvaluador: PropTypes.number,
+  idColaborador: PropTypes.number,
+  esEvaluador: PropTypes.bool
+};
 export default ComentariosAcciones;

@@ -2,29 +2,32 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types'; // Asegúrate de importar PropTypes
 import {
-  FaBars, FaTimes, FaChevronLeft, FaChevronRight, FaCheckCircle, FaHome, FaCog, FaSignOutAlt, 
+  FaBars, FaTimes, FaChevronLeft, FaChevronRight, FaCheckCircle, FaHome, FaCog, FaSignOutAlt,
   FaClipboardCheck, FaUser, FaList, FaEdit, FaCaretDown, FaCaretUp, FaEye
 } from 'react-icons/fa';
 import { useUser } from '../context/UserContext';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
+import { FaChartPie } from 'react-icons/fa6';
+import { RiFileChartFill } from '@remixicon/react';
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdminSubMenuOpen, setIsAdminSubMenuOpen] = useState(false);
+  const [isOpenInforme, setIsOpenInforme] = useState(false)
   const [idPerfil, setIdPerfil] = useState(null);
   const navigate = useNavigate();
 
   const user = useUser();
 
   const handleLogout = () => {
-    axios.post(`${URLBASE}/usuarios/logout`, {}, {withCredentials: true})
-    .then(() => {
-      user.setColaboradores(null);
-      user.setUser(null);
-      navigate('/');
-    })
-    .catch((err) => console.log(err));
+    axios.post(`${URLBASE}/usuarios/logout`, {}, { withCredentials: true })
+      .then(() => {
+        user.setColaboradores(null);
+        user.setUser(null);
+        navigate('/');
+      })
+      .catch((err) => console.log(err));
   };
 
   const toggleMenu = () => {
@@ -45,7 +48,7 @@ const Layout = ({ children }) => {
       <nav className={`fixed h-full bg-zvioleta rounded-tr-3xl backdrop-blur-sm text-white transition-all duration-300 ease-in-out flex flex-col justify-between ${isMenuOpen ? 'w-72' : 'w-16'}`}>
         <div className="relative p-4 flex items-center justify-between">
           <div className={`transition-opacity duration-300 p-4 rounded-md ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
-          <img className='invert brightness-0' src={user?.user?.Empresas[0]?.urlLogo} alt={`logo-empresa${user?.user?.Empresas[0]?.nombre}`} />
+            <img className='invert brightness-0' src={user?.user?.Empresas[0]?.urlLogo} alt={`logo-empresa${user?.user?.Empresas[0]?.nombre}`} />
           </div>
           <button onClick={toggleMenu} className={`absolute top-1/2 transform -translate-y-1/2 text-white focus:outline-none hover:bg-zvioletaopaco p-2 rounded-full transition-all duration-300 ${isMenuOpen ? '-right-3' : 'right-0'}`}>
             {isMenuOpen ? <FaChevronLeft size={20} /> : <FaChevronRight size={20} />}
@@ -75,21 +78,32 @@ const Layout = ({ children }) => {
           {idPerfil === 3 && (
             <>
               <li>
-                <Link to="/informes/graficas" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                <div className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors cursor-pointer" onClick={() => setIsOpenInforme(!isOpenInforme)}>
                   <FaClipboardCheck size={20} />
                   <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Informes</span>
-                </Link>
-              </li>
-              {/* <li>
-                <Link to="/informes/avances" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
-                  <FaClipboardCheck size={20} />
-                  <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Informes</span>
-                </Link>
-              </li> */}
+                  {isOpenInforme ? <FaCaretUp size={16} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`} /> : <FaCaretDown size={16} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`} />}
+                </div>
 
+                {isOpenInforme && (
+                  <ul className="pl-6 space-y-2">
+                    <li>
+                      <Link to="/informes/graficas" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                        <FaChartPie size={20} />
+                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Gráficas</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/informes/evaluadores" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                        <RiFileChartFill size={20} />
+                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluadores</span>
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </li>
               <li>
                 <div className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors cursor-pointer" onClick={toggleAdminSubMenu}>
-                  <FaCog size={20} /> 
+                  <FaCog size={20} />
                   <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Administración</span>
                   {isAdminSubMenuOpen ? <FaCaretUp size={16} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`} /> : <FaCaretDown size={16} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`} />}
                 </div>

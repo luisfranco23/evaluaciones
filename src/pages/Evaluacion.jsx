@@ -119,7 +119,7 @@ const Evaluacion = () => {
     <div className="flex flex-col justify-center items-center mx-10 lg:mx-32 my-10">
       <h1 className="font-bold text-2xl text-zvioleta">{`${evaluacion.nombre}  ${evaluacion.año}`}</h1>
       <p className="font-light text-znaranja">{`Evaluando a: ${usuario.nombre}`}</p>
-      <p className=' py-7'>A continuación, encontrarás las competencias con sus definiciones y los comportamientos a evaluar según el desempeño observado, junto con las responsabilidades en formación y Seguridad y Salud en el Trabajo (SST). Usa la escala de 5 niveles para calificar cada aspecto.</p>
+       {currentPage === 0 ? <p className=' py-7 text-xl my-5'>A continuación, encontrarás las competencias con sus definiciones y los comportamientos a evaluar según el desempeño observado, junto con las responsabilidades en formación y Seguridad y Salud en el Trabajo (SST). Usa la escala de 5 niveles para calificar cada aspecto.</p> : null}
       <form className="w-full" onSubmit={handleFinalizarClick}>
         {!completed ? (
           <div className="border-2 mt-4 p-2 rounded-lg w-full">
@@ -163,7 +163,7 @@ const Evaluacion = () => {
                       type="button"
                       onClick={prevPage}
                       disabled={currentPage <= 0}
-                      className={`px-4 py-2 text-md font-medium text-white  bg-zvioleta hover:bg-zvioleta/90 rounded-md ${currentPage <= 0 ? "cursor-not-allowed": null}`}
+                      className={`px-4 py-2 text-md font-medium text-white  bg-zvioleta hover:bg-zvioleta/90 rounded-md ${currentPage <= 0 ? "cursor-not-allowed hover:bg-zvioleta": null}`}
                     >
                       Atrás
                     </button>
