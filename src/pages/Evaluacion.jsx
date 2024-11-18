@@ -5,6 +5,7 @@ import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
 import ComentariosAcciones from '../components/ComentariosAcciones';
 import { toast } from 'react-toastify';
+import Loading from './Loading';
 
 
 const Evaluacion = () => {
@@ -112,7 +113,7 @@ const Evaluacion = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center mt-5">Cargando...</div>;
+    return <Loading />
   }
 
   return (

@@ -4,12 +4,14 @@ import { useParams } from 'react-router-dom';
 import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
 import { toast } from 'react-toastify';
+import Loading from './Loading';
 
 const Resultados = () => {
   const { idUsuario } = useParams();
   const user = useUser();
   const [respuestas, setRespuestas] = useState({});
   const [calificaciones, setCalificaciones] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchRespuestas = async () => {
@@ -21,6 +23,8 @@ const Resultados = () => {
         setCalificaciones(calificacionesRes.data?.data)
       } catch {
         toast.error("Ocurrio un error al obtener los resultados!")
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -50,6 +54,12 @@ const Resultados = () => {
     const sumaPromedio =  competencias?.reduce((acc, curr) => acc + curr.promedio, 0)
     const promedio = sumaPromedio / competencias?.length
     return promedio.toFixed(1)
+  }
+
+  if (loading) {
+    return (
+      <Loading />
+    );
   }
 
   return (
