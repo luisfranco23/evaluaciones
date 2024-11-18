@@ -5,6 +5,7 @@ import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
 import { FaCheckCircle } from 'react-icons/fa';
 import { MdCancel } from 'react-icons/md';
+import Loading from './Loading';
 
 const Evaluar = () => {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ const Evaluar = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-10">Cargando...</div>;
+    return <Loading />
   }
 
   return (
@@ -177,7 +178,7 @@ const Evaluar = () => {
                 </button>
                 <button
                   onClick={() => evaluarColaborador('seguimiento', colaborador.idUsuario)}
-                  disabled={!colaborador?.Empresas[0]?.idEmpresa || true}
+                  disabled={!colaborador?.Empresas[0]?.idEmpresa}
                   className="bg-yellow-500 text-white py-1 px-3 rounded-md shadow-md hover:bg-yellow-600 focus:outline-none transition disabled:cursor-not-allowed disabled:bg-yellow-500/50"
                 >
                   Seguimiento

@@ -20,7 +20,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
           const responseCompetencias = await axios.get(`${URLBASE}/respuestas`, { params: { idEvaluador, idColaborador, idEvaluacion } });
           setCompetenciasFiltradas(responseCompetencias.data?.evaluacion);
         } catch {
-          toast.error("Ocurrió un error al obtener las competencias.");
+          toast.error("Ocurrió un error al obtener las competencias ???.");
         }
       };
       obtenerDatos();
@@ -37,6 +37,12 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
   // Agregar una nueva acción de mejoramiento
   const agregarAccion = () => {
     setAccionesMejoramiento([...accionesMejoramiento, { idCompetencia: '', comentario: '', estado: '', fechaCumplimiento: '' }]);
+  };
+
+  const quitarAccion = () => {
+    if (accionesMejoramiento.length > 0) {
+      setAccionesMejoramiento(accionesMejoramiento.slice(0, -1));
+    }
   };
 
   const competencias = competenciasFiltradas.filter(competencia => competencia.promedio < 3.4)
@@ -79,6 +85,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
                 idEvalRealizada, // Obtenido del comentario registrado
                 comentario: accion.comentario,
                 estado: accion.estado,
+                Retroalimentacion: retroalimentacion,
                 fechaCumplimiento: accion.fechaCumplimiento
               };
               await axios.post(`${URLBASE}/evaluaciones/compromisos`, compromisoPayload);
@@ -103,15 +110,15 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   return (
     <div className="my-12 mx-auto max-w-4xl">
-      <h2 className="text-lg font-bold text-zvioleta">Comentarios Generales</h2>
-      <p className='mt-2'>Comentario <span className='text-red-600 font-bold'>*</span></p>
-      <textarea
-        className={`border w-full p-2 rounded-md focus:ring-1 focus:ring-znaranjaclaro focus:border-znaranjaclaro`}
-        placeholder="Escribe tus comentarios..."
-        value={comentariosGenerales}
-        required
-        onChange={(e) => setComentariosGenerales(e.target.value)}
-      />
+        <h2 className="text-lg font-bold text-zvioleta">Comentarios Generales</h2>
+        <p className='mt-2'>Comentario <span className='text-red-600 font-bold'>*</span></p>
+        <textarea
+          className={`border w-full p-2 rounded-md focus:ring-1 focus:ring-znaranjaclaro focus:border-znaranjaclaro`}
+          placeholder="Escribe tus comentarios..."
+          value={comentariosGenerales}
+          required
+          onChange={(e) => setComentariosGenerales(e.target.value)}
+        />
 
       {esEvaluador && (
         <>
@@ -163,8 +170,11 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
               />
             </div>
           ))}
-          <button onClick={agregarAccion} disabled={competencias.length === accionesMejoramiento.length} className={`bg-zvioleta text-white p-2 rounded-md mt-4 ${competencias.length === accionesMejoramiento.length ? 'cursor-not-allowed': null}`} >
+          <button onClick={agregarAccion} disabled={competencias.length === accionesMejoramiento.length} className={`bg-zvioleta text-white p-2 rounded-md mt-4 mr-4 ${competencias.length === accionesMejoramiento.length ? 'cursor-not-allowed': null}`} >
             Agregar Acción
+          </button>
+          <button onClick={quitarAccion} disabled={accionesMejoramiento.length === 0 } className={`bg-zvioleta text-white p-2 rounded-md mt-4 ${accionesMejoramiento.length === 0 ? 'cursor-not-allowed': null}`} >
+            Quitar Acción
           </button>
           <div className="my-6 mt-10 flex items-center">
             <input

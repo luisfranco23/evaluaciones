@@ -27,7 +27,7 @@ const Login = () => {
           return;
         }
         // Redirigir al Home después de iniciar sesión
-          navigate('/home');
+        navigate('/home');
 
       } else {
         // Mostrar error si las credenciales son incorrectas
@@ -40,10 +40,10 @@ const Login = () => {
 
   return (
     <main className="min-h-screen flex flex-col md:flex-row">
-      <div className="w-full md:w-1/2 min-h-screen md:h-auto flex justify-center items-center p-8 bg-gray-50">
+      <div className="w-full md:w-1/2 min-h-screen md:h-auto grid grid-cols-1 justify-items-center items-end sm:p-8 p-4 bg-gray-50">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-2 text-center">
-            <h1 className="text-5xl font-bold tracking-tight text-zvioleta">Talento Pro</h1>
+            <h1 className="text-5xl font-bold tracking-tight text-zvioleta">Desarrollando Talentos</h1>
             <p className="text-sm text-gray-600">Ingresa tus credenciales para acceder</p>
           </div>
           <form className="space-y-4" onSubmit={handleLogin}>
@@ -82,6 +82,7 @@ const Login = () => {
             </button>
           </form>
         </div>
+          <p className="text-sm text-zvioleta">Copyright &copy;  2024 Zentria. Desarrollo por Fábricas y Desarrollo TI.</p>
       </div>
 
 

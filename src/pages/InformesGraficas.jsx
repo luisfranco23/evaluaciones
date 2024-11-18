@@ -3,6 +3,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
 import { BarChartAdvance } from './GraficaAvances';
+import Loading from './Loading';
 
 // Registrar los componentes necesarios de Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -17,8 +18,11 @@ const InformesGraficas = () => {
   }, []);
 
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <Loading />
+    );
   }
+
 
   return (
     <div className="p-4 mx-24 mt-5">
