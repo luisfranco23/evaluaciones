@@ -51,7 +51,7 @@ const Resultados = () => {
 
   const calcularPromedio = (competencias) => {
     if (competencias?.length === 0) return 0
-    const sumaPromedio =  competencias?.reduce((acc, curr) => acc + curr.promedio, 0)
+    const sumaPromedio = competencias?.reduce((acc, curr) => acc + curr.promedio, 0)
     const promedio = sumaPromedio / competencias?.length
     return promedio.toFixed(1)
   }
@@ -73,7 +73,7 @@ const Resultados = () => {
             <th className='row-span-2'>
               <img className=' w-32 p-1 h-auto' src={usuario.Empresas[0].urlLogo} alt={`logo-empresa-${usuario.Empresas[0].nombre}`} />
             </th>
-            <th className='border-b py-2'>VALORACION DE ATRIBUTOS</th>
+            <th className='border-b py-2'>EVALUACIÓN DE DESEMPEÑO</th>
             <th className='border-l px-4 row-span-2'>{`Versión: ${1}`}</th>
             <th>PROCESO: GESTIÓN HUMANA</th>
           </tr>
@@ -110,7 +110,7 @@ const Resultados = () => {
             <th className="border border-gray-300 col-span-3 px-4 py-2 text-left">Competencia</th>
             <th className="border border-gray-300 px-4 py-2 col-span-1 text-left">Promedio</th>
           </tr>
-          {respuestas?.evaluacion?.map(({index, nombre, promedio}) => {
+          {respuestas?.evaluacion?.map(({ index, nombre, promedio }) => {
             return (
               <tr key={index} className="grid grid-cols-4">
                 <td className="border border-gray-300 px-4 py-2 col-span-3">
@@ -128,24 +128,30 @@ const Resultados = () => {
           </tr>
           <tr className='grid  grid-cols-4 border my-1'>
             <th className='col-span-3'>PROMEDIO AUTOEVALUACIÓN</th>
-            <th className='col-span-1 text-center'>{respuestas?.evaluacion ? calcularPromedio(respuestas?.autoevaluacion): 'En espera de resultados'}</th>
+            <th className='col-span-1 text-center'>{respuestas?.evaluacion ? calcularPromedio(respuestas?.autoevaluacion) : 'En espera de resultados'}</th>
           </tr>
           <tr className='grid grid-cols-1 border'>
             <th className='text-start'>Comentarios</th>
-            {respuestas?.compromisos?.map(({index, TipoEvaluacione, comentario}) => (
+            {respuestas?.compromisos?.map(({ index, TipoEvaluacione, comentario }) => (
               <td key={index} className='border'>{`${TipoEvaluacione.nombre === "EVALUACIÓN" ? comentario : '*'}`}</td>
             ))}
           </tr>
-          <tr className='grid grid-cols-2 border'>
-            <th>Firma evaluador</th>
-            <th>Firma evaluado</th>
-            <td className='border h-16'></td>
-            <td className='border'></td>
+          <tr className='grid grid-cols-2 border justify-items-center border-collapse gap-3'>
+            <th>Nombre y cédula evaluador</th>
+            <th>Nombre y cédula evaluado</th>
+            <td>{user.user.nombre} - {user.user.idUsuario}</td>
+            <td>{usuario.nombre} - {usuario.idUsuario}</td>
           </tr>
         </tbody>
         <tfoot className='border grid grid-cols-2 my-4'>
-          <th>Fecha impresión</th>
-          <th>{formatearFecha(new Date())}</th>
+          <tr className='flex justify-center'>
+            <th>Fecha registro</th>
+            <th className='font-normal ml-3'>{formatearFecha(respuestas.compromisos[0].createdAt)}</th>
+          </tr>
+          <tr className='flex justify-center'>
+            <th>Fecha impresión</th>
+            <th className='font-normal ml-3'>{formatearFecha(new Date())}</th>
+          </tr>
         </tfoot>
       </table>
     </div>

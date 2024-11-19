@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound';
 import Seguimiento from './pages/Seguimiento';
 import AdmEvaluacion from './pages/Admin/AdmEvaluacion';
 import TablaAvancesUI from './pages/TablaAvancesUI';
+import Descriptores from './pages/Admin/Descriptores';
 
 
 function App() {
@@ -44,9 +45,9 @@ function App() {
           {/* Rutas de administración */}
           <Route path="administrar">
             <Route path="usuarios" element={<Usuarios />} /> Subruta relativa
-            {/* <Route path="descriptores" element={<Descriptores />} /> */}
-            <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
-            <Route path="seguimiento" element={<ComentariosAcciones />} />
+            <Route path="descriptores" element={<Descriptores />} />
+            {/* <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
+            <Route path="seguimiento" element={<ComentariosAcciones />} /> */}
           </Route>
         </Route>
         <Route path='/*' element={<NotFound />} />
