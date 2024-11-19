@@ -134,7 +134,7 @@ const Home = () => {
                         onClick={() => evaluarColaborador("evaluacion", user.user.idUsuario)}
                         className="flex items-center gap-2 px-5 py-3 text-white bg-zvioleta hover:bg-zvioleta/90 transition-colors duration-300 rounded-lg shadow-md text-base font-semibold"
                     >
-                        <span>Iniciar Evaluación</span>
+                        <span>Iniciar Autoevaluación</span>
                         <FiArrowRight className="w-5 h-5" />
                     </button>
                 )}

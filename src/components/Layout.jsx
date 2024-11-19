@@ -18,6 +18,7 @@ const Layout = ({ children }) => {
   const [idPerfil, setIdPerfil] = useState(null);
   const navigate = useNavigate();
 
+
   const user = useUser();
 
   const handleLogout = () => {

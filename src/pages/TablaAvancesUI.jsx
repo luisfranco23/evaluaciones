@@ -21,6 +21,10 @@ const columnHelper = createMRTColumnHelper();
 
 // Definición de columnas con `createMRTColumnHelper`
 const columns = [
+    columnHelper.accessor('evaluadoresId', {
+        header: '# Documento',
+        size: 150,
+    }),
     columnHelper.accessor('evaluadoresNombre', {
         header: 'Evaluador',
         size: 150,
@@ -58,9 +62,10 @@ export default function TablaAvancesUI() {
                 const normalizedData = res?.data?.resp?.map((item) => ({
                     Usuarios: item.Usuarios,
                     Respuestas: item.Respuestas,
-                    evaluadoresNombre: item['evaluadores.nombre'] == null ? "No asignado" : item['evaluadores.nombre'],
+                    evaluadoresNombre: item['evaluadores.nombre'] == null ? "No Asignado" : item['evaluadores.nombre'],
                     empresasNombre: item['Empresas.nombre'],
-                    sedesNombre: item['Sedes.nombre'],
+                    evaluadoresId: item['evaluadores.idUsuario'] == null ? "No Asignado" : item['evaluadores.idUsuario'],
+                    sedesNombre: item['Sedes.nombre'] == null ? "No Asignado" : item['Sedes.nombre'],
                     avance: `${(item.Respuestas * 100) / item.Usuarios}%`
                 }));
                 setInformes(normalizedData);

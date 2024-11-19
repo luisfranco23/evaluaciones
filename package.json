@@ -12,7 +12,9 @@
   "dependencies": {
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
+    "@radix-ui/react-select": "^2.1.2",
     "@remixicon/react": "^4.5.0",
+    "@tremor/react": "^3.18.4",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",
     "export-to-csv": "^1.4.0",
@@ -26,11 +28,11 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.27.0",
+    "react-select": "^5.8.3",
     "react-toastify": "^10.0.6",
     "recharts": "^2.13.3",
     "tailwind-merge": "^2.5.4",
-    "tailwind-variants": "^0.2.1",
-    "xlsx": "^0.18.5"
+    "tailwind-variants": "^0.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
