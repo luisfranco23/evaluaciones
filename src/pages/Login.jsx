@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
 import { toast } from 'react-toastify';
-import talentoImagen from '/image.webp'
+import DesarrollandoTalentosLogo from '/Desarrollando_talentos_Logo.png'
+import DesarrollandoTalentosHome from '/Desarrollando_talentos_Home.jpg'
 
 const Login = () => {
   const [documento, setDocumento] = useState('');
@@ -43,7 +44,7 @@ const Login = () => {
       <div className="w-full md:w-1/2 min-h-screen md:h-auto grid grid-cols-1 justify-items-center items-end sm:p-8 p-4 bg-gray-50">
         <div className="w-full max-w-md space-y-6">
           <div className="space-y-2 text-center">
-            <h1 className="text-5xl font-bold tracking-tight text-zvioleta">Desarrollando Talentos</h1>
+            <img src={DesarrollandoTalentosLogo} alt="DesarrollandoTalentosLogo" />
             <p className="text-sm text-gray-600">Ingresa tus credenciales para acceder</p>
           </div>
           <form className="space-y-4" onSubmit={handleLogin}>
@@ -82,13 +83,18 @@ const Login = () => {
             </button>
           </form>
         </div>
-          <p className="text-sm text-zvioleta">Copyright &copy;  2024 Zentria. Desarrollo por Fábricas y Desarrollo TI.</p>
+        <p className="text-sm text-zvioleta">Copyright &copy;  2024 Zentria. Desarrollo por Fábricas y Desarrollo TI.</p>
       </div>
 
 
-      <div className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen hidden md:block">
-        {/* Imagen de fondo o ilustración */}
-        <img src={talentoImagen} alt="Imagen de inicio de sesión" className="hidden md:block w-auto h-full object-cover" />
+      <div
+        className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen max-h-screen md:block hidden bg-gray-50"
+        style={{
+          backgroundImage: `url(${DesarrollandoTalentosHome})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
       </div>
     </main>
   );

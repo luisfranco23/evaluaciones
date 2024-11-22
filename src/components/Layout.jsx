@@ -9,7 +9,7 @@ import { useUser } from '../context/UserContext';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
 import { FaChartPie } from 'react-icons/fa6';
-import { RiFileChartFill } from '@remixicon/react';
+import { RiDashboard3Fill, RiFileChartFill } from '@remixicon/react';
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -97,6 +97,12 @@ const Layout = ({ children }) => {
                       <Link to="/informes/evaluadores" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <RiFileChartFill size={20} />
                         <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluadores</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/informes/dashboard" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                        <RiDashboard3Fill size={20} />
+                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Dashboard</span>
                       </Link>
                     </li>
                   </ul>

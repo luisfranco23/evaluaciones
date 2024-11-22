@@ -165,7 +165,7 @@ const ActualizarSeguimiento = ({idColaborador, idEvaluacion}) => {
 
 ActualizarSeguimiento.propTypes = {
   idEvaluacion: PropTypes.number,
-  idColaborador: PropTypes.number,
+  idColaborador: PropTypes.string,
 };
 
 export default ActualizarSeguimiento;

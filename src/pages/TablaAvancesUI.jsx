@@ -9,6 +9,9 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { mkConfig, generateCsv, download } from 'export-to-csv';
 import { useEffect, useState } from 'react';
 import { URLBASE } from '../lib/actions';
+import { Select } from 'antd';
+import { useUser } from '../context/UserContext';
+import Loading from './Loading';
 
 // Configuración para exportación CSV
 const csvConfig = mkConfig({
@@ -53,28 +56,27 @@ const columns = [
 
 export default function TablaAvancesUI() {
     const [informes, setInformes] = useState([]);
+    const [empresas, setEmpresas] = useState({})
+    const [isLoading, setIsLoading] = useState(true); // Estado para cargar datos
+    const [selectedEmpresa, setSelectedEmpresa] = useState(null); // Estado para Empresa seleccionada
+    const [selectedSede, setSelectedSede] = useState(null);
+
+    const user = useUser()
 
     // Obtener los datos de la API
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`${URLBASE}/informes`);
-                const normalizedData = res?.data?.resp?.map((item) => ({
-                    Usuarios: item.Usuarios,
-                    Respuestas: item.Respuestas,
-                    evaluadoresNombre: item['evaluadores.nombre'] == null ? "No Asignado" : item['evaluadores.nombre'],
-                    empresasNombre: item['Empresas.nombre'],
-                    evaluadoresId: item['evaluadores.idUsuario'] == null ? "No Asignado" : item['evaluadores.idUsuario'],
-                    sedesNombre: item['Sedes.nombre'] == null ? "No Asignado" : item['Sedes.nombre'],
-                    avance: `${(item.Respuestas * 100) / item.Usuarios}%`
-                }));
-                setInformes(normalizedData);
+                const empresasRes = await axios.get(`${URLBASE}/usuarios/empresassedes`, { params: { idUsuario: user?.user.idUsuario } })
+                setEmpresas(empresasRes.data?.data || [])
             } catch (error) {
                 console.error("Error al obtener los informes:", error);
+            } finally {
+                setIsLoading(false)
             }
         };
         fetchData();
-    }, []);
+    }, [user?.user.idUsuario]);
 
     // Configuración de la tabla con `useMaterialReactTable`
     const table = useMaterialReactTable({
@@ -86,7 +88,7 @@ export default function TablaAvancesUI() {
         positionToolbarAlertBanner: 'bottom',
         enableDensityToggle: false,
         enableColumnResizing: false,
-        enableFullScreenToggle: false,       
+        enableFullScreenToggle: false,
         renderTopToolbarCustomActions: () => (
             <Box
                 sx={{
@@ -104,9 +106,61 @@ export default function TablaAvancesUI() {
                     Exportar todo
                 </Button>
             </Box>
-            
+
         ),
     });
+
+
+    const handleChangeSede = async (value) => {
+        try {
+            setSelectedSede(value); // Actualiza la sede seleccionada
+            setSelectedEmpresa(null);
+            const res = await axios.get(`${URLBASE}/informes`, { params: { idSede: value } });
+            const normalizedData = res?.data?.resp?.map((item) => ({
+                Usuarios: item.Usuarios,
+                Respuestas: item.Respuestas,
+                evaluadoresNombre: item['evaluadores.nombre'] == null ? "No Asignado" : item['evaluadores.nombre'],
+                empresasNombre: item['Empresas.nombre'],
+                evaluadoresId: item['evaluadores.idUsuario'] == null ? "No Asignado" : item['evaluadores.idUsuario'],
+                sedesNombre: item['Sedes.nombre'] == null ? "No Asignado" : item['Sedes.nombre'],
+                avance: `${(item.Respuestas * 100) / item.Usuarios}%`
+            }));
+            setInformes(normalizedData);
+        } catch (error) {
+            console.error("Error al cargar las competencias:", error);
+        }
+    }
+    const handleChangeEmpresa = async (value) => {
+        try {
+            setSelectedEmpresa(value); // Actualiza la empresa seleccionada
+            setSelectedSede(null);
+            const res = await axios.get(`${URLBASE}/informes`, { params: { idEmpresa: value } });
+            const normalizedData = res?.data?.resp?.map((item) => ({
+                Usuarios: item.Usuarios,
+                Respuestas: item.Respuestas,
+                evaluadoresNombre: item['evaluadores.nombre'] == null ? "No Asignado" : item['evaluadores.nombre'],
+                empresasNombre: item['Empresas.nombre'],
+                evaluadoresId: item['evaluadores.idUsuario'] == null ? "No Asignado" : item['evaluadores.idUsuario'],
+                sedesNombre: item['Sedes.nombre'] == null ? "No Asignado" : item['Sedes.nombre'],
+                avance: `${(item.Respuestas * 100) / item.Usuarios}%`
+            }));
+            setInformes(normalizedData);
+        } catch (error) {
+            console.error("Error al cargar las competencias:", error);
+        }
+    };
+
+    const optionEmpresas = empresas?.Empresas?.map(empresa => {
+        return { value: empresa.idEmpresa, label: empresa.nombre }
+    })
+
+    const optionSedes = empresas?.Sedes?.map(sede => {
+        return { value: sede.idSede, label: sede.nombre }
+    })
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     // Función para exportar todos los datos
     const handleExportData = (data) => {
@@ -117,6 +171,30 @@ export default function TablaAvancesUI() {
     return (
 
         <div className='m-10'>
+            <div className="flex flex-col md:flex-row md:gap-4 mb-6">
+                <Select
+                    showSearch
+                    className="w-64 h-10 outline-none"
+                    placeholder="Selecciona una empresa"
+                    filterOption={(input, option) =>
+                        (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                    }
+                    options={optionEmpresas}
+                    onChange={handleChangeEmpresa}
+                    value={selectedEmpresa}
+                />
+                <Select
+                    showSearch
+                    className="w-64 h-10 outline-none"
+                    placeholder="Selecciona una sede"
+                    filterOption={(input, option) =>
+                        (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                    }
+                    options={optionSedes}
+                    onChange={handleChangeSede}
+                    value={selectedSede}
+                />
+            </div>
             <MaterialReactTable table={table} />
         </div>
     );

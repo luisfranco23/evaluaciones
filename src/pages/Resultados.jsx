@@ -95,7 +95,7 @@ const Resultados = () => {
             <th className='col-span-2 text-start border-b'>Objetivo</th>
             <td className='col-span-2 pb-2'>El objetivo de esta evaluación es valorar las competencias para identificar las fortalezas y puntos de mejora en cuanto al desempeño esperado.</td>
           </tr>
-          <tr className='grid grid-cols-4 mt-4 p-1 mb-4'>
+          <tr key={1} className='grid grid-cols-4 mt-4 p-1 mb-4'>
             <th className='col-span-4 border font-bold my-3'>Escala de calificación</th>
             {
               calificaciones?.map((calificacion) => (
@@ -146,7 +146,7 @@ const Resultados = () => {
         <tfoot className='border grid grid-cols-2 my-4'>
           <tr className='flex justify-center'>
             <th>Fecha registro</th>
-            <th className='font-normal ml-3'>{formatearFecha(respuestas.compromisos[0].createdAt)}</th>
+            <th className='font-normal ml-3'>{formatearFecha(respuestas?.compromisos[0]?.createdAt)}</th>
           </tr>
           <tr className='flex justify-center'>
             <th>Fecha impresión</th>
