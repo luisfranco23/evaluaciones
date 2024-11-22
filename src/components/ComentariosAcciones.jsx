@@ -10,21 +10,22 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
   const [accionesMejoramiento, setAccionesMejoramiento] = useState([]);
   const [competenciasFiltradas, setCompetenciasFiltradas] = useState([]);
   const [retroalimentacion, setRetroalimentacion] = useState(false);
+  const [respuestas, setRespuestas] = useState([])
   const navigate = useNavigate(); // Hook para navegar
 
   // Fetch competencias solo si es evaluador
   useEffect(() => {
-    if (esEvaluador) {
       const obtenerDatos = async () => {
         try {
           const responseCompetencias = await axios.get(`${URLBASE}/respuestas`, { params: { idEvaluador, idColaborador, idEvaluacion } });
+          setRespuestas(responseCompetencias.data)
+          console.log(responseCompetencias)
           setCompetenciasFiltradas(responseCompetencias.data?.evaluacion);
         } catch {
           toast.error("Ocurrió un error al obtener las competencias ???.");
         }
       };
       obtenerDatos();
-    }
   }, [idColaborador, idEvaluador, esEvaluador, idEvaluacion]);
 
   // Manejar cambio en acciones de mejoramiento
@@ -45,7 +46,18 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
     }
   };
 
-  const competencias = competenciasFiltradas.filter(competencia => competencia.promedio < 3.4)
+  const calcularPromedio = (competencias) => {
+    if (competencias?.length === 0) return 0
+    const sumaPromedio = competencias?.reduce((acc, curr) => acc + curr.promedio, 0)
+    const promedio = sumaPromedio / competencias?.length
+    return promedio.toFixed(1)
+  }
+
+  const promedio = calcularPromedio(respuestas?.autoevaluacion?.length > 0 ? respuestas?.autoevaluacion : respuestas?.evaluacion)
+
+
+  console.log(promedio)
+  const competencias = competenciasFiltradas?.filter(competencia => competencia.promedio < 3.4)
 
   const pass = (esEvaluador && retroalimentacion) && (
     (competencias.length >= 3 && accionesMejoramiento.length >= 3) || 
@@ -62,6 +74,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
           idEvaluador,
           idColaborador,
           comentario: comentariosGenerales,
+          promedio,
           accionesMejoramiento: esEvaluador ? accionesMejoramiento : [],
           retroalimentacion
         };
@@ -123,6 +136,9 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
       {esEvaluador && (
         <>
           <h2 className="text-lg font-bold mt-4 text-zvioleta">Acciones de Mejoramiento</h2>
+          <p className='my-2'>
+          A continuación, junto con la persona evaluada, podrán elaborar un plan de mejora enfocado en las competencias calificadas por debajo de lo esperado. El plan debe centrarse en un máximo de tres competencias; si son más, prioricen aquellas con mayor impacto en su desarrollo dentro del rol.
+          </p>
           {accionesMejoramiento.map((accion, index) => (
             <div key={index} className="mt-2 flex flex-col gap-3 border-b-2">
               <p className='-mb-2 mt-2'>Competencia <span className='text-red-600 font-bold'>*</span></p>
@@ -201,7 +217,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 ComentariosAcciones.propTypes = {
   idEvaluacion: PropTypes.number,
   idEvaluador: PropTypes.number,
-  idColaborador: PropTypes.number,
+  idColaborador: PropTypes.string,
   esEvaluador: PropTypes.bool
 };
 export default ComentariosAcciones;

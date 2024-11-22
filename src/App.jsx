@@ -15,6 +15,7 @@ import Seguimiento from './pages/Seguimiento';
 import AdmEvaluacion from './pages/Admin/AdmEvaluacion';
 import TablaAvancesUI from './pages/TablaAvancesUI';
 import Descriptores from './pages/Admin/Descriptores';
+import DashboardUI from './pages/Dashboard';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path="/evaluar" element={<Evaluar />} />
           <Route path="/informes/graficas" element={<InformesGraficas />} />
           <Route path="/informes/evaluadores" element={<TablaAvancesUI />} />
+          <Route path="/informes/dashboard" element={<DashboardUI />} />
         </Route>
         <Route element={<ProtectedLayout allowedProfiles={[3]} />}>
 
@@ -46,8 +48,8 @@ function App() {
           <Route path="administrar">
             <Route path="usuarios" element={<Usuarios />} /> Subruta relativa
             <Route path="descriptores" element={<Descriptores />} />
-            {/* <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
-            <Route path="seguimiento" element={<ComentariosAcciones />} /> */}
+            <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
+            <Route path="seguimiento" element={<ComentariosAcciones />} />
           </Route>
         </Route>
         <Route path='/*' element={<NotFound />} />

@@ -7,6 +7,7 @@ import { URLBASE } from '../lib/actions';
 import { toast } from 'react-toastify';
 import Modal from 'react-modal'
 import FormUpdatePassword from '../components/FormUpdatePassword'
+import DesarrollandoTalentosBanner from '/Desarrollando_talentos_Banner.jpg'
 
 const Home = () => {
     const navigate = useNavigate();
@@ -61,6 +62,10 @@ const Home = () => {
                 Evaluación de desempeño 2024
                 </h1>
             </div>
+            <div className=''>
+                <img src={DesarrollandoTalentosBanner} alt="DesarrollandoTalentosBanner" />
+            </div>
+
             <Modal isOpen={showModal} ariaHideApp={false} onRequestClose={closeModal}>
                 <FormUpdatePassword />
             </Modal>
@@ -68,7 +73,6 @@ const Home = () => {
                 Cordial saludo, Te damos la bienvenida a la evaluación de desempeño 2024 y te invitamos a participar activamente desde tu rol.
                 El objetivo de esta evaluación es valorar las competencias para identificar las fortalezas y puntos de mejora en cuanto al desempeño esperado.
             </p>
-
             <div className="mt-4 text-gray-700">
                 <p className="text-base">Este año la Evaluación de desempeño será 180°, es decir que vamos a tener dos componentes:</p>
                 <ul className="list-disc ml-5 mt-2 text-base space-y-1 text-znaranja font-bold">
