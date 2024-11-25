@@ -106,9 +106,8 @@ const Evaluacion = () => {
       setCompleted(true); // Marcar como completado después de enviar
       setMostrarComentarios(true);
       setShowConfirmDialog(false); // Ocultar el diálogo de confirmación
-    } catch (error) {
-      console.log(error)
-      toast.error("Error al enviar las respuestas!");
+    } catch {
+      toast.warn("Respuestas ya registradas!");
     }
   };
 
