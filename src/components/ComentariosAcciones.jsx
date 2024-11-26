@@ -19,7 +19,6 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
         try {
           const responseCompetencias = await axios.get(`${URLBASE}/respuestas`, { params: { idEvaluador, idColaborador, idEvaluacion } });
           setRespuestas(responseCompetencias.data)
-          console.log(responseCompetencias)
           setCompetenciasFiltradas(responseCompetencias.data?.evaluacion);
         } catch {
           toast.error("Ocurrió un error al obtener las competencias ???.");
@@ -55,8 +54,6 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   const promedio = calcularPromedio(respuestas?.autoevaluacion?.length > 0 ? respuestas?.autoevaluacion : respuestas?.evaluacion)
 
-
-  console.log(promedio)
   const competencias = competenciasFiltradas?.filter(competencia => competencia.promedio < 3.4)
 
   const pass = (esEvaluador && retroalimentacion) && (

@@ -56,7 +56,7 @@ const ProtectedLayout = ({ allowedProfiles }) => {
   }
 
   return (
-    <div className="flex h-screen overflow-auto bg-gray-50">
+    <div className="flex h-screen overflow-auto bg-gray-50 print:overflow-visible print:h-auto">
       <Layout />
       <div className="flex-1">
         <Outlet />
