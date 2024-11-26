@@ -45,7 +45,7 @@ const Resultados = () => {
 
   const usuario = user?.colaboradores?.colaboradores.find(c => c.idUsuario == idUsuario) || user?.colaboradores || user?.user;
 
-  if (!respuestas || respuestas.evaluacion?.length === 0) {
+  if (!respuestas || respuestas.evaluacion?.length === 0 || respuestas.autoevaluacion?.length === 0) {
     return <p className='text-center pt-10'>Aún no hay registros</p>
   }
 
@@ -63,11 +63,18 @@ const Resultados = () => {
   }
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md max-w-7xl my-2 mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-zvioleta text-center my-5">{`Resultados de evaluación ${usuario?.nombre}`}</h1>
-
+    <div className="p-6 bg-white rounded-lg shadow-md max-w-7xl my-2 mx-auto print:shadow-none">
+      <h1 className="text-2xl font-bold mb-6 text-zvioleta text-center my-5 print:hidden">{`Resultados de evaluación ${usuario?.nombre}`}</h1>
+      <div className='w-full flex justify-end'>
+        <button
+          onClick={() => window.print()}
+          className="bg-znaranja text-white py-2 px-4 rounded-lg mb-2 print:hidden"
+        >
+          Imprimir
+        </button>
+      </div>
       {/* Estructura de tabla */}
-      <table className='w-full flex flex-col '>
+      <table className='w-full flex flex-col' id='tabla-resultados'>
         <thead className=''>
           <tr className='grid border grid-cols-3 font-semibold justify-items-center items-center'>
             <th className='row-span-2'>
@@ -95,7 +102,7 @@ const Resultados = () => {
             <th className='col-span-2 text-start border-b'>Objetivo</th>
             <td className='col-span-2 pb-2'>El objetivo de esta evaluación es valorar las competencias para identificar las fortalezas y puntos de mejora en cuanto al desempeño esperado.</td>
           </tr>
-          <tr key={1} className='grid grid-cols-4 mt-4 p-1 mb-4'>
+          <tr className='grid grid-cols-4 mt-4 p-1 mb-4'>
             <th className='col-span-4 border font-bold my-3'>Escala de calificación</th>
             {
               calificaciones?.map((calificacion) => (

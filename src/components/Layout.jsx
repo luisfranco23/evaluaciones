@@ -10,6 +10,8 @@ import axios from 'axios';
 import { URLBASE } from '../lib/actions';
 import { FaChartPie } from 'react-icons/fa6';
 import { RiDashboard3Fill, RiFileChartFill } from '@remixicon/react';
+import { HiMiniClipboardDocumentCheck } from 'react-icons/hi2';
+import style from './layout.module.css';
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -60,7 +62,7 @@ const Layout = ({ children }) => {
         </span>
         <span className={`ml-4 text-sm transition-opacity capitalize duration-300 ${isMenuOpen ? 'opacity-70' : 'opacity-0'}`}>{user?.user?.cargo}</span>
         {/* Opciones del menú */}
-        <ul className="flex-1 space-y-4 mt-8">
+        <ul className={`flex-1 space-y-4 mt-8 overflow-auto ${style.scrollable}`} >
           <li>
             <Link to="/home" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
               <FaHome size={20} />
@@ -103,6 +105,12 @@ const Layout = ({ children }) => {
                       <Link to="/informes/dashboard" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <RiDashboard3Fill size={20} />
                         <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Dashboard</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/informes/resultados" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                        <HiMiniClipboardDocumentCheck size={20} />
+                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Resultados</span>
                       </Link>
                     </li>
                   </ul>

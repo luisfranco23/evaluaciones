@@ -42,9 +42,9 @@ const Login = () => {
   return (
     <main className="min-h-screen flex flex-col md:flex-row">
       <div className="w-full md:w-1/2 min-h-screen md:h-auto grid grid-cols-1 justify-items-center items-end sm:p-8 p-4 bg-gray-50">
-        <div className="w-full max-w-md space-y-6">
-          <div className="space-y-2 text-center">
-            <img src={DesarrollandoTalentosLogo} alt="DesarrollandoTalentosLogo" />
+        <div className="w-full max-w-md space-y-6 pb-24">
+          <div className="space-y-2 text-center flex justify-center flex-col items-center">
+            <img src={DesarrollandoTalentosLogo} alt="DesarrollandoTalentosLogo" className='md:w-full w-80' />
             <p className="text-sm text-gray-600">Ingresa tus credenciales para acceder</p>
           </div>
           <form className="space-y-4" onSubmit={handleLogin}>
@@ -85,14 +85,11 @@ const Login = () => {
         </div>
         <p className="text-sm text-zvioleta">Copyright &copy;  2024 Zentria. Desarrollo por Fábricas y Desarrollo TI.</p>
       </div>
-
-
       <div
-        className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen max-h-screen md:block hidden bg-gray-50"
+        className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen md:block hidden bg-gray-50"
         style={{
           backgroundImage: `url(${DesarrollandoTalentosHome})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
         }}
       >
       </div>

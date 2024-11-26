@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { URLBASE } from '../../lib/actions';
 import Modal from '../../components/Modal';
+import EvaluacionesModal from '../../components/EvaluacionesModal';
 
 const Usuarios = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -18,7 +19,25 @@ const Usuarios = () => {
   const [asignadasSedes, setAsignadasSedes] = useState([]);
   const [asignadosColaboradores, setAsignadosColaboradores] = useState([]);
   const [showModal, setShowModal] = useState({ type: '', open: false });
+  const [evaluacion, setEvaluacion] = useState([])
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [perfilesRes, nivelesCargoRes] = await Promise.all([
+          axios.get(`${URLBASE}/usuarios/perfiles`),
+          axios.get(`${URLBASE}/usuarios/nivelcargos`),
+        ]);
+        setPerfiles(perfilesRes.data?.data);
+        setNivelesCargo(nivelesCargoRes.data?.data);
+      } catch {
+        toast.error('Error al cargar datos iniciales.');
+      }
+    };
+    fetchData();
+  }, []);
+  
 
 
   const buscarUsuario = async (data) => {
@@ -27,23 +46,19 @@ const Usuarios = () => {
     try {
       const response = await axios.get(`${URLBASE}/usuarios`, { params: { idUsuario, correo } });
       const userData = response.data?.data;
-
+      
       if (userData) {
         setUsuario(userData);
+        setEvaluacion(response.data?.evaluacion)
         setAsignadasEmpresas(userData.Empresas || []);
         setAsignadasSedes(userData.Sedes || []);
         setAsignadosColaboradores(userData.colaboradores || []);
 
-        const [perfilesRes, nivelesCargoRes, empresasRes, sedesRes, colaboradoresRes] = await Promise.all([
-          axios.get(`${URLBASE}/usuarios/perfiles`),
-          axios.get(`${URLBASE}/usuarios/nivelcargos`),
+        const [empresasRes, sedesRes, colaboradoresRes] = await Promise.all([
           axios.get(`${URLBASE}/empresas`),
           axios.get(`${URLBASE}/empresas/sedes`),
           axios.get(`${URLBASE}/usuarios/colaboradores`)
         ]);
-
-        setPerfiles(perfilesRes.data?.data);
-        setNivelesCargo(nivelesCargoRes.data?.data);
         setEmpresas(empresasRes.data?.data);
         setSedes(sedesRes.data?.data);
         setColaboradores(colaboradoresRes.data?.data);
@@ -57,7 +72,7 @@ const Usuarios = () => {
         setValue('contrasena');
         setValue('defaultContrasena', userData.defaultContrasena);
         setValue('activo', userData.activo);
-        setValue('fechaIngreso', userData.fechaIngreso);
+        setValue('fechaIngreso', userData.fechaIngreso?.split('T')[0]);
         setValue('area', userData.area);
       } else {
         toast.error('Usuario no encontrado.');
@@ -68,7 +83,6 @@ const Usuarios = () => {
       setLoading(false);
     }
   };
-
 
   const actualizarUsuario = async (data) => {
     try {
@@ -93,7 +107,7 @@ const Usuarios = () => {
           <input
             type="text"
             {...register('idUsuario')}
-            placeholder="Buscar por ID de Usuario"
+            placeholder="Buscar por numero de documento"
             className="border p-3 rounded-lg w-full"
           />
           <input
@@ -185,8 +199,8 @@ const Usuarios = () => {
             >
               Asignar Colaboradores
             </button>
+          <EvaluacionesModal evaluaciones={evaluacion} idColaborador={usuario?.idUsuario} buscarUsuario={() => buscarUsuario({idUsuario: usuario?.idUsuario})} />
           </div>
-
           <Modal
             showModal={showModal.open}
             idUsuario={usuario.idUsuario}
