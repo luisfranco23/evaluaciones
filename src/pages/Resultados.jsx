@@ -45,7 +45,7 @@ const Resultados = () => {
 
   const usuario = user?.colaboradores?.colaboradores.find(c => c.idUsuario == idUsuario) || user?.colaboradores || user?.user;
 
-  if (!respuestas || respuestas.evaluacion?.length === 0 || respuestas.autoevaluacion?.length === 0) {
+  if (!respuestas || !respuestas.evaluacion?.length === 0 || !respuestas.autoevaluacion?.length === 0) {
     return <p className='text-center pt-10'>Aún no hay registros</p>
   }
 
