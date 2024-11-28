@@ -40,8 +40,8 @@ const Login = () => {
   };
 
   return (
-    <main className="min-h-screen flex flex-col md:flex-row">
-      <div className="w-full md:w-1/2 min-h-screen md:h-auto grid grid-cols-1 justify-items-center items-end sm:p-8 p-4 bg-gray-50">
+    <main className="min-h-screen flex flex-col md:flex-row bg-gray-50">
+      <div className="w-full md:w-1/2 h-full md:h-auto grid grid-cols-1 justify-items-center items-end sm:p-8 p-4 bg-gray-50">
         <div className="w-full max-w-md space-y-6 pb-24">
           <div className="space-y-2 text-center flex justify-center flex-col items-center">
             <img src={DesarrollandoTalentosLogo} alt="DesarrollandoTalentosLogo" className='md:w-full w-80' />
@@ -86,12 +86,12 @@ const Login = () => {
         <p className="text-sm text-zvioleta">Copyright &copy;  2024 Zentria. Desarrollo por Fábricas y Desarrollo TI.</p>
       </div>
       <div
-        className="w-full md:w-1/2 md:block hidden max-h-screen"
+        className="w-full md:w-1/2 md:block hidden h-auto"
       >
         <img
           src={DesarrollandoTalentosHome}
           alt="DesarrollandoTalentosHome"
-          className="w-full h-full object-left-top"
+          className="w-full h-full object-cover md:object-left-top"
         />
       </div>
     </main>
