@@ -5,7 +5,7 @@ import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
 import { toast } from 'react-toastify';
 import DesarrollandoTalentosLogo from '/Desarrollando_talentos_Logo.png'
-import DesarrollandoTalentosHome from '/Desarrollando_talentos_Home.jpg'
+import DesarrollandoTalentosHome from '/Desarrollando_talentos_Home.webp'
 
 const Login = () => {
   const [documento, setDocumento] = useState('');
@@ -86,12 +86,13 @@ const Login = () => {
         <p className="text-sm text-zvioleta">Copyright &copy;  2024 Zentria. Desarrollo por Fábricas y Desarrollo TI.</p>
       </div>
       <div
-        className="w-full md:w-1/2 relative min-h-[500px] md:min-h-screen md:block hidden bg-gray-50"
-        style={{
-          backgroundImage: `url(${DesarrollandoTalentosHome})`,
-          backgroundSize: 'cover',
-        }}
+        className="w-full md:w-1/2 md:block hidden max-h-screen"
       >
+        <img
+          src={DesarrollandoTalentosHome}
+          alt="DesarrollandoTalentosHome"
+          className="w-full h-full object-left-top"
+        />
       </div>
     </main>
   );

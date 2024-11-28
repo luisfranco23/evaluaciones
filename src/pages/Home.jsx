@@ -7,7 +7,7 @@ import { URLBASE } from '../lib/actions';
 import { toast } from 'react-toastify';
 import Modal from 'react-modal'
 import FormUpdatePassword from '../components/FormUpdatePassword'
-import DesarrollandoTalentosBanner from '/Desarrollando_talentos_Banner.jpg'
+import DesarrollandoTalentosBanner from '/Desarrollando_talentos_Banner.webp'
 
 const Home = () => {
     const navigate = useNavigate();
