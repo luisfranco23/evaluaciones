@@ -113,6 +113,12 @@ const Layout = ({ children }) => {
                         <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Resultados</span>
                       </Link>
                     </li>
+                    <li>
+                      <Link to="/informes/acciones" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                        <HiMiniClipboardDocumentCheck size={20} />
+                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Acciones de mejora</span>
+                      </Link>
+                    </li>
                   </ul>
                 )}
               </li>

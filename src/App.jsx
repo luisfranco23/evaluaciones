@@ -17,6 +17,7 @@ import TablaAvancesUI from './pages/TablaAvancesUI';
 import Descriptores from './pages/Admin/Descriptores';
 import DashboardUI from './pages/Dashboard';
 import InformeResultados from './pages/InformeResultados';
+import InformeAccionesMejora from './pages/InformeAccionesMejora';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
           <Route path="/informes/evaluadores" element={<TablaAvancesUI />} />
           <Route path="/informes/dashboard" element={<DashboardUI />} />
           <Route path="/informes/resultados" element={<InformeResultados />} />
+          <Route path="/informes/acciones" element={<InformeAccionesMejora />} />
         </Route>
         <Route element={<ProtectedLayout allowedProfiles={[3]} />}>
 
