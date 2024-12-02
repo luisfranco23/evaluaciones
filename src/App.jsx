@@ -50,8 +50,8 @@ function App() {
           <Route path="administrar">
             <Route path="usuarios" element={<Usuarios />} /> Subruta relativa
             <Route path="descriptores" element={<Descriptores />} />
-            {/* <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
-            <Route path="seguimiento" element={<ComentariosAcciones />} /> */}
+            <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
+            <Route path="seguimiento" element={<ComentariosAcciones />} />
           </Route>
         </Route>
         <Route path='/*' element={<NotFound />} />

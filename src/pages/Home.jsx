@@ -56,10 +56,10 @@ const Home = () => {
     }, [user]);
 
     return (
-        <div className="flex flex-col gap-6 bg-white p-8 shadow-lg rounded-lg max-w-7xl my-5 mx-auto">
+        <div className="flex flex-col gap-4 bg-white p-8 shadow-lg rounded-lg max-w-7xl my-5 mx-auto">
             <div className="text-center">
                 <h1 className="font-extrabold text-4xl text-zvioleta mb-2">
-                Evaluación de desempeño 2024
+                    Evaluación de desempeño 2024
                 </h1>
             </div>
             <div className=''>
@@ -70,27 +70,24 @@ const Home = () => {
                 <FormUpdatePassword />
             </Modal>
             <p className='text-gray-700 text-base leading-relaxed mt-2'>
-                Cordial saludo, Te damos la bienvenida a la evaluación de desempeño 2024 y te invitamos a participar activamente desde tu rol.
-                El objetivo de esta evaluación es valorar las competencias para identificar las fortalezas y puntos de mejora en cuanto al desempeño esperado.
+                Bienvenido(a).<br></br>
+                El propósito de esta evaluación es valorar tus fortalezas y áreas de mejora, promoviendo el desarrollo continuo.
             </p>
-            <div className="mt-4 text-gray-700">
-                <p className="text-base">Este año la Evaluación de desempeño será 180°, es decir que vamos a tener dos componentes:</p>
+            <div className="text-gray-700">
+                <p className="text-base">Se realizará:</p>
                 <ul className="list-disc ml-5 mt-2 text-base space-y-1 text-znaranja font-bold">
-                    <li>Evaluación de Jefe Inmediato</li>
                     <li>Autoevaluación</li>
+                    <li>Evaluación por parte del Jefe Inmediato.</li>
                 </ul>
             </div>
 
             <p className="text-gray-700 leading-relaxed">
-                Por lo que si eres líder debes evaluar y retroalimentar las personas a tu cargo, además de realizar tu autoevaluación; y si eres colaborador, debes diligenciar tu autoevaluación.
+            Si tienes personal a cargo, asegúrate de completar tu Autoevaluación y organizar sesiones con tu equipo para realizar la evaluación y brindar retroalimentación.
             </p>
-            <p className="text-gray-700 leading-relaxed">
-                A continuación, vas a encontrar las competencias y responsabilidades junto con los comportamientos que componen la Evaluación de desempeño.
-            </p>
-
+            
             <div className="flex flex-col gap-6">
                 <p className="text-gray-800 text-sm md:text-base">
-                    La escala de calificación que usaremos será la siguiente, por favor lee con detenimiento.
+                Al iniciar, encontrarás los criterios que forman parte de esta evaluación, junto con la siguiente escala de calificación. por favor lee con detenimiento:
                 </p>
                 <table className="border-collapse border border-gray-300 shadow-md rounded-lg overflow-hidden max-w-screen-sm">
                     <thead>

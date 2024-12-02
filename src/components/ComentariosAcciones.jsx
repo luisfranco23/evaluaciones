@@ -134,8 +134,9 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
         <>
           <h2 className="text-lg font-bold mt-4 text-zvioleta">Acciones de Mejoramiento</h2>
           <p className='my-2'>
-          A continuación, junto con la persona evaluada, podrán elaborar un plan de mejora enfocado en las competencias calificadas por debajo de lo esperado. El plan debe centrarse en un máximo de tres competencias; si son más, prioricen aquellas con mayor impacto en su desarrollo dentro del rol.
+          A continuación, elabora el plan de desarrollo enfocado en las competencias con puntajes por debajo de lo esperado. Selecciona mínimo 1 máximo 3. 
           </p>
+          <p>Consulta las ideas que te damos en Guía de Desarrollo haciendo clic <a href="https://grupozentria.sharepoint.com/:f:/s/TD-TI-Zentria/RRHH/ErcFIunNaDlLjoaRMWxog3cByTRhRz7bz_9EtNFtgwHcIg" target='_blank' className='underline text-znaranja'>aquí.</a></p>
           {accionesMejoramiento.map((accion, index) => (
             <div key={index} className="mt-2 flex flex-col gap-3 border-b-2">
               <p className='-mb-2 mt-2'>Competencia <span className='text-red-600 font-bold'>*</span></p>
