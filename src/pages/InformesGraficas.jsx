@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
-import { BarChartAdvance } from './GraficaAvances';
+import { BarChartAdvance, PieChartCumplimiento } from './GraficaAvances';
 import Loading from './Loading';
 import { Select } from 'antd';
 import { useUser } from '../context/UserContext';
@@ -65,6 +65,12 @@ const InformesGraficas = () => {
     return { value: sede.idSede, label: sede.nombre }
   })
 
+  const dataPie = cubrimiento?.avanceGlobal?.flatMap(item => [
+    { value: item.Respuestas, name: "Respuestas" },
+    { value: item.Usuarios, name: "Usuarios" },
+    { ...item }
+  ])
+
 
   return (
     <div className="p-4 mx-24 mt-5">
@@ -82,7 +88,8 @@ const InformesGraficas = () => {
           value={selectedSede}
         />
       </div>
-      <div className="flex gap-4 flex-col m-9">
+      <div className="grid md:grid-cols-2 grid-cols-1">
+        <PieChartCumplimiento data={dataPie} nombre='Avance Zentria' />
         <BarChartAdvance data={selectedSede ? cubrimiento?.totalUsuariosSede : []} nombre={'Sedes'} />
         <BarChartAdvance data={cubrimiento?.totalUsuariosEmpresa} nombre={'Empresas'} />
       </div>

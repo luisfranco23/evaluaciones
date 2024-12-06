@@ -56,10 +56,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   const competencias = competenciasFiltradas?.filter(competencia => competencia.promedio < 3.4)
 
-  const pass = (esEvaluador && retroalimentacion) && (
-    (competencias.length >= 3 && accionesMejoramiento.length >= 3) || 
-    (competencias.length <= 3 && accionesMejoramiento.length === competencias.length)
-  )
+  const pass = (esEvaluador && retroalimentacion) && ((competencias.length >= 1 && accionesMejoramiento.length >= 1))
   // Manejo de envío de datos
   const submitComentarios = async () => {
     const puedeEnviar = comentariosGenerales.length > 0 && (!esEvaluador || pass);

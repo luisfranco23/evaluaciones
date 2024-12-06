@@ -24,15 +24,15 @@ const columnHelper = createMRTColumnHelper();
 
 // Definición de columnas con `createMRTColumnHelper`
 const columns = [
-    columnHelper.accessor('evaluadoresId', {
+    columnHelper.accessor('documento', {
         header: '# Documento',
         size: 150,
     }),
-    columnHelper.accessor('evaluadoresNombre', {
+    columnHelper.accessor('nombreEvaluador', {
         header: 'Evaluador',
         size: 150,
     }),
-    columnHelper.accessor('empresasNombre', {
+    columnHelper.accessor('nombreEmpresa', {
         header: 'Empresa',
         size: 200,
     }),
@@ -116,14 +116,14 @@ export default function TablaAvancesUI() {
             setSelectedSede(value); // Actualiza la sede seleccionada
             setSelectedEmpresa(null);
             const res = await axios.get(`${URLBASE}/informes`, { params: { idSede: value } });
-            const normalizedData = res?.data?.resp?.map((item) => ({
-                Usuarios: item.Usuarios,
-                Respuestas: item.Respuestas,
-                evaluadoresNombre: item['evaluadores.nombre'] == null ? "No Asignado" : item['evaluadores.nombre'],
-                empresasNombre: item['Empresas.nombre'],
-                evaluadoresId: item['evaluadores.idUsuario'] == null ? "No Asignado" : item['evaluadores.idUsuario'],
-                sedesNombre: item['Sedes.nombre'] == null ? "No Asignado" : item['Sedes.nombre'],
-                avance: `${(item.Respuestas * 100) / item.Usuarios}%`
+            const normalizedData = res?.data?.informe?.map((item) => ({
+                documento: item.documento,
+                nombreEvaluador: item.nombre,
+                nombreEmpresa: item.empresa,
+                sedesNombre: item.sede == null ? "No Asignado" : item.sede,
+                Usuarios: item.colaboradores,
+                Respuestas: item.respuestas,
+                avance: `${(item.respuestas * 100) / item.colaboradores}%`
             }));
             setInformes(normalizedData);
         } catch (error) {
@@ -135,14 +135,14 @@ export default function TablaAvancesUI() {
             setSelectedEmpresa(value); // Actualiza la empresa seleccionada
             setSelectedSede(null);
             const res = await axios.get(`${URLBASE}/informes`, { params: { idEmpresa: value } });
-            const normalizedData = res?.data?.resp?.map((item) => ({
-                Usuarios: item.Usuarios,
-                Respuestas: item.Respuestas,
-                evaluadoresNombre: item['evaluadores.nombre'] == null ? "No Asignado" : item['evaluadores.nombre'],
-                empresasNombre: item['Empresas.nombre'],
-                evaluadoresId: item['evaluadores.idUsuario'] == null ? "No Asignado" : item['evaluadores.idUsuario'],
-                sedesNombre: item['Sedes.nombre'] == null ? "No Asignado" : item['Sedes.nombre'],
-                avance: `${(item.Respuestas * 100) / item.Usuarios}%`
+            const normalizedData = res?.data?.informe?.map((item) => ({
+                documento: item.documento,
+                nombreEvaluador: item.nombre,
+                nombreEmpresa: item.empresa,
+                sedesNombre: item.sede == null ? "No Asignado" : item.sede,
+                Usuarios: item.colaboradores,
+                Respuestas: item.respuestas,
+                avance: `${(item.respuestas * 100) / item.colaboradores}%`
             }));
             setInformes(normalizedData);
         } catch (error) {
