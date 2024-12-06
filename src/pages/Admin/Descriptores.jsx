@@ -130,7 +130,7 @@ const Descriptores = () => {
                 fullWidth
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="mb-4"
+                margin="normal"
             />
             <Card>
                 <TableContainer>
