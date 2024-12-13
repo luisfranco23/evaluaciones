@@ -118,11 +118,11 @@ const Evaluar = () => {
             onChange={(e) => setFilters({ ...filters, empresa: e.target.value })}
             className="border rounded px-2 py-1"
           >
-            {empresasDisponibles.map((empresa) => (
+            {/* {empresasDisponibles.map((empresa) => (
               <option key={empresa} value={empresa}>
                 {empresa}
               </option>
-            ))}
+            ))} */}
           </select>
         </div>
 
@@ -146,7 +146,7 @@ const Evaluar = () => {
               <div className="md:grid md:grid-cols-4 w-3/4 capitalize md:w-full flex flex-col justify-items-center lg:justify-items-start">
                 <h2 className="text-lg font-semibold text-gray-700">{colaborador.nombre.toLowerCase()}</h2>
                 <p className="text-gray-500 capitalize pr-6">{colaborador.cargo.toLowerCase()}</p>
-                <p className="text-gray-500">
+                {/* <p className="text-gray-500">
                   {colaborador.Empresas.length > 0
                     ? colaborador.Empresas.map((empresa) => (
                         <span key={empresa.idEmpresa} className="text-gray-500">
@@ -154,7 +154,7 @@ const Evaluar = () => {
                         </span>
                       ))
                     : '❌ No asignado'}
-                </p>
+                </p> */}
                 {colaborador.usuariosEvaluadores.estado ? (
                   <FaCheckCircle color="#07bc0c" size={25} />
                 ) : (
