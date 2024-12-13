@@ -16,8 +16,10 @@ import AdmEvaluacion from './pages/Admin/AdmEvaluacion';
 import TablaAvancesUI from './pages/TablaAvancesUI';
 import Descriptores from './pages/Admin/Descriptores';
 import DashboardUI from './pages/Dashboard';
-import InformeResultados from './pages/InformeResultados';
 import InformeAccionesMejora from './pages/InformeAccionesMejora';
+import { InformesExcel } from './pages/InformesExcel';
+import InformeDetalleGrupo from './pages/InformeDetalleGrupo';
+import DashboardUser from './pages/DashboardUser';
 
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
           <Route path="/evaluacion/:idUsuario" element={<Evaluacion />} />
           <Route path="/resultados/:idUsuario" element={<Resultados />} />
           <Route path="/seguimiento/:idUsuario" element={<Seguimiento />} />
+          <Route path="/informes/resultado/usuario" element={<InformeDetalleGrupo />} />
+          <Route path="/DashboardUser" element={<DashboardUser />} />
         </Route>
 
         {/* Solo para evaluadores y administradores */}
@@ -43,7 +47,7 @@ function App() {
           <Route path="/informes/graficas" element={<InformesGraficas />} />
           <Route path="/informes/evaluadores" element={<TablaAvancesUI />} />
           <Route path="/informes/dashboard" element={<DashboardUI />} />
-          <Route path="/informes/resultados" element={<InformeResultados />} />
+          <Route path="/informes/resultados" element={<InformesExcel />} />
           <Route path="/informes/acciones" element={<InformeAccionesMejora />} />
         </Route>
         <Route element={<ProtectedLayout allowedProfiles={[3]} />}>
@@ -53,7 +57,7 @@ function App() {
             <Route path="usuarios" element={<Usuarios />} /> Subruta relativa
             <Route path="descriptores" element={<Descriptores />} />
             <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
-            <Route path="seguimiento" element={<ComentariosAcciones />} />
+            {/* <Route path="seguimiento" element={<ComentariosAcciones />} /> */}
           </Route>
         </Route>
         <Route path='/*' element={<NotFound />} />

@@ -56,8 +56,10 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   const competencias = competenciasFiltradas?.filter(competencia => competencia.promedio < 3.4)
 
-  const pass = (esEvaluador && retroalimentacion) && ((competencias.length >= 1 && accionesMejoramiento.length >= 1))
+  const pass = esEvaluador && retroalimentacion && competencias.length === 0 || accionesMejoramiento.length >= 1;
   // Manejo de envío de datos
+
+  console.log(pass)
   const submitComentarios = async () => {
     const puedeEnviar = comentariosGenerales.length > 0 && (!esEvaluador || pass);
     if (puedeEnviar) {
@@ -111,7 +113,7 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
         toast.error("Ocurrió un error en la comunicación con el servidor.");
       }
     } else {
-      toast.error("Debes llenar los comentarios", {position: 'top-center',toastId: 'err-id-mejoramiento'})
+      toast.error("Debes llenar todos los campos", {position: 'top-center',toastId: 'err-id-mejoramiento'})
     }
   };
 

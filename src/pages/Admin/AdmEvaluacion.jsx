@@ -1,6 +1,8 @@
 const AdmEvaluacion = () => {
   return (
-    <div>AdmEvaluacion</div>
+    <div className="flex justify-center items-center h-screen">
+      <p className="text-lg font-semibold text-zvioleta">Próximamente...</p>
+    </div>
   )
 }
 

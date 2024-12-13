@@ -42,7 +42,7 @@ const Home = () => {
                     if (respuesta.data.porcentageEvaluados < 99) {
                         toast.info(`Llevas el ${respuesta.data.porcentageEvaluados.toFixed()}% de evaluaciones completadas.`, { position: "top-right", toastId: "percentage-id", autoClose: 10000 })
                     } else {
-                        toast.info(`Evaluaciones completadas al ${respuesta.data.porcentageEvaluados.toFixed()}%`)
+                        toast.success(`Evaluaciones completadas al ${respuesta.data.porcentageEvaluados.toFixed()}%`)
                     }
                 } else {
                     toast.error("Error al obtener la disponibilidad.");

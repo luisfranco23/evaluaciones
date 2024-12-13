@@ -8,6 +8,7 @@ import { URLBASE } from '../lib/actions';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
 import { Button, Box } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import Loading from './Loading';
 
 const InformeResultados = () => {
   const [datos, setDatos] = useState([]);
@@ -19,7 +20,7 @@ const InformeResultados = () => {
         const response = await axios.get(`${URLBASE}/informes/detalle`, {
           params: {},
         });
-        setDatos(response.data?.response);
+        setDatos(response.data?.informe);
       } catch (error) {
         console.error('Error fetching data:', error.message);
       } finally {
@@ -34,117 +35,81 @@ const InformeResultados = () => {
 
   const columns = [
     // Configuración de columnas (igual a la anterior)
-    columnHelper.group({
-      header: 'Evaluador',
-      columns: [
-        columnHelper.accessor('evaluador.idUsuario', {
-          header: '# Documento',
-          size: 150,
-        }),
-        columnHelper.accessor('evaluador.nombre', {
-          header: 'Nombre',
-          size: 200,
-        }),
-        columnHelper.accessor('evaluador.cargo', {
-          header: 'Cargo',
-          size: 150,
-        }),
-        columnHelper.accessor('evaluador.fechaIngreso', {
-          header: 'Fecha Ingreso',
-          size: 150,
-        }),
-        columnHelper.accessor('evaluador.area', {
-          header: 'Área',
-          size: 150,
-        }),
-        columnHelper.accessor('evaluador.empresas', {
-          header: 'Empresas',
-          size: 250,
-          Cell: ({ row }) =>
-            row.original.evaluador.empresas
-              .map((empresa) => empresa.nombre)
-              .join(', '),
-        }),
-        columnHelper.accessor('evaluador.sedes', {
-          header: 'Sedes',
-          size: 250,
-          Cell: ({ row }) =>
-            row.original.evaluador.sedes
-              .map((sede) => sede.nombre)
-              .join(', '),
-        }),
-        columnHelper.accessor('evaluador.evaluaciones', {
-          header: 'Resultados autoevaluación',
-          size: 300,
-          Cell: ({ row }) =>
-            row.original.evaluador.evaluaciones
-              .map(
-                (dato) =>
-                  `${dato.TipoEvaluacione?.nombre}, Nota: ${dato.promedio}, comentario: ${dato.comentario}`
-              )
-              .join(' | '),
-        }),
-        columnHelper.accessor('evaluador.nivelCargo', {
-          header: 'Nivel de Cargo',
-          size: 150,
-        }),
-      ],
+    columnHelper.accessor('idEvaluador', {
+      header: '# Documento',
+      size: 200,
     }),
-    columnHelper.group({
-      header: 'Colaborador',
-      columns: [
-        columnHelper.accessor('colaborador.idUsuario', {
-          header: '# Documento',
-          size: 150,
-        }),
-        columnHelper.accessor('colaborador.nombre', {
-          header: 'Nombre',
-          size: 200,
-        }),
-        columnHelper.accessor('colaborador.cargo', {
-          header: 'Cargo',
-          size: 150,
-        }),
-        columnHelper.accessor('colaborador.fechaIngreso', {
-          header: 'Fecha Ingreso',
-          size: 150,
-        }),
-        columnHelper.accessor('colaborador.area', {
-          header: 'Área',
-          size: 150,
-        }),
-        columnHelper.accessor('colaborador.empresas', {
-          header: 'Empresas',
-          size: 250,
-          Cell: ({ row }) =>
-            row.original.colaborador.empresas
-              .map((empresa) => empresa.nombre)
-              .join(', '),
-        }),
-        columnHelper.accessor('colaborador.sedes', {
-          header: 'Sedes',
-          size: 250,
-          Cell: ({ row }) =>
-            row.original.colaborador.sedes
-              .map((sede) => sede.nombre)
-              .join(', '),
-        }),
-        columnHelper.accessor('colaborador.nivelCargo', {
-          header: 'Nivel de Cargo',
-          size: 150,
-        }),
-        columnHelper.accessor('colaborador.evaluaciones', {
-          header: 'Resultados Evaluación',
-          size: 300,
-          Cell: ({ row }) =>
-            row.original.colaborador.evaluaciones
-              .map(
-                (dato) =>
-                  `${dato.TipoEvaluacione?.nombre}, Nota: ${dato.promedio}, comentario: ${dato.comentario}`
-              )
-              .join(' | '),
-        }),
-      ],
+    columnHelper.accessor('nombreEvaluador', {
+      header: 'Nombre Evaluador',
+      size: 200,
+    }),
+    columnHelper.accessor('cargoEval', {
+      header: 'Cargo Evaluador',
+      size: 200,
+    }),
+    columnHelper.accessor('areaEval', {
+      header: 'Área Evaluador',
+      size: 200,
+    }),
+    columnHelper.accessor('nivelCargoEval', {
+      header: 'Nivel Cargo Evaluador',
+      size: 200,
+    }),
+    columnHelper.accessor('empresaEval', {
+      header: 'Empresa',
+      size: 200,
+    }),
+    columnHelper.accessor('sedeEval', {
+      header: 'Sede',
+      size: 200,
+    }),
+    columnHelper.accessor('tipoEval', {
+      header: 'Tipo Evaluación',
+      size: 200,
+    }),
+    columnHelper.accessor('promedioEval', {
+      header: 'Promedio',
+      size: 200,
+    }),
+    columnHelper.accessor('idUsuario', {
+      header: '# Documento',
+      size: 200,
+    }),
+    columnHelper.accessor('nombre', {
+      header: 'Nombre Colaborador',
+      size: 200,
+    }),
+    columnHelper.accessor('cargo', {
+      header: 'Cargo Colaborador',
+      size: 200,
+    }),
+    columnHelper.accessor('area', {
+      header: 'Área Colaborador',
+      size: 200,
+    }),
+    columnHelper.accessor('nivelCargo', {
+      header: 'Nivel Cargo Colaborador',
+      size: 200,
+    }),
+    columnHelper.accessor('fechaIngreso', {
+      header: 'Fecha Ingreso Colaborador',
+      size: 200,
+    }),
+    columnHelper.accessor('empresa', {
+      header: 'Empresa Colaborador',
+      size: 200,
+    }),
+    columnHelper.accessor('sede', {
+      header: 'Sede Colaborador',
+      size: 200,
+    }),
+    columnHelper.accessor('tipo', {
+      header: 'Tipo Evaluación',
+      size: 200,
+    }),
+    columnHelper.accessor('promedio', {
+      header: 'Promedio Colaborador',
+      size: 200,
     }),
   ];
 
@@ -152,49 +117,49 @@ const InformeResultados = () => {
     fieldSeparator: ',',
     decimalSeparator: '.',
     useKeysAsHeaders: true,
-});
+  });
 
-const handleExportData = (data) => {
+  const handleExportData = (data) => {
     const csv = generateCsv(csvConfig)(data);
     download(csvConfig)(csv);
-};
+  };
+
+  if (isLoading) {
+    return (
+      <Loading />
+    );
+  }
 
   return (
-    <div className="my-10 mx-24">
-      <h1 className="text-xl font-bold text-start mb-5">
+    <div>
+      <h1 className="text-xl font-bold text-start my-5">
         Informe de Evaluadores y Colaboradores
       </h1>
-
-      {isLoading ? (
-        <p className="text-center">Cargando datos...</p>
-      ) : (
-        <MaterialReactTable
-          columns={columns}
-          data={datos}
-          enableColumnResizing
-          enableSorting
-          enablePagination
-          enableRowSelection
-          renderTopToolbarCustomActions={() => (
-            <Box
-              sx={{
-                display: 'flex',
-                gap: '16px',
-                padding: '8px',
-                flexWrap: 'wrap',
-              }}
+      <MaterialReactTable
+        columns={columns}
+        data={datos}
+        enableColumnResizing
+        enableSorting
+        enablePagination
+        renderTopToolbarCustomActions={() => (
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '16px',
+              padding: '8px',
+              flexWrap: 'wrap',
+            }}
+          >
+            <Button
+              onClick={() => handleExportData(datos)}
+              startIcon={<FileDownloadIcon />}
+              color="success"
             >
-              <Button
-                onClick={() => handleExportData(datos)}
-                startIcon={<FileDownloadIcon />}
-                color="success"
-              >
-                Exportar todo
-              </Button>
-            </Box>
-          )}
-        />
-      )}
+              Exportar todo
+            </Button>
+          </Box>
+        )}
+      />
     </div>
   );
 };

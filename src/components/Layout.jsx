@@ -8,7 +8,7 @@ import {
 import { useUser } from '../context/UserContext';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
-import { FaChartPie } from 'react-icons/fa6';
+import { FaChartPie, FaTableCells } from 'react-icons/fa6';
 import { RiDashboard3Fill, RiFileChartFill } from '@remixicon/react';
 import { HiMiniClipboardDocumentCheck } from 'react-icons/hi2';
 import style from './layout.module.css';
@@ -70,12 +70,26 @@ const Layout = ({ children }) => {
             </Link>
           </li>
           {(idPerfil === 2 || idPerfil === 3) && (
-            <li>
-              <Link to="/evaluar" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
-                <FaCheckCircle size={20} />
-                <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluar</span>
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/evaluar" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                  <FaCheckCircle size={20} />
+                  <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluar</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/informes/resultado/usuario" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                  <FaTableCells size={20} />
+                  <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Informe</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/DashboardUser" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                  <FaChartPie size={20} />
+                  <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Dashboard</span>
+                </Link>
+              </li>
+            </>
           )}
 
           {idPerfil === 3 && (

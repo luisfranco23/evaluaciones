@@ -71,6 +71,14 @@ const InformesGraficas = () => {
     { ...item }
   ])
 
+  const sharedProps = {
+    mode: 'multiple',
+    style: {
+        width: '50%',
+    },
+    options: optionSedes,
+    placeholder: 'Seleccione una empresa...',
+};
 
   return (
     <div className="p-4 mx-24 mt-5">
@@ -78,14 +86,14 @@ const InformesGraficas = () => {
       <div className="flex flex-col md:flex-row md:gap-4">
         <Select
           showSearch
-          className="w-64 h-10 outline-none"
+          className="mb-5"
           placeholder="Selecciona una sede"
           filterOption={(input, option) =>
             (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
           }
-          options={optionSedes}
           onChange={handleChangeSede}
           value={selectedSede}
+          {...sharedProps}
         />
       </div>
       <div className="grid md:grid-cols-2 grid-cols-1">

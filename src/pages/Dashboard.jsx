@@ -76,6 +76,7 @@ const DashboardUI = () => {
     try {
       setSelectedSede(value); // Actualiza la sede seleccionada
       setSelectedEmpresa(null);
+      setIsLoading(true)
       const [competenciasRes, cubrimientoRes] = await Promise.all([
         axios.get(`${URLBASE}/informes/resultados`, {
           params: { idSede: value },
@@ -86,12 +87,15 @@ const DashboardUI = () => {
       setCompetencias(competenciasRes.data?.data || []);
     } catch (error) {
       console.error("Error al cargar las competencias:", error);
+    } finally {
+      setIsLoading(false)
     }
   }
   const handleChangeEmpresa = async (value) => {
     try {
       setSelectedEmpresa(value); // Actualiza la empresa seleccionada
-      setSelectedSede(null); 
+      setSelectedSede(null);
+      setIsLoading(true)
       const [competenciasRes, cubrimientoRes] = await Promise.all([
         axios.get(`${URLBASE}/informes/resultados`, {
           params: { idEmpresa: value },
@@ -102,6 +106,8 @@ const DashboardUI = () => {
       setCompetencias(competenciasRes.data?.data || []);
     } catch (error) {
       console.error("Error al cargar las competencias:", error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
