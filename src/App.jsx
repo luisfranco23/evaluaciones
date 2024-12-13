@@ -6,7 +6,6 @@ import ProtectedLayout from './components/ProtectedLayout';
 import Resultados from './pages/Resultados';
 import Home from './pages/Home';
 import InformesGraficas from './pages/InformesGraficas';
-import ComentariosAcciones from './components/ComentariosAcciones';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Usuarios from './pages/Admin/Usuarios';

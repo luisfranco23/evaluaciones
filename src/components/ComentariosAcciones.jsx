@@ -58,8 +58,6 @@ const ComentariosAcciones = ({ idEvaluacion, idEvaluador, idColaborador, esEvalu
 
   const pass = esEvaluador && retroalimentacion && competencias.length === 0 || accionesMejoramiento.length >= 1;
   // Manejo de envío de datos
-
-  console.log(pass)
   const submitComentarios = async () => {
     const puedeEnviar = comentariosGenerales.length > 0 && (!esEvaluador || pass);
     if (puedeEnviar) {
