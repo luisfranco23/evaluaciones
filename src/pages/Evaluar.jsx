@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
@@ -60,11 +60,11 @@ const Evaluar = () => {
   }, [filters, user?.colaboradores?.colaboradores]);
 
   // Obtener lista única de empresas para el filtro
-  const empresasDisponibles = useMemo(() => {
-    const empresas = user?.colaboradores?.colaboradores?.flatMap(colaborador => colaborador.Empresas) || [];
-    const nombresEmpresas = [...new Set(empresas.map(empresa => empresa.nombre))];
-    return ['Todas', ...nombresEmpresas];
-  }, [user?.colaboradores?.colaboradores]);
+  // const empresasDisponibles = useMemo(() => {
+  //   const empresas = user?.colaboradores?.colaboradores?.flatMap(colaborador => colaborador.Empresas) || [];
+  //   const nombresEmpresas = [...new Set(empresas.map(empresa => empresa.nombre))];
+  //   return ['Todas', ...nombresEmpresas];
+  // }, [user?.colaboradores?.colaboradores]);
 
   // Determinar el rango de colaboradores a mostrar en la página actual
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -111,20 +111,20 @@ const Evaluar = () => {
           </select>
         </div>
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="mr-2 font-semibold">Empresa:</label>
           <select
             value={filters.empresa}
             onChange={(e) => setFilters({ ...filters, empresa: e.target.value })}
             className="border rounded px-2 py-1"
           >
-            {/* {empresasDisponibles.map((empresa) => (
+            {empresasDisponibles.map((empresa) => (
               <option key={empresa} value={empresa}>
                 {empresa}
               </option>
-            ))} */}
+            ))}
           </select>
-        </div>
+        </div> */}
 
         <div className="mb-4">
           <label className="mr-2 font-semibold">Nombre:</label>

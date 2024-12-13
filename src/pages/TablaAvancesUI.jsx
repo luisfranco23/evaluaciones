@@ -115,6 +115,7 @@ export default function TablaAvancesUI() {
         try {
             setSelectedSede(value); // Actualiza la sede seleccionada
             setSelectedEmpresa(null);
+            setIsLoading(true)
             const res = await axios.get(`${URLBASE}/informes`, { params: { idSede: value } });
             const normalizedData = res?.data?.informe?.map((item) => ({
                 documento: item.documento,
@@ -123,17 +124,20 @@ export default function TablaAvancesUI() {
                 sedesNombre: item.sede == null ? "No Asignado" : item.sede,
                 Usuarios: item.colaboradores,
                 Respuestas: item.respuestas,
-                avance: `${(item.respuestas * 100) / item.colaboradores}%`
+                avance: `${((item.respuestas * 100) / item.colaboradores).toFixed()}%`
             }));
             setInformes(normalizedData);
         } catch (error) {
             console.error("Error al cargar las competencias:", error);
+        } finally {
+            setIsLoading(false)
         }
     }
     const handleChangeEmpresa = async (value) => {
         try {
             setSelectedEmpresa(value); // Actualiza la empresa seleccionada
             setSelectedSede(null);
+            setIsLoading(true)
             const res = await axios.get(`${URLBASE}/informes`, { params: { idEmpresa: value } });
             const normalizedData = res?.data?.informe?.map((item) => ({
                 documento: item.documento,
@@ -142,11 +146,13 @@ export default function TablaAvancesUI() {
                 sedesNombre: item.sede == null ? "No Asignado" : item.sede,
                 Usuarios: item.colaboradores,
                 Respuestas: item.respuestas,
-                avance: `${(item.respuestas * 100) / item.colaboradores}%`
+                avance: `${((item.respuestas * 100) / item.colaboradores).toFixed()}%`
             }));
             setInformes(normalizedData);
         } catch (error) {
             console.error("Error al cargar las competencias:", error);
+        } finally {
+            setIsLoading(false)
         }
     };
 
