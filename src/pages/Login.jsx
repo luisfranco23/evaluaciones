@@ -21,6 +21,7 @@ const Login = () => {
       const result = await axios.post(`${URLBASE}/usuarios/login`, { documento: documento, contrasena: password }, { withCredentials: true })
       if (result.data?.data) {
         user?.setUser(result.data?.data)
+        toast.success("Credenciales correctas!")
 
         if (result.data?.data.Empresas.length < 1) {
           toast.warning("No cuenta con empresa asignada, por favor contacta con el Administrador")
@@ -30,12 +31,9 @@ const Login = () => {
         // Redirigir al Home después de iniciar sesión
         navigate('/home');
 
-      } else {
-        // Mostrar error si las credenciales son incorrectas
-        toast.error("Credenciales Invalidas.")
       }
-    } catch {
-      toast.error('Ocurrió un error. Inténtalo de nuevo.')
+    } catch (error) {
+      toast.error(`Ups!. ${error?.response?.data.message}`)
     }
   };
 
