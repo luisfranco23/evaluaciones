@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { URLBASE } from '../../lib/actions';
 import Modal from '../../components/Modal';
 import EvaluacionesModal from '../../components/EvaluacionesModal';
+// import TableComponent from '../../components/TableComponent';
 
 const Usuarios = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
@@ -57,6 +58,7 @@ const Usuarios = () => {
         const [empresasRes, sedesRes, colaboradoresRes] = await Promise.all([
           axios.get(`${URLBASE}/empresas`),
           axios.get(`${URLBASE}/empresas/sedes`),
+          axios.get(`${URLBASE}/usuarios/colaboradores`),
           axios.get(`${URLBASE}/usuarios/colaboradores`)
         ]);
         setEmpresas(empresasRes.data?.data);
@@ -183,6 +185,7 @@ const Usuarios = () => {
               </div>
             </div>
           </div>
+            {/* <TableComponent usuario={usuario} empresas={empresas}/> */}
 
           <div className="flex gap-4 mt-6">
             {/* <button
@@ -221,7 +224,6 @@ const Usuarios = () => {
               }
             }}
           />
-
           <div className="flex gap-4 mt-8">
             <button type="submit" className="bg-zverde text-white px-6 py-3 rounded-lg">Actualizar</button>
             <button type="button" onClick={cancelarBusqueda} className="bg-znaranja text-white px-6 py-3 rounded-lg">
