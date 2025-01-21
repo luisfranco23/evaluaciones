@@ -78,14 +78,15 @@ const Modal = ({ showModal, type, onClose, data, idUsuario }) => {
             nombre: item.nombre
         }));
 
-
-        
-    const usuariosAsignados = colaboradoresAsignados.map(asignados => {
-        return {
-          idEvaluador: idUsuario,
-          idUsuario: asignados.id
-        }
-      })
+        const usuariosAsignados = (colaboradoresAsignados?.length > 0 ? 
+            colaboradoresAsignados.map(asignados => ({
+              idEvaluador: idUsuario,
+              idUsuario: asignados.id
+            })) : [{
+              idEvaluador: idUsuario,
+              idUsuario: null
+            }]
+          );
 
       axios.post(`${URLBASE}/usuarios/colaboradores`, {usuarios: usuariosAsignados})
         .then(res => toast.success(res.data.message, {toastId: "toast-id-ok"}))
