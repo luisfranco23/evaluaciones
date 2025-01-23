@@ -49,6 +49,10 @@ const Resultados = () => {
     return <p className='text-center pt-10'>Aún no hay registros</p>
   }
 
+
+  const dateRegister = respuestas?.compromisos?.filter(({ TipoEvaluacione }) => TipoEvaluacione.nombre === "EVALUACIÓN")
+  .map(({ createdAt }) => createdAt).join('');
+
   const calcularPromedio = (competencias) => {
     if (competencias?.length === 0) return 0
     const sumaPromedio = competencias?.reduce((acc, curr) => acc + curr.promedio, 0)
@@ -131,11 +135,11 @@ const Resultados = () => {
           })}
           <tr className='grid  grid-cols-4 border my-1'>
             <th className='col-span-3'>PROMEDIO EVALUACIÓN</th>
-            <th className='col-span-1 text-center'>{respuestas?.evaluacion ? calcularPromedio(respuestas?.evaluacion) : 'En espera de resultados'}</th>
+            <th className='col-span-1 text-center'>{respuestas?.evaluacion.length > 0 ? calcularPromedio(respuestas?.evaluacion) : 'En espera de resultados'}</th>
           </tr>
           <tr className='grid  grid-cols-4 border my-1'>
             <th className='col-span-3'>PROMEDIO AUTOEVALUACIÓN</th>
-            <th className='col-span-1 text-center'>{respuestas?.evaluacion ? calcularPromedio(respuestas?.autoevaluacion) : 'En espera de resultados'}</th>
+            <th className='col-span-1 text-center'>{respuestas?.evaluacion.length > 0 ? calcularPromedio(respuestas?.autoevaluacion) : 'En espera de resultados'}</th>
           </tr>
           <tr className='grid grid-cols-1 border'>
             <th className='text-start'>Comentarios</th>
@@ -153,7 +157,7 @@ const Resultados = () => {
         <tfoot className='border grid grid-cols-2 my-4'>
           <tr className='flex justify-center'>
             <th>Fecha registro</th>
-            <th className='font-normal ml-3'>{formatearFecha(respuestas?.compromisos[0]?.createdAt)}</th>
+            <th className='font-normal ml-3'>{formatearFecha(dateRegister)}</th>
           </tr>
           <tr className='flex justify-center'>
             <th>Fecha impresión</th>

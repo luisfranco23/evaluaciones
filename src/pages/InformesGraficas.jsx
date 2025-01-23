@@ -65,11 +65,27 @@ const InformesGraficas = () => {
     return { value: sede.idSede, label: sede.nombre }
   })
 
-  const dataPie = cubrimiento?.avanceGlobal?.flatMap(item => [
-    { value: item.Respuestas, name: "Respuestas" },
-    { value: item.Usuarios, name: "Usuarios" },
-    { ...item }
-  ])
+  const dataPieEvaluacion = cubrimiento?.avanceGlobal?.flatMap(item => {
+    const rename = {
+      ...item,
+      Respuestas: item.Evaluacion,
+    }
+    return [
+      { value: rename.Respuestas, name: "Respuestas" },
+      { value: rename.Usuarios, name: "Usuarios" },
+      { ...rename }
+    ]
+  })
+  const dataPieAutoevaluacion = cubrimiento?.avanceGlobal?.flatMap(item => {
+    const rename = {
+      ...item,
+      Respuestas: item.Autoevaluacion,
+    }
+     return [
+    { value: rename.Respuestas, name: "Respuestas" },
+    { value: rename.Usuarios, name: "Usuarios" },
+    { ...rename }
+  ]})
 
   const sharedProps = {
     mode: 'multiple',
@@ -97,7 +113,8 @@ const InformesGraficas = () => {
         />
       </div>
       <div className="grid md:grid-cols-2 grid-cols-1">
-        <PieChartCumplimiento data={dataPie} nombre='Avance Zentria' />
+        <PieChartCumplimiento data={dataPieEvaluacion} nombre='Avance Zentria Evaluación' />
+        <PieChartCumplimiento data={dataPieAutoevaluacion} nombre='Avance Zentria Autoevaluación' />
         <BarChartAdvance data={selectedSede ? cubrimiento?.totalUsuariosSede : []} nombre={'Sedes'} />
         <BarChartAdvance data={cubrimiento?.totalUsuariosEmpresa} nombre={'Empresas'} />
       </div>
