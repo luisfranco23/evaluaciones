@@ -11,13 +11,14 @@ export const BarChartAdvance = ({ data, nombre }) => {
           <BarChart
             data={data}
             margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-            stackOffset='stacked'
+            stackOffset='sign'
           >
-            <XAxis dataKey="nombre" angle={-8} textAnchor="end" height={100} />
+            <XAxis dataKey="nombre" angle={-8} textAnchor="end" />
             <YAxis />
             <Tooltip />
             <Bar dataKey="Usuarios" fill="#A65C99" stackId="a" />
-            <Bar dataKey="Respuestas" fill="#FFB5A6" stackId="a" />
+            <Bar dataKey="Evaluacion" fill="#FFB5A6" stackId="a" />
+            <Bar dataKey="Autoevaluacion" fill="#D7D7D7" stackId="a" />
           </BarChart>
         </ResponsiveContainer>
       </div>
