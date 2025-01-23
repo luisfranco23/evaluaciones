@@ -32,7 +32,9 @@ const Resultados = () => {
   }, [idUsuario, user?.user?.idUsuario]);
 
   const formatearFecha = (fecha) => {
-    if (!fecha) return 0
+    if (!fecha) return 0;
+    const date = new Date(fecha);
+    if (isNaN(date.getTime())) return 0; // Verifica si la fecha es válida
     const opciones = {
       year: 'numeric',
       month: '2-digit',
@@ -40,7 +42,7 @@ const Resultados = () => {
       hour12: false,
       timeZone: 'UTC'
     };
-    return new Intl.DateTimeFormat('es-ES', opciones).format(new Date(fecha)).replace(',', '');
+    return new Intl.DateTimeFormat('es-ES', opciones).format(date).replace(',', '');
   };
 
   const usuario = user?.colaboradores?.colaboradores.find(c => c.idUsuario == idUsuario) || user?.colaboradores || user?.user;
@@ -49,10 +51,10 @@ const Resultados = () => {
     return <p className='text-center pt-10'>Aún no hay registros</p>
   }
 
-
+  
   const dateRegister = respuestas?.compromisos?.filter(({ TipoEvaluacione }) => TipoEvaluacione.nombre === "EVALUACIÓN")
-  .map(({ createdAt }) => createdAt).join('');
-
+  .map(({ createdAt }) => createdAt)[0];
+  
   const calcularPromedio = (competencias) => {
     if (competencias?.length === 0) return 0
     const sumaPromedio = competencias?.reduce((acc, curr) => acc + curr.promedio, 0)
