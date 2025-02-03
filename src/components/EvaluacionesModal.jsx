@@ -63,7 +63,7 @@ const EvaluacionesModal = ({ evaluaciones, idColaborador, buscarUsuario }) => {
         }}
       >
         <h2 className="text-xl font-bold mb-2 text-zvioleta">Evaluaciones realizadas</h2>
-        <p className='text-sm pb-4 font-light italic'>Las evaluaciones pueden eliminarse dentro de los 3 días posteriores a su registro.</p>
+        <p className='text-sm pb-4 font-light italic'>Las evaluaciones pueden eliminarse dentro de los 6 días posteriores a su registro.</p>
         <ul className="space-y-4">
           {evaluaciones?.map((evaluacion) => (
             <li
@@ -87,7 +87,7 @@ const EvaluacionesModal = ({ evaluaciones, idColaborador, buscarUsuario }) => {
               <button
                 onClick={() => handleDelete(evaluacion.idEvaluacion, evaluacion.idEvaluador)}
                 className="bg-znaranja text-white px-3 py-1 rounded-lg hover:scale-105 hover:bg-znaranja/80 disabled:bg-znaranja/70 disabled:cursor-not-allowed"
-                disabled={isDisabledAfterDays(evaluacion.createdAt, 3)}
+                disabled={isDisabledAfterDays(evaluacion.createdAt, 6)}
               >
                 Eliminar
               </button>

@@ -35,80 +35,56 @@ const InformeResultados = () => {
 
   const columns = [
     // Configuración de columnas (igual a la anterior)
-    columnHelper.accessor('idEvaluador', {
+    columnHelper.accessor('ID_Evaluador', {
       header: '# Documento',
       size: 200,
     }),
-    columnHelper.accessor('nombreEvaluador', {
-      header: 'Nombre Evaluador',
+    columnHelper.accessor('Evaluador', {
+      header: 'Nombre evaluador',
       size: 200,
     }),
-    columnHelper.accessor('cargoEval', {
-      header: 'Cargo Evaluador',
+    columnHelper.accessor('cargo_evaluador', {
+      header: 'Cargo evaluador',
       size: 200,
     }),
-    columnHelper.accessor('areaEval', {
-      header: 'Área Evaluador',
-      size: 200,
-    }),
-    columnHelper.accessor('nivelCargoEval', {
-      header: 'Nivel Cargo Evaluador',
-      size: 200,
-    }),
-    columnHelper.accessor('empresaEval', {
+    columnHelper.accessor('empresa_evaluador', {
       header: 'Empresa',
       size: 200,
     }),
-    columnHelper.accessor('sedeEval', {
-      header: 'Sede',
-      size: 200,
-    }),
-    columnHelper.accessor('tipoEval', {
-      header: 'Tipo Evaluación',
-      size: 200,
-    }),
-    columnHelper.accessor('promedioEval', {
-      header: 'Promedio',
-      size: 200,
-    }),
-    columnHelper.accessor('idUsuario', {
+    columnHelper.accessor('ID_Colaborador', {
       header: '# Documento',
       size: 200,
     }),
-    columnHelper.accessor('nombre', {
-      header: 'Nombre Colaborador',
+    columnHelper.accessor('Colaborador', {
+      header: 'Nombre colaborador',
       size: 200,
     }),
     columnHelper.accessor('cargo', {
-      header: 'Cargo Colaborador',
+      header: 'Cargo colaborador',
       size: 200,
     }),
     columnHelper.accessor('area', {
-      header: 'Área Colaborador',
-      size: 200,
-    }),
-    columnHelper.accessor('nivelCargo', {
-      header: 'Nivel Cargo Colaborador',
+      header: 'Área colaborador',
       size: 200,
     }),
     columnHelper.accessor('fechaIngreso', {
       header: 'Fecha Ingreso Colaborador',
       size: 200,
     }),
-    columnHelper.accessor('empresa', {
+    columnHelper.accessor('Empresa', {
       header: 'Empresa Colaborador',
       size: 200,
     }),
-    columnHelper.accessor('sede', {
+    columnHelper.accessor('Sede', {
       header: 'Sede Colaborador',
       size: 200,
     }),
-    columnHelper.accessor('tipo', {
-      header: 'Tipo Evaluación',
+    columnHelper.accessor('AUTOEVALUACION', {
+      header: 'Prom. Autoevaluación',
       size: 200,
     }),
-    columnHelper.accessor('promedio', {
-      header: 'Promedio Colaborador',
+    columnHelper.accessor('EVALUACION', {
+      header: 'Evaluación',
       size: 200,
     }),
   ];

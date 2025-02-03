@@ -145,8 +145,8 @@ const Resultados = () => {
           </tr>
           <tr className='grid grid-cols-1 border'>
             <th className='text-start'>Comentarios</th>
-            {respuestas?.compromisos?.map(({ index, TipoEvaluacione, comentario }) => (
-              <td key={index} className='border'>{`${TipoEvaluacione.nombre === "EVALUACIÓN" ? comentario : '*'}`}</td>
+            {respuestas?.compromisos?.map(({ index, TipoEvaluacione }) => (
+              <td key={index} className='border'>{`${TipoEvaluacione.nombre === "EVALUACIÓN" ? '' : '*'}`}</td>
             ))}
           </tr>
           <tr className='grid grid-cols-2 border justify-items-center border-collapse gap-3'>
