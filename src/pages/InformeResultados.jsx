@@ -9,16 +9,23 @@ import { download, generateCsv, mkConfig } from 'export-to-csv';
 import { Button, Box } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Loading from './Loading';
+import PropTypes from 'prop-types';
+import { DocumentScannerRounded } from '@mui/icons-material';
+import { toast } from 'react-toastify';
+import LoadingGenerate from '../components/LoadingGenerate';
 
-const InformeResultados = () => {
+const InformeResultados = ({idEvaluacion}) => {
   const [datos, setDatos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [rowSelection, setRowSelection] = useState({});
+  const [isGenerate, setIsGenerate] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${URLBASE}/informes/detalle`, {
-          params: {},
+          params: {idEvaluacion},
         });
         setDatos(response.data?.informe);
       } catch (error) {
@@ -29,7 +36,7 @@ const InformeResultados = () => {
     };
 
     fetchData();
-  }, []);
+  }, [idEvaluacion]);
 
   const columnHelper = createMRTColumnHelper();
 
@@ -37,15 +44,15 @@ const InformeResultados = () => {
     // Configuración de columnas (igual a la anterior)
     columnHelper.accessor('ID_Evaluador', {
       header: '# Documento',
-      size: 200,
+      size: 150,
     }),
     columnHelper.accessor('Evaluador', {
       header: 'Nombre evaluador',
-      size: 200,
+      size: 250,
     }),
     columnHelper.accessor('cargo_evaluador', {
       header: 'Cargo evaluador',
-      size: 200,
+      size: 250,
     }),
     columnHelper.accessor('empresa_evaluador', {
       header: 'Empresa',
@@ -57,11 +64,11 @@ const InformeResultados = () => {
     }),
     columnHelper.accessor('Colaborador', {
       header: 'Nombre colaborador',
-      size: 200,
+      size: 250,
     }),
     columnHelper.accessor('cargo', {
       header: 'Cargo colaborador',
-      size: 200,
+      size: 250,
     }),
     columnHelper.accessor('area', {
       header: 'Área colaborador',
@@ -84,7 +91,7 @@ const InformeResultados = () => {
       size: 200,
     }),
     columnHelper.accessor('EVALUACION', {
-      header: 'Evaluación',
+      header: 'Prom. Evaluación',
       size: 200,
     }),
   ];
@@ -105,11 +112,68 @@ const InformeResultados = () => {
       <Loading />
     );
   }
+  if (isGenerate) {
+    return (
+      <LoadingGenerate />
+    );
+  }
+
+  const exportPdfs = async (dataSelected) => {
+    const idusers = dataSelected.map(item => item.ID_Colaborador);
+    setIsGenerate(true)
+  
+    try {
+      const response = await axios.post(
+        `${URLBASE}/respuestas/pdfs`, 
+        { idusers, idEvaluacion },
+        { 
+          withCredentials: true,
+          responseType: 'blob' // Recibe el archivo como un blob
+        }
+      );
+
+      if (response.data) {
+        setIsGenerate(false)
+      }
+  
+      // Obtener el nombre del archivo desde los headers
+      const contentDisposition = response.headers["content-disposition"];
+      const timestamp = new Date().toLocaleString('en-CA', { timeZone: 'America/Bogota' }).replace(',', '')
+      let filename = `documents_${timestamp}.zip`; // Nombre por defecto
+  
+      if (contentDisposition) {
+        const match = contentDisposition.match(/filename="?([^"]+)"?/);
+        if (match && match[1]) {
+          filename = match[1]; // Extrae el nombre real del archivo
+        }
+      }
+  
+      // Crear un Blob con los datos del ZIP
+      const blob = new Blob([response.data], { type: "application/zip" });
+  
+      // Generar un enlace de descarga dinámico
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename; // Usar el nombre obtenido del servidor
+      document.body.appendChild(a);
+      a.click();
+  
+      // Limpiar la URL temporal
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+    } catch (error) {
+      console.error("Error al descargar el ZIP:", error);
+      toast.error("Error al descargar el archivo");
+    }
+  };
+  
 
   return (
     <div>
       <h1 className="text-xl font-bold text-start my-5">
-        Informe de Evaluadores y Colaboradores
+        Informe de resultados
       </h1>
       <MaterialReactTable
         columns={columns}
@@ -117,6 +181,14 @@ const InformeResultados = () => {
         enableColumnResizing
         enableSorting
         enablePagination
+        enableRowSelection
+        state={{ rowSelection }}
+        onRowSelectionChange={(updater) => {
+          const newRowSelection = typeof updater === "function" ? updater(rowSelection) : updater;
+          setRowSelection(newRowSelection);
+          const selectedData = Object.keys(newRowSelection).map(index => datos[index]);
+          setSelectedRows(selectedData);
+        }}
         renderTopToolbarCustomActions={() => (
           <Box
             sx={{
@@ -133,11 +205,22 @@ const InformeResultados = () => {
             >
               Exportar todo
             </Button>
+            <Button
+              onClick={() => exportPdfs(selectedRows)}
+              startIcon={<DocumentScannerRounded />}
+              color="error"
+            >
+              Exportar PDF
+            </Button>
           </Box>
         )}
       />
     </div>
   );
+};
+
+InformeResultados.propTypes = {
+  idEvaluacion: PropTypes.number.isRequired,
 };
 
 export default InformeResultados;
