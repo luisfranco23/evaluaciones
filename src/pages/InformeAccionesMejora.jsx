@@ -2,8 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { URLBASE } from '../lib/actions';
 import { toast } from "react-toastify";
-import { Space, Table, Tag } from "antd";
+import { Button, Space, Table, Tag } from "antd";
 import { Input } from 'antd';
+import { DownloadOutlined } from "@mui/icons-material";
 const { Search } = Input;
 
 const InformeAccionesMejora = () => {
@@ -133,6 +134,18 @@ const InformeAccionesMejora = () => {
     };
 
 
+    function exportTableToExcel(tableId) {
+        const table = document.getElementById(tableId);
+        const html = table.outerHTML.replace(/<thead>/g, '<thead xmlns="http://www.w3.org/1999/xhtml">');
+        const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'InformeAccionesMejora.xls';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
     return (
         <div className="m-12">
             <Search
@@ -144,8 +157,12 @@ const InformeAccionesMejora = () => {
                     marginBottom: 8
                 }}
             />
+            <Button className="ml-2" type="default" icon={<DownloadOutlined />} size={25} onClick={() => exportTableToExcel('tableacctions')}>
+                Downdload Excel
+            </Button>
             <Space style={{ marginBottom: 16 }} />
             <Table
+                id="tableacctions"
                 columns={columns}
                 dataSource={filteredData.length > 0 ? filteredData : acciones}
                 onChange={(pagination, filters, sorter) => {
