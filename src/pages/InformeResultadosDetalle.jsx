@@ -11,8 +11,9 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Select } from 'antd';
 import { useUser } from '../context/UserContext';
 import Loading from './Loading';
+import PropTypes from 'prop-types';
 
-const InformeResultadosDetalle = () => {
+const InformeResultadosDetalle = ({idEvaluacion}) => {
     const [datos, setDatos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [empresas, setEmpresas] = useState([])
@@ -43,7 +44,7 @@ const InformeResultadosDetalle = () => {
         setIsLoading(true)
         try {
             const response = await axios.get(`${URLBASE}/informes/resultados/detalle`, {
-                params: { idEmpresa: newValue },
+                params: { idEmpresa: newValue, idEvaluacion },
             })
             setDatos(response.data.informe)
         } catch (error) {
@@ -56,55 +57,31 @@ const InformeResultadosDetalle = () => {
 
     const columns = [
         // Configuración de columnas (igual a la anterior)
-        columnHelper.accessor('idEvaluador', {
-            header: '# Documento',
+        columnHelper.accessor('tipo', {
+            header: 'Tipo',
             size: 200,
         }),
-        columnHelper.accessor('nombreEvaluador', {
-            header: 'Nombre Evaluador',
+        columnHelper.accessor('ID_Evaluador', {
+            header: '# Documento evaluador',
             size: 200,
         }),
-        columnHelper.accessor('cargoEval', {
+        columnHelper.accessor('Evaluador', {
+            header: 'Nombre evaluador',
+            size: 200,
+        }),
+        columnHelper.accessor('cargo_evaluador', {
             header: 'Cargo Evaluador',
             size: 200,
         }),
-        columnHelper.accessor('areaEval', {
-            header: 'Área Evaluador',
+        columnHelper.accessor('empresa_evaluador', {
+            header: 'Empresa evaluador',
             size: 200,
         }),
-        columnHelper.accessor('nivelCargoEval', {
-            header: 'Nivel Cargo Evaluador',
-            size: 200,
-        }),
-        columnHelper.accessor('empresaEval', {
-            header: 'Empresa',
-            size: 200,
-        }),
-        columnHelper.accessor('sedeEval', {
-            header: 'Sede',
-            size: 200,
-        }),
-        columnHelper.accessor('competenciaEval', {
-            header: 'Competencia',
-            size: 200,
-        }),
-        columnHelper.accessor('promedioCompetenciaEval', {
-            header: 'Promedio Competencia',
-            size: 200,
-        }),
-        columnHelper.accessor('tipoEval', {
-            header: 'Tipo Evaluación',
-            size: 200,
-        }),
-        columnHelper.accessor('promedioEval', {
-            header: 'Promedio Final',
-            size: 200,
-        }),
-        columnHelper.accessor('idUsuario', {
+        columnHelper.accessor('ID_Colaborador', {
             header: '# Documento',
             size: 200,
         }),
-        columnHelper.accessor('nombre', {
+        columnHelper.accessor('Colaborador', {
             header: 'Nombre Colaborador',
             size: 200,
         }),
@@ -116,38 +93,26 @@ const InformeResultadosDetalle = () => {
             header: 'Área Colaborador',
             size: 200,
         }),
-        columnHelper.accessor('nivelCargo', {
-            header: 'Nivel Cargo Colaborador',
-            size: 200,
-        }),
         columnHelper.accessor('fechaIngreso', {
             header: 'Fecha Ingreso Colaborador',
             size: 200,
         }),
-        columnHelper.accessor('empresa', {
+        columnHelper.accessor('Empresa', {
             header: 'Empresa Colaborador',
             size: 200,
         }),
-        columnHelper.accessor('sede', {
+        columnHelper.accessor('Sede', {
             header: 'Sede Colaborador',
             size: 200,
         }),
-        columnHelper.accessor('competencia', {
+        columnHelper.accessor('Competencia', {
             header: 'Competencia',
             size: 200,
         }),
-        columnHelper.accessor('promedioCompetencia', {
+        columnHelper.accessor('promedio', {
             header: 'Promedio competencia',
             size: 200,
-        }),
-        columnHelper.accessor('tipo', {
-            header: 'Tipo Evaluación',
-            size: 200,
-        }),
-        columnHelper.accessor('promedio', {
-            header: 'Promedio Final Colaborador',
-            size: 200,
-        }),
+        })
     ];
 
     const csvConfig = mkConfig({
@@ -219,6 +184,9 @@ const InformeResultadosDetalle = () => {
             />
         </div>
     );
+};
+InformeResultadosDetalle.propTypes = {
+  idEvaluacion: PropTypes.number.isRequired,
 };
 
 export default InformeResultadosDetalle;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     MaterialReactTable,
     createMRTColumnHelper,
@@ -14,25 +14,44 @@ import { toast } from 'react-toastify';
 
 const InformeDetalleGrupo = () => {
     const [datos, setDatos] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const user = useUser()
+      const [evaluaciones, setEvaluaciones] = useState([])
+      const idEvaluacion = useRef(null)
+      const [IdEvaluacion, setIdEvaluacion] = useState(null)
+
+    useEffect(() => {
+        const fetchEvaluaciones = async () => {
+            try {
+                const evaluacionesResponse = await axios.get(`${URLBASE}/evaluaciones/gestionar`);
+                setEvaluaciones(evaluacionesResponse?.data?.data || []);
+            } catch (error) {
+                console.error(error);
+                toast.error("Error al obtener las evaluaciones!");
+            }
+        };
+        fetchEvaluaciones();
+    }, []);
 
 
     useEffect(() => {
         const fetchData = async () => {
+            if (IdEvaluacion == null) return
+            setIsLoading(true);
             try {
-                const response = await axios.get(`${URLBASE}/informes/resultados/detalle`, {
-                    params: { idEvaluador: user?.user?.idUsuario, idEmpresa: user?.user?.Empresas[0].idEmpresa },
-                })
-                setDatos(response.data.informe)
-            } catch {
-                toast.error("Error al obtener los datos!")
+                const informeResponse = await axios.get(`${URLBASE}/informes/resultados/detalle`, {
+                    params: { idEvaluador: user?.user?.idUsuario, idEmpresa: user?.user?.Empresas[0].idEmpresa, idEvaluacion: IdEvaluacion},
+                });
+                setDatos(informeResponse.data.informe);
+            } catch (error) {
+                console.error(error);
+                toast.error("Error al obtener los datos!");
             } finally {
-                setIsLoading(false)
+                setIsLoading(false);
             }
         };
         fetchData();
-    }, [user?.user?.idUsuario, user?.user?.Empresas]);
+    }, [user?.user?.idUsuario, user?.user?.Empresas, IdEvaluacion]);
 
 
 
@@ -40,47 +59,31 @@ const InformeDetalleGrupo = () => {
 
     const columns = [
         // Configuración de columnas (igual a la anterior)
-        columnHelper.accessor('idEvaluador', {
-            header: '# Documento',
+        columnHelper.accessor('tipo', {
+            header: 'Tipo',
             size: 200,
         }),
-        columnHelper.accessor('nombreEvaluador', {
-            header: 'Nombre Evaluador',
+        columnHelper.accessor('ID_Evaluador', {
+            header: '# Documento evaluador',
             size: 200,
         }),
-        columnHelper.accessor('cargoEval', {
+        columnHelper.accessor('Evaluador', {
+            header: 'Nombre evaluador',
+            size: 200,
+        }),
+        columnHelper.accessor('cargo_evaluador', {
             header: 'Cargo Evaluador',
             size: 200,
         }),
-        columnHelper.accessor('areaEval', {
-            header: 'Área Evaluador',
+        columnHelper.accessor('empresa_evaluador', {
+            header: 'Empresa evaluador',
             size: 200,
         }),
-        columnHelper.accessor('nivelCargoEval', {
-            header: 'Nivel Cargo Evaluador',
-            size: 200,
-        }),
-        columnHelper.accessor('empresaEval', {
-            header: 'Empresa',
-            size: 200,
-        }),
-        columnHelper.accessor('sedeEval', {
-            header: 'Sede',
-            size: 200,
-        }),
-        columnHelper.accessor('tipoEval', {
-            header: 'Tipo Evaluación',
-            size: 200,
-        }),
-        columnHelper.accessor('promedioEval', {
-            header: 'Promedio Final',
-            size: 200,
-        }),
-        columnHelper.accessor('idUsuario', {
+        columnHelper.accessor('ID_Colaborador', {
             header: '# Documento',
             size: 200,
         }),
-        columnHelper.accessor('nombre', {
+        columnHelper.accessor('Colaborador', {
             header: 'Nombre Colaborador',
             size: 200,
         }),
@@ -92,38 +95,26 @@ const InformeDetalleGrupo = () => {
             header: 'Área Colaborador',
             size: 200,
         }),
-        columnHelper.accessor('nivelCargo', {
-            header: 'Nivel Cargo Colaborador',
-            size: 200,
-        }),
         columnHelper.accessor('fechaIngreso', {
             header: 'Fecha Ingreso Colaborador',
             size: 200,
         }),
-        columnHelper.accessor('empresa', {
+        columnHelper.accessor('Empresa', {
             header: 'Empresa Colaborador',
             size: 200,
         }),
-        columnHelper.accessor('sede', {
+        columnHelper.accessor('Sede', {
             header: 'Sede Colaborador',
             size: 200,
         }),
-        columnHelper.accessor('competencia', {
+        columnHelper.accessor('Competencia', {
             header: 'Competencia',
             size: 200,
         }),
-        columnHelper.accessor('promedioCompetencia', {
+        columnHelper.accessor('promedio', {
             header: 'Promedio competencia',
             size: 200,
-        }),
-        columnHelper.accessor('tipo', {
-            header: 'Tipo Evaluación',
-            size: 200,
-        }),
-        columnHelper.accessor('promedio', {
-            header: 'Promedio Final Colaborador',
-            size: 200,
-        }),
+        })
     ];
 
     const csvConfig = mkConfig({
@@ -143,11 +134,18 @@ const InformeDetalleGrupo = () => {
         );
     }
 
+
     return (
         <div className='ml-20'>
-            <h1 className="text-xl font-bold text-start my-5">
-                Informe de Evaluadores y Colaboradores Detalle
-            </h1>
+            <div className='flex flex-col gap-4 mb-4'>
+                <h1 className="text-xl font-bold text-start my-5">Informe de Evaluadores y Colaboradores Detalle</h1>
+                <select ref={idEvaluacion} className="w-80" name="evaluacion" id="id-evaluacion" onChange={() => setIdEvaluacion(idEvaluacion.current.value)}>
+                    <option disabled selected>Seleccione...</option>
+                    {evaluaciones?.map((evaluacion, index) => (
+                        <option key={index} value={evaluacion.idEvaluacion}>{`${evaluacion.nombre} ${evaluacion.año}`}</option>
+                    ))}
+                </select>
+            </div>
             <MaterialReactTable
                 columns={columns}
                 data={datos}
