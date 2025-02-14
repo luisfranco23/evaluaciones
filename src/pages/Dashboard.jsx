@@ -42,7 +42,7 @@ const DashboardUI = () => {
 
 
   const dataPie = cubrimiento.totalUsuariosEmpresa?.flatMap(item => [
-    { value: item.Respuestas, name: "Respuestas" },
+    { value: item.Evaluacion, name: "Respuestas" },
     { value: item.Usuarios, name: "Usuarios" },
     { ...item }
   ])
@@ -66,7 +66,7 @@ const DashboardUI = () => {
 
 
   const dataPieSede = cubrimiento.totalUsuariosSede?.flatMap(item => [
-    { value: item.Respuestas, name: "Respuestas" },
+    { value: item.Evaluacion, name: "Respuestas" },
     { value: item.Usuarios, name: "Usuarios" },
     { ...item }
 
@@ -148,7 +148,6 @@ const DashboardUI = () => {
   if (isLoading) {
     return <Loading />
   }
-
 
 
   return (
