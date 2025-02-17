@@ -19,7 +19,7 @@ const DashboardUser = () => {
       try {
         const [calificacionesRes,competenciasRes, cubrimientoRes] = await Promise.all([
             axios.get(`${URLBASE}/respuestas/calificacion`),
-            axios.get(`${URLBASE}/informes/resultados`,{params: {idEvaluador: user?.user?.idUsuario}}),
+            axios.get(`${URLBASE}/informes/resultados`,{params: {idEvaluador: user?.user?.idUsuario, idEvaluacion: 1}}),
             axios.get(`${URLBASE}/informes/resultados/${user?.user?.idUsuario}`),
         ]);
         setCalificaciones(calificacionesRes.data?.data || []);

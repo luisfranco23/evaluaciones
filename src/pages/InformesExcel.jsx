@@ -19,13 +19,13 @@ export const InformesExcel = () => {
   return (
     <div className={`mt-5 ml-20`}>
       <div className="flex gap-4">
-        <select ref={idEvaluacion} className="w-80" name="evaluacion" id="id-evaluacion" >
+        <select ref={idEvaluacion} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
           <option disabled selected>Seleccione...</option>
           {evaluaciones.map((evaluacion, index) => (
             <option key={index} value={evaluacion.idEvaluacion}>{`${evaluacion.nombre} ${evaluacion.año}`}</option>
           ))}
         </select>
-        <select className="w-80" name="tipo-evaluacion" id="id-tipo" onChange={(e) => setReport(e.target.value)} >
+        <select className="w-80 border-gray-300 rounded-md" name="tipo-evaluacion" id="id-tipo" onChange={(e) => setReport(e.target.value)} >
           <option disabled selected>Seleccione...</option>
           <option value="1">Informe resultados</option>
           <option value="2">Informe resultados detalle</option>

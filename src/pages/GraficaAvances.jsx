@@ -31,8 +31,8 @@ BarChartAdvance.propTypes = {
   nombre: PropTypes.string.isRequired,
 };
 
-export const BarChartPromedio = ({ data, nombre }) => {
-
+export const BarChartPromedio = ({ data, nombre, index }) => {
+  const colors = ["#A65C99", "#FFB5A6"];
   return (
     <div className="flex flex-col gap-16">
       <div className="flex flex-col gap-4">
@@ -48,7 +48,12 @@ export const BarChartPromedio = ({ data, nombre }) => {
             }} />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="promedio" fill="#A65C99" stackId="a" />
+              <Bar 
+                key={index} 
+                dataKey="promedio" 
+                fill={colors[index % colors.length]}
+                stackId="a" 
+              />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -59,6 +64,7 @@ export const BarChartPromedio = ({ data, nombre }) => {
 BarChartPromedio.propTypes = {
   data: PropTypes.array.isRequired,
   nombre: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 
