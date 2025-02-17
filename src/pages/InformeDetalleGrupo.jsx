@@ -139,7 +139,7 @@ const InformeDetalleGrupo = () => {
         <div className='ml-20'>
             <div className='flex flex-col gap-4 mb-4'>
                 <h1 className="text-xl font-bold text-start my-5">Informe de Evaluadores y Colaboradores Detalle</h1>
-                <select ref={idEvaluacion} className="w-80" name="evaluacion" id="id-evaluacion" onChange={() => setIdEvaluacion(idEvaluacion.current.value)}>
+                <select ref={idEvaluacion} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" onChange={() => setIdEvaluacion(idEvaluacion.current.value)}>
                     <option disabled selected>Seleccione...</option>
                     {evaluaciones?.map((evaluacion, index) => (
                         <option key={index} value={evaluacion.idEvaluacion}>{`${evaluacion.nombre} ${evaluacion.año}`}</option>
