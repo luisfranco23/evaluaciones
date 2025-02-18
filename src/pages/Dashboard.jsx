@@ -92,7 +92,7 @@ const DashboardUI = () => {
         axios.get(`${URLBASE}/informes/resultados`, {
           params: { idEmpresa: idEmpresa.current.value, idEvaluacion: idEvaluacion.current.value, idNivelCargo: idNivelCargo.current.value, area: area.current.value, idSede: idSede.current.value },
         }),
-        axios.get(`${URLBASE}/informes/grafica/all`, { params: { idEmpresa: idEmpresa.current.value, idSede: idSede.current.value, idEvaluacion: idEvaluacion.current.value } }),
+        axios.get(`${URLBASE}/informes/grafica/all`, { params: { idEmpresa: idEmpresa.current.value, idEvaluacion: idEvaluacion.current.value, idNivelCargo: idNivelCargo.current.value, area: area.current.value, idSede: idSede.current.value } }),
       ])
       setCubrimiento(cubrimientoRes.data?.data || [])
       setCompetencias(competenciasRes.data?.data || []);
@@ -161,13 +161,13 @@ const DashboardUI = () => {
           ))}
         </select>
         <select ref={area} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
-          <option disabled selected value="">Seleccione...</option>
+          <option selected value="">Seleccione...</option>
           {infoSelect?.areas?.map((area, index) => (
             <option key={index} value={area}>{area}</option>
           ))}
         </select>
         <select ref={idNivelCargo} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
-          <option disabled selected value="">Seleccione...</option>
+          <option selected value="">Seleccione...</option>
           {infoSelect?.niveles?.map((niveles) => (
             <option key={niveles.idNivelCargo} value={niveles.idNivelCargo}>{niveles.nombre}</option>
           ))}
