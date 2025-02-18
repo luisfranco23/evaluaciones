@@ -72,7 +72,7 @@ export const PieChartCumplimiento = ({ nombre, data }) => {
 
   const COLORS = ['#D7D7D7', "#A65C99",]
 
-  const Respuestas = data?.map(item => item.Evaluacion)?.filter(item => item != undefined && item != null).join(',')
+  const Respuestas = data?.map(item => item.value)[0]
   const Usuarios = data?.map(item => item.Usuarios)?.filter(item => item != undefined && item != null).join(',')
   const porcentaje = (Respuestas * 100) / Usuarios
 
