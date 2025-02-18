@@ -53,7 +53,7 @@ const DashboardUI = () => {
     { ...item }
   ])
 
-  const resultado = competencias.reduce(
+  const resultado = promediosUsuario.reduce(
     (acc, curr) => {
       if (curr.promedio > 3.5) {
         acc.totalSupera++;
@@ -134,6 +134,13 @@ const DashboardUI = () => {
 
 
 
+  const empresasOrdenadas = useMemo(() => {
+    return empresas?.Empresas?.sort((a, b) => a.nombre.localeCompare(b.nombre))
+  }, [empresas])
+
+  const sedesOrdenadas = useMemo(() => {
+    return empresas?.Sedes?.sort((a, b) => a.nombre.localeCompare(b.nombre))}, [empresas])
+
   return (
     <>
     <Loading loading={isLoading} />
@@ -150,13 +157,13 @@ const DashboardUI = () => {
         </select>
         <select ref={idEmpresa} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
           <option selected value="">Seleccione...</option>
-          {empresas?.Empresas?.map((empresa, index) => (
+          {empresasOrdenadas?.map((empresa, index) => (
             <option key={index} value={empresa.idEmpresa}>{empresa.nombre}</option>
           ))}
         </select>
         <select ref={idSede} className={`border-gray-300 rounded-md w-80`} name="evaluacion" id="id-evaluacion" >
           <option selected value="">Seleccione...</option>
-          {empresas?.Sedes?.map((sede, index) => (
+          {sedesOrdenadas.map((sede, index) => (
             <option key={index} value={sede.idSede}>{sede.nombre}</option>
           ))}
         </select>
