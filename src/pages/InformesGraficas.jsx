@@ -5,6 +5,7 @@ import { BarChartAdvance, PieChartCumplimiento } from './GraficaAvances';
 import Loading from './Loading';
 import { Select } from 'antd';
 import { useUser } from '../context/UserContext';
+import { toast } from 'react-toastify';
 
 
 const InformesGraficas = () => {
@@ -22,7 +23,7 @@ const InformesGraficas = () => {
       try {
 
         const [cubrimientoRes, empresasRes] = await Promise.all([
-          axios.get(`${URLBASE}/informes/grafica/all`),
+          axios.get(`${URLBASE}/informes/grafica/all`, {params: {idEvaluacion: 1}}),
           axios.get(`${URLBASE}/usuarios/empresassedes`, { params: { idUsuario: user?.user.idUsuario } })
         ])
         setCubrimiento(cubrimientoRes.data?.data || [])
@@ -51,11 +52,12 @@ const InformesGraficas = () => {
       setSelectedSede(value); // Actualiza la sede seleccionada
       setIsLoading(true)
       const [cubrimientoRes] = await Promise.all([
-        axios.get(`${URLBASE}/informes/grafica/all`, { params: { idSede: value } }),
+        axios.get(`${URLBASE}/informes/grafica/all`, { params: { idSede: value, idEvaluacion: 1 } }),
       ])
       setCubrimiento(cubrimientoRes.data?.data || [])
     } catch (error) {
       console.error("Error al cargar las competencias:", error);
+      toast.error(`Ups! No se pudo cargar las competencias. ${error.response?.data?.message || 'Algo salio mal'}`);
     } finally {
       setIsLoading(false)
     }
@@ -86,6 +88,8 @@ const InformesGraficas = () => {
     { value: rename.Usuarios, name: "Usuarios" },
     { ...rename }
   ]})
+
+  console.log(dataPieAutoevaluacion, dataPieEvaluacion)
 
   const sharedProps = {
     mode: 'multiple',
