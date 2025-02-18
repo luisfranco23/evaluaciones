@@ -163,7 +163,7 @@ const DashboardUI = () => {
         </select>
         <select ref={idSede} className={`border-gray-300 rounded-md w-80`} name="evaluacion" id="id-evaluacion" >
           <option selected value="">Seleccione...</option>
-          {sedesOrdenadas.map((sede, index) => (
+          {sedesOrdenadas?.map((sede, index) => (
             <option key={index} value={sede.idSede}>{sede.nombre}</option>
           ))}
         </select>
