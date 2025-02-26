@@ -6,14 +6,14 @@ export const desviacionEstandar = (data= [], calificaciones) => {
     return distribucionNormal(calificaciones, mean, desviacion);
 }
 
-export const distribucionNormal = (x, media, desviacion) => {
+export const distribucionNormal = (calificaciones, media, desviacion) => {
     const pi = Math.PI;
-    if (Array.isArray(x)) {
-        return x.flatMap((val) => {
+    if (Array.isArray(calificaciones)) {
+        return calificaciones.flatMap((val) => {
             const coeficiente = 1 / (desviacion * Math.sqrt(2 * pi));
             const exponente = Math.exp(-Math.pow(val - media, 2) / (2 * Math.pow(desviacion, 2)));
             const valor = coeficiente * exponente;
-            return { valor: val, promedio: valor };
+            return { valor: val, promedio: isNaN(valor) ? 0 : valor  };
         });
     }
 }
