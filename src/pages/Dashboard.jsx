@@ -100,7 +100,7 @@ const DashboardUI = () => {
       setInfoSelect(competenciasRes.data?.dataSelect || []);
     } catch (error) {
       console.log(error.response.data.message)
-      toast.error(`Ups! ${error.response.data.message}`, {position: "top-right", toastId: "error"});
+      toast.error(`Ups! ${error.response.data.message}`, { position: "top-right", toastId: "error" });
     } finally {
       setIsLoading(false)
     }
@@ -139,68 +139,84 @@ const DashboardUI = () => {
   }, [empresas])
 
   const sedesOrdenadas = useMemo(() => {
-    return empresas?.Sedes?.sort((a, b) => a.nombre.localeCompare(b.nombre))}, [empresas])
+    return empresas?.Sedes?.sort((a, b) => a.nombre.localeCompare(b.nombre))
+  }, [empresas])
 
   return (
     <>
-    <Loading loading={isLoading} />
-    <div className="m-10">
-      <h1 className="text-zvioleta text-3xl font-bold text-center my-5">
-        Dashboard resultados
-      </h1>
-      <div className="flex flex-col md:flex-row md:gap-4 gap-2">
-        <select ref={idEvaluacion} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
-          <option selected disabled>Seleccione...</option>
-          {evaluaciones.map((evaluacion, index) => (
-            <option key={index} value={evaluacion.idEvaluacion}>{`${evaluacion.nombre} ${evaluacion.año}`}</option>
-          ))}
-        </select>
-        <select ref={idEmpresa} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
-          <option selected value="">Seleccione...</option>
-          {empresasOrdenadas?.map((empresa, index) => (
-            <option key={index} value={empresa.idEmpresa}>{empresa.nombre}</option>
-          ))}
-        </select>
-        <select ref={idSede} className={`border-gray-300 rounded-md w-80`} name="evaluacion" id="id-evaluacion" >
-          <option selected value="">Seleccione...</option>
-          {sedesOrdenadas?.map((sede, index) => (
-            <option key={index} value={sede.idSede}>{sede.nombre}</option>
-          ))}
-        </select>
-        <select ref={area} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
-          <option selected value="">Seleccione...</option>
-          {infoSelect?.areas?.map((area, index) => (
-            <option key={index} value={area}>{area}</option>
-          ))}
-        </select>
-        <select ref={idNivelCargo} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
-          <option selected value="">Seleccione...</option>
-          {infoSelect?.niveles?.map((niveles) => (
-            <option key={niveles.idNivelCargo} value={niveles.idNivelCargo}>{niveles.nombre}</option>
-          ))}
-        </select>
-        <button className="bg-zvioleta py-2 px-10 rounded-lg text-white hover:scale-105 shadow-md" onClick={handleChangeEmpresa}>Consultar</button>
-      </div>
-      <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">
-        <PieChartCumplimiento nombre={dataPie?.length > 0 ? 'Cubrimiento' : null} data={cubrimiento?.totalUsuariosEmpresa?.length == 1 ? dataPie : dataPieSede} />
-        <LineChartPromedio data={calificacionesData} nombre={calificacionesData.length > 0 ? "Curva de Desempeño" : null} />
-        <div className="flex flex-col items-center gap-10">
-          <h2 className="text-znaranja font-bold text-xl">Índice de Desempeño:</h2>
-          <Card className="bg-zvioletaopaco text-white text-center" >
-            <p>{porcentaje.toFixed(1)}%</p>
-            <p>Evaluaciones con resultado esperado y superior</p>
-          </Card>
+      <Loading loading={isLoading} />
+      <div className="m-10">
+        <h1 className="text-zvioleta text-3xl font-bold text-center my-5">
+          Dashboard resultados
+        </h1>
+        <div className="flex flex-col md:flex-row md:gap-4 gap-2 items-end text-gray-800">
+          <div className="flex flex-col">
+            <label htmlFor="id-evaluacion">Evaluación</label>
+            <select ref={idEvaluacion} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-evaluacion" >
+              <option selected disabled>Seleccione...</option>
+              {evaluaciones.map((evaluacion, index) => (
+                <option key={index} value={evaluacion.idEvaluacion}>{`${evaluacion.nombre} ${evaluacion.año}`}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="id-empresa">Empresa</label>
+            <select ref={idEmpresa} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-empresa" >
+              <option selected value="">Seleccione...</option>
+              {empresasOrdenadas?.map((empresa, index) => (
+                <option key={index} value={empresa.idEmpresa}>{empresa.nombre}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="id-sede">Sede</label>
+            <select ref={idSede} className={`border-gray-300 rounded-md w-80`} name="evaluacion" id="id-sede" >
+              <option selected value="">Seleccione...</option>
+              {sedesOrdenadas?.map((sede, index) => (
+                <option key={index} value={sede.idSede}>{sede.nombre}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="id-area">Área</label>
+            <select ref={area} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-area" >
+              <option selected value="">Seleccione...</option>
+              {infoSelect?.areas?.map((area, index) => (
+                <option key={index} value={area}>{area}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="id-nivel">Nivel de cargo</label>
+            <select ref={idNivelCargo} className="w-80 border-gray-300 rounded-md" name="evaluacion" id="id-nivel" >
+              <option selected value="">Seleccione...</option>
+              {infoSelect?.niveles?.map((niveles) => (
+                <option key={niveles.idNivelCargo} value={niveles.idNivelCargo}>{niveles.nombre}</option>
+              ))}
+            </select>
+          </div>
+          <button className="bg-zvioleta py-2 px-10 rounded-lg text-white hover:scale-105 shadow-md" onClick={handleChangeEmpresa}>Consultar</button>
         </div>
-        {groupedData.map((competencia, index) => (
-          <BarChartPromedio
-            key={competencia.tipo}
-            nombre={competencia?.tipo}
-            data={competencia.competencias}
-            index={index}
-          />
-        ))}
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 mt-4">
+          <PieChartCumplimiento nombre={dataPie?.length > 0 ? 'Cubrimiento' : null} data={cubrimiento?.totalUsuariosEmpresa?.length == 1 ? dataPie : dataPieSede} />
+          <LineChartPromedio data={calificacionesData} nombre={calificacionesData.length > 0 ? "Curva de Desempeño" : null} />
+          <div className="flex flex-col items-center gap-10">
+            <h2 className="text-znaranja font-bold text-xl">Índice de Desempeño:</h2>
+            <Card className="bg-zvioletaopaco text-white text-center" >
+              <p>{porcentaje.toFixed(1)}%</p>
+              <p>Evaluaciones con resultado esperado y superior</p>
+            </Card>
+          </div>
+          {groupedData.map((competencia, index) => (
+            <BarChartPromedio
+              key={competencia.tipo}
+              nombre={competencia?.tipo}
+              data={competencia.competencias}
+              index={index}
+            />
+          ))}
+        </div>
       </div>
-    </div>
     </>
   );
 };

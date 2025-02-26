@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
   }, [user]);
 
   return (
-    <div className="flex z-10 min-h-screen bg-gray-50 text-gray-900 overflow-y-auto">
+    <div className="flex z-20 min-h-screen bg-gray-50 text-gray-900 overflow-y-auto">
       <nav className={`fixed h-full bg-zvioleta rounded-tr-3xl backdrop-blur-sm text-white transition-all duration-300 ease-in-out flex flex-col justify-between ${isMenuOpen ? 'w-72' : 'w-16'}`}>
         <div className="relative p-4 flex items-center justify-between">
           <div className={`transition-opacity duration-300 p-4 rounded-md ${isMenuOpen ? 'opacity-100' : 'opacity-0'}`}>
