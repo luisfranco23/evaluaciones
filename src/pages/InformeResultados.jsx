@@ -14,7 +14,7 @@ import { DocumentScannerRounded } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import LoadingGenerate from '../components/LoadingGenerate';
 
-const InformeResultados = ({idEvaluacion}) => {
+const InformeResultados = ({idEvaluacion, idEmpresa, idSede, changeSelect}) => {
   const [datos, setDatos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -24,8 +24,9 @@ const InformeResultados = ({idEvaluacion}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true)
         const response = await axios.get(`${URLBASE}/informes/detalle`, {
-          params: {idEvaluacion},
+          params: {idEvaluacion, idEmpresa, idSede},
         });
         setDatos(response.data?.informe);
       } catch (error) {
@@ -36,7 +37,7 @@ const InformeResultados = ({idEvaluacion}) => {
     };
 
     fetchData();
-  }, [idEvaluacion]);
+  }, [idEvaluacion, idEmpresa, changeSelect, idSede]);
 
   const columnHelper = createMRTColumnHelper();
 
@@ -221,6 +222,9 @@ const InformeResultados = ({idEvaluacion}) => {
 
 InformeResultados.propTypes = {
   idEvaluacion: PropTypes.number.isRequired,
+  idEmpresa: PropTypes.number.isRequired,
+  idSede: PropTypes.string.isRequired,
+  changeSelect: PropTypes.bool
 };
 
 export default InformeResultados;

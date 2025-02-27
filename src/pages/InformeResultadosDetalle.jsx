@@ -8,26 +8,25 @@ import { URLBASE } from '../lib/actions';
 import { download, generateCsv, mkConfig } from 'export-to-csv';
 import { Button, Box } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { Select } from 'antd';
 import { useUser } from '../context/UserContext';
 import Loading from './Loading';
 import PropTypes from 'prop-types';
 
-const InformeResultadosDetalle = ({idEvaluacion}) => {
+const InformeResultadosDetalle = ({idEvaluacion, idEmpresa, changeSelect}) => {
     const [datos, setDatos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [empresas, setEmpresas] = useState([])
     const user = useUser()
-    const [value, setValue] = useState([]);
 
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [empresasRes] = await Promise.all([
-                    axios.get(`${URLBASE}/usuarios/empresassedes`, { params: { idUsuario: user?.user.idUsuario } })
+                setIsLoading(true)
+                const [informeRes] = await Promise.all([
+                    axios.get(`${URLBASE}/informes/resultados/detalle`, { params: { idEmpresa, idEvaluacion },
+                    })
                 ])
-                setEmpresas(empresasRes?.data.data || [])
+                setDatos(informeRes.data.informe || [])
             } catch (error) {
                 console.error('Error fetching data:', error.message);
             } finally {
@@ -36,23 +35,23 @@ const InformeResultadosDetalle = ({idEvaluacion}) => {
         };
 
         fetchData();
-    }, [user?.user?.idUsuario]);
+    }, [user?.user?.idUsuario, idEmpresa, idEvaluacion, changeSelect]);
 
 
-    const handleChangeEmpresa = async (newValue) => {
-        setValue(newValue);
-        setIsLoading(true)
-        try {
-            const response = await axios.get(`${URLBASE}/informes/resultados/detalle`, {
-                params: { idEmpresa: newValue, idEvaluacion },
-            })
-            setDatos(response.data.informe)
-        } catch (error) {
-            console.error("Error al cargar las competencias:", error);
-        } finally {
-            setIsLoading(false)
-        }
-    };
+    // const handleChangeEmpresa = async (newValue) => {
+    //     setValue(newValue);
+    //     setIsLoading(true)
+    //     try {
+    //         const response = await axios.get(`${URLBASE}/informes/resultados/detalle`, {
+    //             params: { idEmpresa: newValue, idEvaluacion },
+    //         })
+    //         setDatos(response.data.informe)
+    //     } catch (error) {
+    //         console.error("Error al cargar las competencias:", error);
+    //     } finally {
+    //         setIsLoading(false)
+    //     }
+    // };
     const columnHelper = createMRTColumnHelper();
 
     const columns = [
@@ -126,19 +125,6 @@ const InformeResultadosDetalle = ({idEvaluacion}) => {
         download(csvConfig)(csv);
     };
 
-    const optionEmpresas = empresas?.Empresas?.map(empresa => {
-        return { value: empresa.idEmpresa, label: empresa.nombre }
-    })
-
-
-    const sharedProps = {
-        mode: 'multiple',
-        style: {
-            width: '600px',
-        },
-        options: optionEmpresas,
-        placeholder: 'Seleccione una empresa...',
-    };
 
     if (isLoading) {
         return (
@@ -151,12 +137,6 @@ const InformeResultadosDetalle = ({idEvaluacion}) => {
             <h1 className="text-xl font-bold text-start my-5">
                 Informe de Evaluadores y Colaboradores Detalle
             </h1>
-            <Select
-                value={value}
-                onChange={handleChangeEmpresa}
-                {...sharedProps}
-                className='mb-5'
-            />
             <MaterialReactTable
                 columns={columns}
                 data={datos}
@@ -187,6 +167,8 @@ const InformeResultadosDetalle = ({idEvaluacion}) => {
 };
 InformeResultadosDetalle.propTypes = {
   idEvaluacion: PropTypes.number.isRequired,
+  idEmpresa: PropTypes.number.isRequired,
+  changeSelect: PropTypes.bool.isRequired,
 };
 
 export default InformeResultadosDetalle;
