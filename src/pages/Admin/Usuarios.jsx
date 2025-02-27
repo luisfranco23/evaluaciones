@@ -76,6 +76,8 @@ const Usuarios = () => {
         setValue('activo', userData.activo);
         setValue('fechaIngreso', userData.fechaIngreso?.split('T')[0]);
         setValue('area', userData.area);
+
+        await new Promise((resolve) => setTimeout(resolve, 100));
       } else {
         toast.error('Usuario no encontrado.');
       }
@@ -107,7 +109,7 @@ const Usuarios = () => {
       <div className="mb-8">
         <form onSubmit={handleSubmit(buscarUsuario)} className="flex gap-4">
           <input
-            type="text"
+            type="number"
             {...register('idUsuario')}
             placeholder="Buscar por numero de documento"
             className="border p-3 rounded-lg w-full"
@@ -130,7 +132,7 @@ const Usuarios = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-gray-700 mb-2">ID Usuario</label>
-              <input type="text" {...register('idUsuario')} className="border p-3 rounded-lg w-full" disabled />
+              <input type="number" {...register('idUsuario', { required: true })} className="border p-3 rounded-lg w-full cursor-not-allowed bg-gray-50" disabled />
             </div>
             <div>
               <label className="block text-gray-700 mb-2">Nombre</label>
