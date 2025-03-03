@@ -46,7 +46,7 @@ export const BarChartPromedio = ({ data, nombre, index }) => {
             <XAxis dataKey="nombre" height={100} fontSize={15} tickFormatter={(value) => {
               return value.split(" ").join("\n");
             }} />
-            <YAxis />
+            <YAxis domain={[0, 5]} />
             <Tooltip />
               <Bar 
                 key={index} 
