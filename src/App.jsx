@@ -19,6 +19,7 @@ import InformeAccionesMejora from './pages/InformeAccionesMejora';
 import { InformesExcel } from './pages/InformesExcel';
 import InformeDetalleGrupo from './pages/InformeDetalleGrupo';
 import DashboardUser from './pages/DashboardUser';
+import Empresas from './pages/Admin/Empresas';
 
 
 function App() {
@@ -56,7 +57,7 @@ function App() {
             <Route path="usuarios" element={<Usuarios />} /> Subruta relativa
             <Route path="descriptores" element={<Descriptores />} />
             <Route path="evaluaciones" element={<AdmEvaluacion />} /> 
-            {/* <Route path="seguimiento" element={<ComentariosAcciones />} /> */}
+            <Route path="empresas" element={<Empresas />} /> 
           </Route>
         </Route>
         <Route path='/*' element={<NotFound />} />

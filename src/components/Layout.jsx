@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types'; // Asegúrate de importar PropTypes
 import {
   FaBars, FaTimes, FaChevronLeft, FaChevronRight, FaCheckCircle, FaHome, FaCog, FaSignOutAlt,
-  FaClipboardCheck, FaUser, FaList, FaEdit, FaCaretDown, FaCaretUp, FaEye
+  FaClipboardCheck, FaUser, FaList, FaEdit, FaCaretDown, FaCaretUp
 } from 'react-icons/fa';
 import { useUser } from '../context/UserContext';
 import axios from 'axios';
@@ -12,6 +12,7 @@ import { FaChartPie, FaTableCells } from 'react-icons/fa6';
 import { RiDashboard3Fill, RiFileChartFill } from '@remixicon/react';
 import { HiMiniClipboardDocumentCheck } from 'react-icons/hi2';
 import style from './layout.module.css';
+import { IoIosBusiness } from 'react-icons/io';
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,7 +67,7 @@ const Layout = ({ children }) => {
           <li>
             <Link to="/home" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
               <FaHome size={20} />
-              <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Home</span>
+              <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Home</span>
             </Link>
           </li>
           {(idPerfil === 2 || idPerfil === 3) && (
@@ -74,19 +75,19 @@ const Layout = ({ children }) => {
               <li>
                 <Link to="/evaluar" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                   <FaCheckCircle size={20} />
-                  <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluar</span>
+                  <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluar</span>
                 </Link>
               </li>
               <li>
                 <Link to="/informes/resultado/usuario" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                   <FaTableCells size={20} />
-                  <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Informe</span>
+                  <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Informe</span>
                 </Link>
               </li>
               <li>
                 <Link to="/DashboardUser" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                   <FaChartPie size={20} />
-                  <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Dashboard</span>
+                  <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Dashboard</span>
                 </Link>
               </li>
             </>
@@ -106,31 +107,31 @@ const Layout = ({ children }) => {
                     <li>
                       <Link to="/informes/graficas" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <FaChartPie size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Gráficas</span>
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Gráficas</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/informes/evaluadores" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <RiFileChartFill size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluadores</span>
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluadores</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/informes/dashboard" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <RiDashboard3Fill size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Dashboard</span>
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Dashboard</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/informes/resultados" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <HiMiniClipboardDocumentCheck size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Resultados</span>
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Resultados</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/informes/acciones" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <HiMiniClipboardDocumentCheck size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Acciones de mejora</span>
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Acciones de mejora</span>
                       </Link>
                     </li>
                   </ul>
@@ -148,25 +149,25 @@ const Layout = ({ children }) => {
                     <li>
                       <Link to="/administrar/usuarios" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <FaUser size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Usuarios</span>
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Usuarios</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/administrar/descriptores" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <FaList size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Descriptores</span>
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Descriptores</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/administrar/evaluaciones" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
                         <FaEdit size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluaciones</span>
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Evaluaciones</span>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/administrar/seguimiento" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
-                        <FaEye size={20} />
-                        <span className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Seguimiento</span>
+                      <Link to="/administrar/empresas" className="flex items-center gap-4 px-4 py-3 hover:bg-zvioletaopaco rounded-lg transition-colors">
+                        <IoIosBusiness size={20} />
+                        <span onClick={toggleMenu} className={`${!isMenuOpen && 'hidden'} transition-all duration-300`}>Empresas</span>
                       </Link>
                     </li>
                   </ul>

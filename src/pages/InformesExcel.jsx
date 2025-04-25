@@ -82,7 +82,7 @@ export const InformesExcel = () => {
         <button className="bg-zvioleta py-2 px-10 rounded-lg text-white hover:scale-105 shadow-md" onClick={() => setChangeSelect(prev => !prev)}>Consultar</button>
       </div>
       {
-        report == 1 ? <InformeResultados changeSelect={changeSelect} idEvaluacion={idEvaluacion.current.value} idEmpresa={idEmpresa.current.value} idSede={idSede.current.value} /> : report == 2 ? <InformeResultadosDetalle idEvaluacion={idEvaluacion.current.value} changeSelect={changeSelect} idEmpresa={idEmpresa.current.value} /> : null
+        report == 1 ? <InformeResultados changeSelect={changeSelect} idEvaluacion={idEvaluacion.current.value} idEmpresa={idEmpresa.current.value} idSede={idSede.current.value} /> : report == 2 ? <InformeResultadosDetalle idEvaluacion={idEvaluacion.current.value} changeSelect={changeSelect} idEmpresa={idEmpresa.current.value} idSede={idSede.current.value} /> : null
       }
     </div>
   )

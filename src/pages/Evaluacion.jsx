@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { URLBASE } from '../lib/actions';
 import { useUser } from '../context/UserContext';
@@ -19,6 +19,7 @@ const Evaluacion = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false); // Para controlar el modal de confirmación
   const { idUsuario } = useParams();
   const user = useUser();
+  const navigate = useNavigate();
 
   const evaluadorId = user?.user.idUsuario; // Evaluador siempre es el usuario actual
 
@@ -42,8 +43,9 @@ const Evaluacion = () => {
         });
         setEvaluacion(evaluacionResponse.data?.data || []);
         setIsLoading(false);
-      } catch{
-        toast.error("Ocurrio un error durante la obtención de los datos!");
+      } catch(err){
+        toast.error(`Ocurrio un error durante la obtención de los datos!, ${err.response.data?.message}`);
+        navigate("/evaluar")
       }
     };
 
