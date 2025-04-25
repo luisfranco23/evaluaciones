@@ -12,7 +12,9 @@ import { useUser } from '../context/UserContext';
 import Loading from './Loading';
 import PropTypes from 'prop-types';
 
-const InformeResultadosDetalle = ({idEvaluacion, idEmpresa, changeSelect}) => {
+const InformeResultadosDetalle = ({idEvaluacion, idEmpresa, idSede, changeSelect}) => {
+
+    console.log(idEmpresa, idSede)
     const [datos, setDatos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const user = useUser()
@@ -23,8 +25,7 @@ const InformeResultadosDetalle = ({idEvaluacion, idEmpresa, changeSelect}) => {
             try {
                 setIsLoading(true)
                 const [informeRes] = await Promise.all([
-                    axios.get(`${URLBASE}/informes/resultados/detalle`, { params: { idEmpresa, idEvaluacion },
-                    })
+                    axios.get(`${URLBASE}/informes/resultados/detalle`, { params: { idEmpresa, idEvaluacion, idSede }})
                 ])
                 setDatos(informeRes.data.informe || [])
             } catch (error) {
@@ -35,7 +36,7 @@ const InformeResultadosDetalle = ({idEvaluacion, idEmpresa, changeSelect}) => {
         };
 
         fetchData();
-    }, [user?.user?.idUsuario, idEmpresa, idEvaluacion, changeSelect]);
+    }, [user?.user?.idUsuario, idEmpresa, idSede, idEvaluacion, changeSelect]);
 
 
     // const handleChangeEmpresa = async (newValue) => {
@@ -168,6 +169,7 @@ const InformeResultadosDetalle = ({idEvaluacion, idEmpresa, changeSelect}) => {
 InformeResultadosDetalle.propTypes = {
   idEvaluacion: PropTypes.number.isRequired,
   idEmpresa: PropTypes.number.isRequired,
+  idSede: PropTypes.number.isRequired,
   changeSelect: PropTypes.bool.isRequired,
 };
 

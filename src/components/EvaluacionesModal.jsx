@@ -15,6 +15,7 @@ const EvaluacionesModal = ({ evaluaciones, idColaborador, buscarUsuario }) => {
     setIsModalOpen(!isModalOpen);
   };
 
+
   const handleDelete = async (idEvaluacion, idEvaluador) => {
     try {
       await axios.delete(`${URLBASE}/evaluaciones/disponible`, {params: {idEvaluacion, idEvaluador, idColaborador}})
@@ -65,9 +66,9 @@ const EvaluacionesModal = ({ evaluaciones, idColaborador, buscarUsuario }) => {
         <h2 className="text-xl font-bold mb-2 text-zvioleta">Evaluaciones realizadas</h2>
         <p className='text-sm pb-4 font-light italic'>Las evaluaciones pueden eliminarse dentro de los 6 días posteriores a su registro.</p>
         <ul className="space-y-4">
-          {evaluaciones?.map((evaluacion) => (
+          {evaluaciones?.map((evaluacion, index) => (
             <li
-              key={evaluacion.idEvaluacion}
+              key={`lista-${index}`}
               className="p-3 border rounded-lg flex justify-between items-center"
             >
               <div>
