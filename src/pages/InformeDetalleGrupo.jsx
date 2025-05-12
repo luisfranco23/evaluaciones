@@ -40,7 +40,7 @@ const InformeDetalleGrupo = () => {
             setIsLoading(true);
             try {
                 const informeResponse = await axios.get(`${URLBASE}/informes/resultados/detalle`, {
-                    params: { idEvaluador: user?.user?.idUsuario, idEmpresa: user?.user?.Empresas[0].idEmpresa, idEvaluacion: IdEvaluacion},
+                    params: { idEvaluador: user?.user?.idUsuario, idEvaluacion: IdEvaluacion},
                 });
                 setDatos(informeResponse.data.informe);
             } catch (error) {
